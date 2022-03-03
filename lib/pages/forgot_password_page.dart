@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:login_ui/common/theme_helper.dart';
+import 'package:login_ui/pages/forgot_password_verification_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 
@@ -95,7 +96,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             decoration: ThemeHelper().buttonBoxDecoration(context),
                             child: ElevatedButton(
                               style: ThemeHelper().buttonStyle(),
-                              onPressed: () {  },
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()){
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ForgotPasswordVerificationPage()),);
+                                }
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                                 child: Text(

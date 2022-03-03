@@ -5,37 +5,19 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:login_ui/data/result.dart';
-import 'package:login_ui/data/error.dart';
+import 'package:login_ui/pages/login_page.dart';
+import 'package:login_ui/pages/widgets/header_widget.dart';
+import 'package:login_ui/pages/widgets/search_widget.dart';
 
-import '../login_page.dart';
-
-class MapWidget extends StatefulWidget {
-  const MapWidget({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _MapWidgetState createState() => _MapWidgetState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _MapWidgetState extends State<MapWidget> {
+class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-
-  Completer<GoogleMapController> _controller = Completer();
-  static final CameraPosition _myLocation = CameraPosition(
-    target: LatLng(0, 0),
-  );
-
-  static const String _API_KEY = '{{AIzaSyBf7DG40n2shzerenZZmgl1UQg4CIRes-o}}';
-  static double latitude = 40.7484405;
-  static double longitude = -73.9878531;
-  static const String baseUrl =
-      "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-
-  late Error error;
-  late List<Result> places;
-  bool searching = true;
-  late String keyword;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -45,7 +27,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           centerTitle: true,
@@ -70,14 +52,15 @@ class _MapWidgetState extends State<MapWidget> {
           elevation: 0.5,
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
         ),
-        body: GoogleMap(
-          initialCameraPosition: _myLocation,
-          mapType: MapType.normal,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
+        body: SingleChildScrollView(
+          child: Stack(
+            children: [
+              //SizedBox(height: 20),
+              Container(height: 150, child: HeaderWidget(150, false, Icons.house_rounded),),
+              SearchWidget(onChanged: (value) {}),
+            ],
+          )
         ),
-
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -99,17 +82,5 @@ class _MapWidgetState extends State<MapWidget> {
               IconThemeData(color: Theme.of(context).accentColor, size: 30),
           selectedItemColor: Theme.of(context).accentColor,
         ));
-  }
-
-  void _handleResponse(data) {
-    //bad api key or otherwise
-    if (data['status'] == "REQUEST_DENIED") {
-      setState(() {
-        error = Error.fromJson(data);
-      });
-      //success
-    } else if (data['status'] == "OK") {
-    } else {
-    }
   }
 }

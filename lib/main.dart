@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:login_ui/pages/home/home_screen.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/widgets/map_widget.dart';
 
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.grey[50],
         primarySwatch: Colors.grey,
       ),
-      home: LoginPage(),
+      home: HomeScreen(),
     );
   }
 }
