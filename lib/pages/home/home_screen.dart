@@ -5,8 +5,10 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
+import 'package:login_ui/pages/widgets/map_widget.dart';
 import 'package:login_ui/pages/widgets/search_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,6 +20,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+
+  static const List<Widget> _widgetOPtions = <Widget>[
+    HomeScreen(),
+    HomeScreen(),
+    HomeScreen(),
+    HomeScreen(),
+    LoginPage()
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,25 +52,129 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.symmetric(horizontal: 20),
             ),
             IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                icon: Icon(Icons.person))
+              onPressed: () {
+                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage()),);
+              },
+              icon: Icon(Icons.login),
+            )
           ],
           backgroundColor: Colors.white,
           elevation: 0.5,
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
         ),
         body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              //SizedBox(height: 20),
-              Container(height: 150, child: HeaderWidget(150, false, Icons.house_rounded),),
-              SearchWidget(onChanged: (value) {}),
-            ],
-          )
-        ),
+            child: Stack(
+          children: <Widget>[
+            //_widgetOPtions.elementAt(_selectedIndex)
+            Container(
+              height: 200,
+              child: HeaderWidget(200, false, Icons.house_rounded),
+            ),
+            SearchWidget(onChanged: (value) {}),
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 200, 0, 0),
+              alignment: Alignment.center,
+              child: Column(
+                children: <Widget>[
+                  InkWell(
+                    child: GFCard(
+                      boxFit: BoxFit.cover,
+                      titlePosition: GFPosition.start,
+                      image: Image.asset(
+                        'assets/images/house_01.jpg',
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
+                      showImage: true,
+                      content: Text("Lorem ipsum dolo")
+                    ),
+                    onTap: () {
+                      Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MapWidget()),);
+                    },
+                  ),
+                  InkWell(
+                    child: GFCard(
+                      boxFit: BoxFit.cover,
+                      titlePosition: GFPosition.start,
+                      image: Image.asset(
+                        'assets/images/house_01.jpg',
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
+                      showImage: true,
+                      content: Text("Lorem ipsum dolo")
+                    ),
+                    onTap: () {
+                      Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MapWidget()),);
+                    },
+                  ),
+                  GestureDetector(
+                    child: Card(),
+                  ),
+                  InkWell(
+                    child: GFCard(
+                      colorFilter: ColorFilter.linearToSrgbGamma(),
+                      boxFit: BoxFit.cover,
+                      elevation: 20,
+                      border: Border.all(width: 5, color: Colors.white),
+                      borderRadius: BorderRadius.circular(10),
+                      titlePosition: GFPosition.start,
+                      showOverlayImage: true,
+                      imageOverlay: AssetImage('assets/images/maps.jpg'),
+                      title: GFListTile(
+                        titleText: 'Maps',
+                        subTitleText: 'Search from maps',
+                        //onTap: () {},
+                      ),
+                      content: Text(
+                        'Go to maps',
+                        style:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MapWidget()),);
+                    },
+                  ),
+                  InkWell(
+                    child: GFCard(
+                      boxFit: BoxFit.cover,
+                      titlePosition: GFPosition.start,
+                      image: Image.asset(
+                        'assets/images/house_01.jpg',
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.cover,
+                      ),
+                      showImage: true,
+                      content: Text("Lorem ipsum dolo")
+                    ),
+                    onTap: () {
+                      Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MapWidget()),);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -68,12 +182,20 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.search_sharp),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_rounded),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.settings),
               label: 'Settings',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.logout),
-              label: 'Logout',
+              icon: Icon(Icons.person),
+              label: 'Login',
             ),
           ],
           currentIndex: _selectedIndex,
@@ -81,6 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedIconTheme:
               IconThemeData(color: Theme.of(context).accentColor, size: 30),
           selectedItemColor: Theme.of(context).accentColor,
+          unselectedItemColor: Colors.grey,
         ));
   }
 }
