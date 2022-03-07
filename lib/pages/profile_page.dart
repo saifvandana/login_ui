@@ -12,6 +12,8 @@ import 'package:login_ui/pages/registration_page.dart';
 import 'package:login_ui/pages/splash_screen.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 
+import 'forgot_password_verification_page.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -200,6 +202,27 @@ class _ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                             builder: (context) =>
                                 ForgotPasswordPage()));
+                  },
+                ),
+                 Divider(color: Theme.of(context).primaryColor, height: 1,),
+                ListTile(
+                  leading: Icon(
+                    Icons.password_rounded,
+                    size: _drawerIconSize,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  title: Text(
+                    'Password Verification Page',
+                    style: TextStyle(
+                        fontSize: _drawerFontSize,
+                        color: Theme.of(context).accentColor),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ForgotPasswordVerificationPage()));
                   },
                 ),
                 Divider(color: Theme.of(context).primaryColor, height: 1,),

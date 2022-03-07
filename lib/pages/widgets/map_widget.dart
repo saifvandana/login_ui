@@ -46,59 +46,39 @@ class _MapWidgetState extends State<MapWidget> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppBar(
-          centerTitle: true,
-          title: SizedBox(
-            child: Icon(
-              Icons.android_outlined,
-              size: 50,
-            ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: AppBar(
+        centerTitle: true,
+        title: SizedBox(
+          child: Icon(
+            Icons.android_outlined,
+            size: 50,
           ),
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-            ),
-            IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                icon: Icon(Icons.person))
-          ],
-          backgroundColor: Colors.white,
-          elevation: 0.5,
-          iconTheme: IconThemeData(color: Theme.of(context).accentColor),
         ),
-        body: GoogleMap(
-          initialCameraPosition: _myLocation,
-          mapType: MapType.normal,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
-
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.logout),
-              label: 'Logout',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          selectedIconTheme:
-              IconThemeData(color: Theme.of(context).accentColor, size: 30),
-          selectedItemColor: Theme.of(context).accentColor,
-        ));
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+          ),
+          IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LoginPage()));
+              },
+              icon: Icon(Icons.person))
+        ],
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        iconTheme: IconThemeData(color: Theme.of(context).accentColor),
+      ),
+      body: GoogleMap(
+        initialCameraPosition: _myLocation,
+        mapType: MapType.normal,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
+    );
   }
 
   void _handleResponse(data) {

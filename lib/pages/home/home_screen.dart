@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:login_ui/pages/login_page.dart';
+import 'package:login_ui/pages/widgets/banner_widget.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:login_ui/pages/widgets/map_widget.dart';
 import 'package:login_ui/pages/widgets/search_widget.dart';
+import 'package:login_ui/pages/widgets/section_title.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -37,6 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width;
+
     return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
@@ -79,6 +86,12 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.center,
               child: Column(
                 children: <Widget>[
+                  BannerWidget(),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: SectionTitle(title: "Go to Options", press: () {},),
+                  ),
+                  SizedBox(height: 20,),
                   InkWell(
                     child: GFCard(
                       boxFit: BoxFit.cover,
@@ -93,12 +106,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       content: Text("Lorem ipsum dolo")
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MapWidget()),);
+                      // Navigator.pushReplacement(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                 builder: (context) => MapWidget()),);
                     },
                   ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: SectionTitle(title: "Go to Options", press: () {},),
+                  ),
+                  SizedBox(height: 20,),
                   InkWell(
                     child: GFCard(
                       boxFit: BoxFit.cover,
@@ -113,12 +131,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       content: Text("Lorem ipsum dolo")
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MapWidget()),);
                     },
                   ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: SectionTitle(title: "Go to Options", press: () {},),
+                  ),
+                  SizedBox(height: 20,),
                   GestureDetector(
                     child: Card(),
                   ),
@@ -135,7 +154,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: GFListTile(
                         titleText: 'Maps',
                         subTitleText: 'Search from maps',
-                        //onTap: () {},
                       ),
                       content: Text(
                         'Go to maps',
@@ -144,12 +162,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MapWidget()),);
                     },
                   ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: SectionTitle(title: "Go to Options", press: () {},),
+                  ),
+                  SizedBox(height: 20,),
                   InkWell(
                     child: GFCard(
                       boxFit: BoxFit.cover,
@@ -164,10 +183,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       content: Text("Lorem ipsum dolo")
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MapWidget()),);
                     },
                   ),
                 ],
