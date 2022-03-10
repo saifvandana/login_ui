@@ -3,7 +3,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:circular_menu/circular_menu.dart';
+import 'package:login_ui/pages/section_page.dart';
 
 import 'login_page.dart';
 import 'widgets/search_widget.dart';
@@ -19,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    //double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: height / 3.5,),
+            padding: EdgeInsets.only(top: height / 4,),
             child: Center(
               child: RichText(
                 text: TextSpan(
@@ -61,14 +62,14 @@ class _HomePageState extends State<HomePage> {
                     TextSpan(
                       text: "All",
                       style: TextStyle(
-                        color: Color.fromARGB(255, 16, 238, 23), 
+                        color: Color.fromARGB(255, 146, 19, 163), 
                         fontWeight: FontWeight.bold,
                         fontSize: 50,)
                     ),
                     TextSpan(
                       text: "Menkul",
                       style: TextStyle(
-                        color: Color.fromARGB(255, 24, 100, 26), 
+                        color: Color.fromARGB(255, 238, 122, 28), 
                         fontWeight: FontWeight.bold,
                         fontSize: 50,)
                     ),
@@ -94,26 +95,34 @@ class _HomePageState extends State<HomePage> {
                     height: 32,
                     child: Stack(
                       children: [
+                        GestureDetector(
+                          child: ListView(
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            children: [
 
-                        ListView(
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          children: [
+                              SizedBox(
+                                width: 24,
+                              ),
+                              buildFilter("House"),
+                              buildFilter("Price"),
+                              buildFilter("Rent"),
+                              buildFilter("Apartment"),
+                              buildFilter("Bedrooms"),
+                              SizedBox(
+                                width: 8,
+                              ),
 
-                            SizedBox(
-                              width: 24,
-                            ),
-                            buildFilter("House"),
-                            buildFilter("Price"),
-                            buildFilter("Security"),
-                            buildFilter("Bedrooms"),
-                            buildFilter("Bedrooms"),
-                            SizedBox(
-                              width: 8,
-                            ),
-
-                          ],
-                        ),  
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SectionPage()));
+                          }, 
+                        ), 
 
                         Align(
                           alignment: Alignment.centerRight,
@@ -154,6 +163,27 @@ class _HomePageState extends State<HomePage> {
                 // ),
 
               ],
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.only(left: 0, right: 0),
+            child: Align(
+              //alignment: Alignment.bottomCenter,
+              child: CircularMenu(
+                toggleButtonColor: Colors.pink,
+                items: <CircularMenuItem> [
+                  CircularMenuItem(icon: Icons.home, onTap: () {
+                    // callback
+                  }),
+                  CircularMenuItem(icon: Icons.search, onTap: () {
+                    // callback
+                  }),
+                  CircularMenuItem(icon: Icons.settings, onTap: () {
+                    // callback
+                  }),
+                ]
+              ),
             ),
           ),
 

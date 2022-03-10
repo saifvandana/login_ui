@@ -1,7 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, prefer_is_not_empty
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:login_ui/common/theme_helper.dart';
 
@@ -16,6 +22,66 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Key _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
+  String username = "", password = "", email = "";
+  bool isLoading = false;
+
+  TextEditingController _username = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+
+  //API
+  signup(username, email, password) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    username = _username.text;
+    email = _email.text;
+    password = _password.text;
+
+    if (username == "" || password == "" || email == "") {
+      Fluttertoast.showToast(
+        msg: "Username, email or password cannot be blank",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else {
+      Map data = {'username': username, 'email': email, 'password': password};
+
+      //print(data.toString());
+
+      final response = await http.post(
+          Uri.parse("http://192.168.1.103/localconnect/signup.php"),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: data,
+          encoding: Encoding.getByName("utf-8"));
+
+      //If data fetching is successful
+      if (response.statusCode == 200) {
+        print(response.body);
+        final content = jsonDecode(response.body);
+
+        if (!content['error']) {
+          Fluttertoast.showToast(
+            msg: "${content['message']}",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.SNACKBAR,
+          );
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ProfilePage()));
+        } else {
+          Fluttertoast.showToast(
+            msg: "${content['message']}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+          );
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +144,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         Container(
                           child: TextFormField(
+                            controller: _username,
                             decoration: ThemeHelper().textInputDecoration(
                                 'Name', 'Enter your user name'),
                           ),
@@ -88,6 +155,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         Container(
                           child: TextFormField(
+                            controller: _email,
                             decoration: ThemeHelper().textInputDecoration(
                                 "E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
@@ -103,24 +171,25 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(height: 20.0),
+                        // Container(
+                        //   child: TextFormField(
+                        //     decoration: ThemeHelper().textInputDecoration(
+                        //         "Mobile Number", "Enter your mobile number"),
+                        //     keyboardType: TextInputType.phone,
+                        //     validator: (val) {
+                        //       if (!(val!.isEmpty) &&
+                        //           !RegExp(r"^(\d+)*$").hasMatch(val)) {
+                        //         return "Enter a valid phone number";
+                        //       }
+                        //       return null;
+                        //     },
+                        //   ),
+                        //   decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                        // ),
+                        // SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration(
-                                "Mobile Number", "Enter your mobile number"),
-                            keyboardType: TextInputType.phone,
-                            validator: (val) {
-                              if (!(val!.isEmpty) &&
-                                  !RegExp(r"^(\d+)*$").hasMatch(val)) {
-                                return "Enter a valid phone number";
-                              }
-                              return null;
-                            },
-                          ),
-                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                        ),
-                        SizedBox(height: 20.0),
-                        Container(
-                          child: TextFormField(
+                            controller: _password,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Password", "Enter your password"),
@@ -182,7 +251,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               ThemeHelper().buttonBoxDecoration(context),
                           child: ElevatedButton(
                             style: ThemeHelper().buttonStyle(),
-                            onPressed: () {},
+                            onPressed: () {
+                              signup(username, email, password);
+                            },
                             child: Padding(
                               padding:
                                   const EdgeInsets.fromLTRB(40, 10, 40, 10),

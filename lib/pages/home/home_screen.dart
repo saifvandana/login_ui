@@ -76,13 +76,16 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Stack(
           children: <Widget>[
             //_widgetOPtions.elementAt(_selectedIndex)
-            Container(
-              height: 200,
-              child: HeaderWidget(200, false, Icons.house_rounded),
+            // Container(
+            //   height: 200,
+            //   child: HeaderWidget(200, false, Icons.house_rounded),
+            // ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
+              child: SearchWidget(onChanged: (value) {}),
             ),
-            SearchWidget(onChanged: (value) {}),
             Container(
-              padding: EdgeInsets.fromLTRB(0, 200, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
               alignment: Alignment.center,
               child: Column(
                 children: <Widget>[

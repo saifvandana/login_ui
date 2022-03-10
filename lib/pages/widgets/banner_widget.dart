@@ -8,7 +8,7 @@ class BannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width / 1.2,
       height: 80,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(
