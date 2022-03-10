@@ -79,21 +79,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         Container(
                           child: TextFormField(
                             decoration: ThemeHelper().textInputDecoration(
-                                'First Name', 'Enter your first name'),
+                                'Name', 'Enter your user name'),
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(
                           height: 30,
                         ),
-                        Container(
-                          child: TextFormField(
-                            decoration: ThemeHelper().textInputDecoration(
-                                'Last Name', 'Enter your last name'),
-                          ),
-                          decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                        ),
-                        SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
                             decoration: ThemeHelper().textInputDecoration(

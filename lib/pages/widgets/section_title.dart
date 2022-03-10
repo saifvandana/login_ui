@@ -32,7 +32,7 @@ class SectionTitle extends StatelessWidget {
           },
           child: Text(
             "See More",
-            style: TextStyle(color: Colors.black54),
+            style: TextStyle(color: Colors.black),
           ),
         )
       ],

@@ -10,24 +10,31 @@ class SearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
+      //margin: EdgeInsets.all(20),
       padding: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20 / 4,
+        horizontal: 10,
+        vertical: 4,
       ),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.4),
-        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(40),
       ),
       child: TextField(
         onChanged: onChanged,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.black),
         decoration: InputDecoration(
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,
-          icon: Icon(Icons.search_rounded, color: Colors.white,),
+          suffixIcon: Padding(
+            padding: EdgeInsets.zero,
+            child: Icon(
+              Icons.search,
+              color: Colors.grey[400],
+              size: 28,
+            ),
+          ),
           hintText: 'Search',
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: TextStyle(color: Colors.grey),
         ),
       ),
     );

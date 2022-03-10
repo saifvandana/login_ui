@@ -8,14 +8,15 @@ class BannerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width / 2,
+      height: 80,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 10
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).accentColor,
+        color: Color.fromARGB(255, 23, 11, 75),
         borderRadius: BorderRadius.circular(20),
       ),
       child: const Text.rich(

@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:login_ui/pages/home/home_screen.dart';
+import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/widgets/map_widget.dart';
 
@@ -27,12 +29,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Login',
       theme: ThemeData(
+        textTheme: GoogleFonts.openSansTextTheme(),
         primaryColor: _primaryColor,
         accentColor: _accentColor,
         scaffoldBackgroundColor: Colors.grey[50],
         primarySwatch: Colors.grey,
       ),
-      home: SplashScreen(title: '',),
+      home: HomePage(),//SplashScreen(title: '',),
     );
   }
 }

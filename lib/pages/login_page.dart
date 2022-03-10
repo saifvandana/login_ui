@@ -1,8 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import
 
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
@@ -19,6 +24,55 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double _headerHeight = 150;
   Key _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+  String username = "", password = "";
+
+  TextEditingController _username = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
+
+   //API
+  login(username, password) async {
+    username = _username.text;
+    password = _password.text;
+
+    if (username == "" || password == "") {
+      Fluttertoast.showToast(
+        msg: "Username or password cannot be blank",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else {
+      Map data = {'username': username, 'password': password};
+
+      //print(data.toString());
+
+      final response = await http.post(
+          Uri.parse("http://192.168.1.104/localconnect/signin.php"),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: data,
+          encoding: Encoding.getByName("utf-8"));
+
+      //If data fetching is successful
+      if (response.statusCode == 200) {
+        print(response.body);
+        final content = jsonDecode(response.body);
+
+        if (!content['error']) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ProfilePage()));
+        } else {
+          Fluttertoast.showToast(
+            msg: "Username or password invalid",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+          );
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Container(
                               child: TextField(
+                                controller: _username,
                                 decoration: ThemeHelper().textInputDecoration(
                                     'Kullanıcı Adı', 'Kullanıcı Adınız giriniz'),
                               ),
@@ -59,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 30.0),
                             Container(
                               child: TextField(
+                                controller: _password,
                                 obscureText: true,
                                 decoration: ThemeHelper().textInputDecoration(
                                     'Şifre', 'Şifreniz giriniz'),

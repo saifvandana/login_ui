@@ -41,6 +41,13 @@ dependencies:
   google_maps_flutter: ^2.1.1
   flutter_svg: ^1.0.3
   getwidget: ^2.0.5
+  http: ^0.13.4
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.17.0
+  webview_flutter: ^2.0.9
+  shared_preferences: ^2.0.6
+  google_fonts: ^2.3.1
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:
