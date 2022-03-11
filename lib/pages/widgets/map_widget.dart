@@ -26,7 +26,7 @@ class _MapWidgetState extends State<MapWidget> {
     target: LatLng(0, 0),
   );
 
-  static const String _API_KEY = '{{AIzaSyBf7DG40n2shzerenZZmgl1UQg4CIRes-o}}';
+  //static const String _API_KEY = '{{AIzaSyBf7DG40n2shzerenZZmgl1UQg4CIRes-o}}';
   static double latitude = 40.7484405;
   static double longitude = -73.9878531;
   static const String baseUrl =

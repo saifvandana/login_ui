@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, prefer_is_not_empty
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, prefer_is_not_empty, avoid_print
 
 import 'dart:convert';
 
@@ -22,64 +22,79 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Key _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
-  String username = "", password = "", email = "";
+  String name = "", password = "", email = "";
   bool isLoading = false;
 
-  TextEditingController _username = TextEditingController();
+  TextEditingController _name = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
   //API
-  signup(username, email, password) async {
+  signup(name, email, password) async {
     setState(() {
       isLoading = true;
     });
 
-    username = _username.text;
+    name = _name.text;
     email = _email.text;
     password = _password.text;
 
-    if (username == "" || password == "" || email == "") {
+    if (name == "" || password == "" || email == "") {
       Fluttertoast.showToast(
-        msg: "Username, email or password cannot be blank",
+        msg: "name, email or password cannot be blank",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else if (!RegExp(
+            r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+        .hasMatch(email)) {
+      Fluttertoast.showToast(
+        msg: "Enter a valid email",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      Map data = {'username': username, 'email': email, 'password': password};
+      Map data = {
+        's_name': name,
+        's_email': email,
+        's_password': password,
+        's_username': name,
+        'fk_i_parent_id': '0',
+        'b_enabled': '1',
+        'b_active': '1'
+      };
 
       //print(data.toString());
 
       final response = await http.post(
-          Uri.parse("http://192.168.1.103/localconnect/signup.php"),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
+        Uri.parse("http://localhost:8080/osclass/add"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        //encoding: Encoding.getByName("utf-8")
+      );
 
-      //If data fetching is successful
+      //If registration is successful
       if (response.statusCode == 200) {
         print(response.body);
-        final content = jsonDecode(response.body);
 
-        if (!content['error']) {
-          Fluttertoast.showToast(
-            msg: "${content['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.SNACKBAR,
-          );
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ProfilePage()));
+        Fluttertoast.showToast(
+          msg: "User registered successfully",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ProfilePage()));
+
         } else {
           Fluttertoast.showToast(
-            msg: "${content['message']}",
+            msg: "User cannot be registered",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.SNACKBAR,
           );
         }
-      }
     }
   }
 
@@ -144,7 +159,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         Container(
                           child: TextFormField(
-                            controller: _username,
+                            controller: _name,
                             decoration: ThemeHelper().textInputDecoration(
                                 'Name', 'Enter your user name'),
                           ),
@@ -159,14 +174,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             decoration: ThemeHelper().textInputDecoration(
                                 "E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
-                            validator: (val) {
-                              if (!(val!.isEmpty) &&
-                                  !RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                                      .hasMatch(val)) {
-                                return "Enter a valid email address";
-                              }
-                              return null;
-                            },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
@@ -252,7 +259,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           child: ElevatedButton(
                             style: ThemeHelper().buttonStyle(),
                             onPressed: () {
-                              signup(username, email, password);
+                              signup(name, email, password);
                             },
                             child: Padding(
                               padding:
@@ -275,7 +282,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         SizedBox(height: 25.0),
                         Row(
-                          
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             GestureDetector(
