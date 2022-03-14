@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:login_ui/pages/home/home_screen.dart';
+import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     new Timer(const Duration(milliseconds: 2000), (){
       setState(() {
         Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => HomeScreen()), (route) => false);
+        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
       });
     });
 

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:circular_menu/circular_menu.dart';
 import 'package:login_ui/pages/section_page.dart';
 
-import 'login_page.dart';
+import 'package:login_ui/pages/login_page.dart';
 import 'widgets/search_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,10 +38,10 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LoginPage()),);
+              Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage()),);
             },
             icon: Icon(Icons.person),
           )

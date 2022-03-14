@@ -25,30 +25,30 @@ class _LoginPageState extends State<LoginPage> {
   double _headerHeight = 150;
   Key _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String email = "", password = "";
+  String username = "", password = "";
 
-  TextEditingController _email = TextEditingController();
+  TextEditingController _username = TextEditingController();
   TextEditingController _password = TextEditingController();
 
-  //API
-  login(email, password) async {
-    email = _email.text;
+  /*//API
+  login(username, password) async {
+    username = _username.text;
     password = _password.text;
 
-    if (email == "" || password == "") {
+    if (username == "" || password == "") {
       Fluttertoast.showToast(
-        msg: "email or password cannot be blank",
+        msg: "username or password cannot be blank",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
-    } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(email)) {
+    } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(username)) {
       Fluttertoast.showToast(
-        msg: "Enter a valid email",
+        msg: "Enter a valid username",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      Map data = {'s_email': email, 's_password': password};
+      Map data = {'s_username': username, 's_password': password};
 
       print(data.toString());
 
@@ -70,9 +70,54 @@ class _LoginPageState extends State<LoginPage> {
         if (content['pk_i_id'] != null) {                         //if (!content['error']) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
+        } 
+      }
+      else if (response.statusCode == 500) {
+        Fluttertoast.showToast(
+          msg: "username or password invalid",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
+      }
+    }
+  }*/
+
+  //API
+  login(username, password) async {
+    username = _username.text;
+    password = _password.text;
+
+    if (username == "" || password == "") {
+      Fluttertoast.showToast(
+        msg: "Username or password cannot be blank",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else {
+      Map data = {'username': username, 'password': password};
+
+      //print(data.toString());
+
+      final response = await http.post(
+          Uri.parse("http://192.168.0.101/localconnect/signin.php"),
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: data,
+          encoding: Encoding.getByName("utf-8"));
+
+      //If data fetching is successful
+      if (response.statusCode == 200) {
+        print(response.body);
+        final content = jsonDecode(response.body);
+
+        if (!content['error']) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ProfilePage()));
         } else {
           Fluttertoast.showToast(
-            msg: "email or password invalid",
+            msg: "Username or password invalid",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.SNACKBAR,
           );
@@ -114,10 +159,9 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Container(
                                 child: TextField(
-                                  controller: _email,
+                                  controller: _username,
                                   decoration: ThemeHelper().textInputDecoration(
-                                      'Email',
-                                      'Email giriniz'),
+                                      'Name', 'Enter your user name'),
                                 ),
                                 decoration:
                                     ThemeHelper().inputBoxDecorationShaddow(),
@@ -128,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _password,
                                   obscureText: true,
                                   decoration: ThemeHelper().textInputDecoration(
-                                      'Şifre', 'Şifreniz giriniz'),
+                                      "Password", "Enter your password"),
                                 ),
                                 decoration:
                                     ThemeHelper().inputBoxDecorationShaddow(),
@@ -163,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   onPressed: () {
-                                    login(email, password);
+                                    login(username, password);
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(
