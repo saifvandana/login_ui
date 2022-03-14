@@ -51,6 +51,8 @@ dependencies:
   circular_menu : ^1.2.3
   ionicons: ^0.1.2
   cached_network_image: ^3.2.0
+  flutter_icons: ^1.1.0
+  footer: ^0.0.4
 
 dev_dependencies:
   flutter_test:

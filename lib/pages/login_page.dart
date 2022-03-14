@@ -22,7 +22,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  double _headerHeight = 150;
+  double _headerHeight = 130;
   Key _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   String username = "", password = "";
@@ -144,12 +144,12 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       Text(
-                        'Merhaba',
+                        'Welcome',
                         style: TextStyle(
                             fontSize: 60, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Hesabına Giriş',
+                        'Sign in to your account',
                         style: TextStyle(color: Colors.grey),
                       ),
                       SizedBox(height: 30.0),
@@ -207,7 +207,12 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   onPressed: () {
-                                    login(username, password);
+                                    //login(username, password);
+                                    Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfilePage()));
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(

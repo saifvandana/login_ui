@@ -16,7 +16,7 @@ class LogoutPage extends StatefulWidget {
 }
 
 class _LogoutPageState extends State<LogoutPage> {
-  double _headerHeight = 150;
+  double _headerHeight = 130;
 
   @override
   Widget build(BuildContext context) {

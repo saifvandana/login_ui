@@ -162,10 +162,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
           children: [
             Container(
               height: 150,
-              child: HeaderWidget(150, false, Icons.person_add_alt_1_rounded),
+              child: HeaderWidget(130, false, Icons.person_add_alt_1_rounded),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(25, 50, 25, 10),
+              margin: EdgeInsets.fromLTRB(25, 60, 25, 10),
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               alignment: Alignment.center,
               child: Column(
@@ -195,11 +195,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 child: Icon(
                                   Icons.person,
                                   color: Colors.grey.shade300,
-                                  size: 80.0,
+                                  size: 70.0,
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(80, 80, 0, 0),
+                                padding: EdgeInsets.fromLTRB(75, 75, 0, 0),
                                 child: Icon(
                                   Icons.add_circle,
                                   color: Colors.grey.shade700,

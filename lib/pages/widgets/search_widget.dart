@@ -11,11 +11,14 @@ class SearchWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       //margin: EdgeInsets.all(20),
-      padding: EdgeInsets.symmetric(
-        horizontal: 10,
-        vertical: 4,
-      ),
+      // padding: EdgeInsets.symmetric(
+      //   horizontal: 10,
+      //   vertical: 4,
+      // ),
+      padding: EdgeInsets.all(8),
+      height: 40,
       decoration: BoxDecoration(
+        color: Colors.white,
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(40),
       ),
@@ -29,12 +32,12 @@ class SearchWidget extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Icon(
               Icons.search,
-              color: Colors.grey[400],
-              size: 28,
+              color: Colors.grey,
+              size: 22,
             ),
           ),
           hintText: 'Search',
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
         ),
       ),
     );

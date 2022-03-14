@@ -21,7 +21,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    double _headerHeight = 150;
+    double _headerHeight = 130;
 
     return Scaffold(
       backgroundColor: Colors.white,

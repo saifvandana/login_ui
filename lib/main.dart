@@ -17,9 +17,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   Color _primaryColor =
-      Color.fromARGB(255, 238, 122, 28); //Color.fromARGB(255, 45, 110, 45);
+      Color.fromARGB(255, 4, 28, 107); //Color.fromARGB(255, 45, 110, 45);
   Color _accentColor =
-      Color.fromARGB(255, 146, 12, 168); //Color.fromARGB(255, 55, 199, 27);
+      Color.fromARGB(255, 130, 146, 218); //Color.fromARGB(255, 55, 199, 27);
 
   // Color _primaryColor = HexColor('#DC54FE');
   // Color _accentColor = HexColor('#8A02AE');
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.grey[50],
         primarySwatch: Colors.grey,
       ),
-      home: LoginPage(),//SplashScreen(title: '',),
+      home: HomePage(),//SplashScreen(title: '',),
     );
   }
 }
