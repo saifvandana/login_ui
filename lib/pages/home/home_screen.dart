@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.center,
               child: Column(
                 children: <Widget>[
-                  SearchWidget(onChanged: (value) {}),
+                  //SearchWidget(onChanged: (value) {}),
                   SizedBox(height: 20,),
                   BannerWidget(),
                   Padding(

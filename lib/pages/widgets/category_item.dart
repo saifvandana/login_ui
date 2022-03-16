@@ -20,26 +20,26 @@ class CategoryItem extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.fastOutSlowIn,
-        padding: EdgeInsets.fromLTRB(5, 20, 5, 0),
+        padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
         margin: EdgeInsets.only(right: 10),
-        width: 90,
-        height: 90,
+        width: 60,
+        height: 60,
         decoration: BoxDecoration(
           color: selected ? primary : cardColor,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromARGB(255, 221, 218, 218).withOpacity(0.1),
-              spreadRadius: .5,
-              blurRadius: .5,
-              offset: Offset(0, 1), // changes position of shadow
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Color.fromARGB(255, 230, 82, 82).withOpacity(0.1),
+          //     spreadRadius: .5,
+          //     blurRadius: .5,
+          //     offset: Offset(0, 1), // changes position of shadow
+          //   ),
+          // ],
         ),
         child: Column(
           children: [
             Icon(data["icon"],
-                size: 25, color: selected ? Colors.white : primary),
+                size: 15, color: selected ? Colors.white : primary),
             SizedBox(
               height: 5,
             ),
@@ -52,15 +52,6 @@ class CategoryItem extends StatelessWidget {
                     fontSize: 13, color: selected ? Colors.white : primary),
               ),
             ),
-            // Visibility(
-            //   visible: selected,
-            //   child: Container(
-            //     width: double.infinity, height: 2,
-            //     decoration: BoxDecoration(
-            //       color: primary,
-            //     ),
-            //   ),
-            // ),
           ],
         ),
       ),

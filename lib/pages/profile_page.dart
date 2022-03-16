@@ -82,18 +82,6 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         drawer: Drawer(
           child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [
-                  0.0,
-                  1.0
-                ],
-                    colors: [
-                  Theme.of(context).primaryColor.withOpacity(0.2),
-                  Theme.of(context).accentColor.withOpacity(0.2),
-                ])),
             child: ListView(
               children: [
                 DrawerHeader(
