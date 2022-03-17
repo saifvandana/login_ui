@@ -53,6 +53,7 @@ dependencies:
   cached_network_image: ^3.2.0
   flutter_icons: ^1.1.0
   footer: ^0.0.4
+  get: 
 
 dev_dependencies:
   flutter_test:

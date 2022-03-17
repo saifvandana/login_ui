@@ -28,7 +28,7 @@ class _FilterState extends State<Filter> {
               Text(
                 "Filter",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -40,7 +40,7 @@ class _FilterState extends State<Filter> {
               Text(
                 "your search",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 17,
                 ),
               ),
 
@@ -57,7 +57,7 @@ class _FilterState extends State<Filter> {
               Text(
                 "Price",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 17,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -69,7 +69,7 @@ class _FilterState extends State<Filter> {
               Text(
                 "range",
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 17,
                 ),
               ),
 
@@ -94,14 +94,14 @@ class _FilterState extends State<Filter> {
             children: [
 
               Text(
-                r"$70k",
+                r"TL70k",
                 style: TextStyle(
                   fontSize: 14,
                 ),
               ),
 
               Text(
-                r"$1000k",
+                r"TL1000k",
                 style: TextStyle(
                   fontSize: 14,
                 ),
@@ -117,7 +117,7 @@ class _FilterState extends State<Filter> {
           Text(
             "Rooms",
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -145,7 +145,7 @@ class _FilterState extends State<Filter> {
           Text(
             "Bathrooms",
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
             ),
           ),

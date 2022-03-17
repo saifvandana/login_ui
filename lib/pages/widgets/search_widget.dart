@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SearchWidget extends StatelessWidget {
   //final ValueChanged onChanged;
@@ -11,7 +12,7 @@ class SearchWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.only(left: 10),
       height: 50,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -27,14 +28,14 @@ class SearchWidget extends StatelessWidget {
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
             suffixIcon: Padding(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.only(right: 10),
               child: Icon(
                 Icons.search,
                 color: Colors.grey,
                 size: 22,
               ),
             ),
-            hintText: 'Search',
+            hintText: 'Search'.tr,
             hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
           ),
         ),

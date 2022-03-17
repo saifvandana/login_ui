@@ -93,8 +93,8 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     tileMode: TileMode.clamp
                 ),
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
                 ),
               ),
             ),

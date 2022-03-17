@@ -333,27 +333,30 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.googlePlus,
-                                size: 35,
-                                color: Colors.red,
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: GestureDetector(
+                                child: FaIcon(
+                                  FontAwesomeIcons.googlePlus,
+                                  size: 35,
+                                  color: Colors.red,
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return ThemeHelper().alartDialog(
+                                            "Google Plus",
+                                            "You tap on GooglePlus icon",
+                                            context);
+                                      },
+                                    );
+                                  });
+                                },
                               ),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog(
-                                          "Google Plus",
-                                          "You tap on GooglePlus icon",
-                                          context);
-                                    },
-                                  );
-                                });
-                              },
                             ),
-                            SizedBox(height: 50.0),
+                            
                             GestureDetector(
                               child: FaIcon(
                                 FontAwesomeIcons.facebook,

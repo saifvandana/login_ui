@@ -1,4 +1,5 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class Property {
 
@@ -20,13 +21,13 @@ class Property {
 List<Property> getPropertyList(){
   return <Property>[
     Property(
-      "SALE",
+      "SALE".tr,
       "Clinton Villa",
-      "3,500.00",
+      "3,5000.00",
       "Ankara",
       "2,456",
       "4.4",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
       "assets/images/house_01.jpg",
       "assets/images/owner.jpg",
       [
@@ -38,9 +39,9 @@ List<Property> getPropertyList(){
       ],
     ),
     Property(
-      "RENT",
+      "RENT".tr,
       "Salu House",
-      "3,500.00",
+      "3,5000.00",
       "Mamak",
       "3,300",
       "4.6",
@@ -56,13 +57,13 @@ List<Property> getPropertyList(){
       ],
     ),
     Property(
-      "RENT",
+      "RENT".tr,
       "Hilton House",
-      "3,100.00",
+      "3,1000.00",
       "Istanbul",
       "2,100",
       "4.1",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
       "assets/images/house_02.jpg",
       "assets/images/owner.jpg",
       [
@@ -74,13 +75,13 @@ List<Property> getPropertyList(){
       ],
     ),
     Property(
-      "SALE",
+      "SALE".tr,
       "Ibe House",
-      "4,500.00",
+      "4,5000.00",
       "Antalya",
       "4,100",
       "4.5",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
       "assets/images/house_03.jpg",
       "assets/images/owner.jpg",
       [
@@ -92,13 +93,13 @@ List<Property> getPropertyList(){
       ],
     ),
     Property(
-      "SALE",
+      "SALE".tr,
       "Aventura",
-      "5,200.00",
+      "5,2000.00",
       "Istanbul",
       "3,100",
       "4.2",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
       "assets/images/house_05.jpg",
       "assets/images/owner.jpg",
       [
@@ -110,13 +111,13 @@ List<Property> getPropertyList(){
       ],
     ),
     Property(
-      "SALE",
+      "SALE".tr,
       "North House",
-      "3,500.00",
+      "3,5000.00",
       "Izmir",
       "3,700",
       "4.0",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
       "assets/images/house_06.jpg",
       "assets/images/owner.jpg",
       [
@@ -128,13 +129,13 @@ List<Property> getPropertyList(){
       ],
     ),
     Property(
-      "RENT",
+      "RENT".tr,
       "Rasmus Resident",
-      "2,900.00",
+      "2,9000.00",
       "Ankara",
       "2,700",
       "4.3",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
       "assets/images/house_07.jpg",
       "assets/images/owner.jpg",
       [
@@ -146,13 +147,13 @@ List<Property> getPropertyList(){
       ],
     ),
     Property(
-      "RENT",
+      "RENT".tr,
       "Simone House",
-      "3,900.00",
+      "3,9000.00",
       "Ankara",
       "3,700",
       "4.4",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.",
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
       "assets/images/house_08.jpg",
       "assets/images/owner.jpg",
       [
@@ -168,7 +169,7 @@ List<Property> getPropertyList(){
 
 List categories = [
   {
-    "name" : "All",
+    "name" : "All".tr,
     "icon" :  FontAwesomeIcons.boxes
   },
   // {
@@ -184,11 +185,11 @@ List categories = [
   //   "icon" :  FontAwesomeIcons.building
   // },
   {
-    "name" : "Rent",
+    "name" : "Rent".tr,
     "icon" :  FontAwesomeIcons.home
   },
   {
-    "name" : "Buy",
+    "name" : "Buy".tr,
     "icon" :  FontAwesomeIcons.building
   },
 ];

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:login_ui/data/data.dart';
 import 'package:login_ui/filter.dart';
 
@@ -26,13 +27,13 @@ class _SearchPageState extends State<SearchPage> {
             padding: EdgeInsets.only(top: 48, left: 24, right: 24, bottom: 16),
             child: TextField(
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 17,
                 color: Colors.black,             
               ),
               decoration: InputDecoration(
-                hintText: 'Search',
+                hintText: 'Search'.tr,
                 hintStyle: TextStyle(
-                  fontSize: 20,
+                  fontSize: 17,
                   color: Colors.grey[400],
                 ),
                 enabledBorder: UnderlineInputBorder(      
@@ -49,7 +50,7 @@ class _SearchPageState extends State<SearchPage> {
                   child: Icon(
                     Icons.search,
                     color: Colors.grey[400],
-                    size: 28,
+                    size: 20,
                   ),
                 ),
               ),
@@ -57,7 +58,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
 
           Padding(
-            padding: EdgeInsets.only(top: 16),
+            padding: EdgeInsets.only(top: 16, bottom: 16,),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -118,9 +119,9 @@ class _SearchPageState extends State<SearchPage> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 16, right: 24),
                     child: Text(
-                      "Filters",
+                      "Filters".tr,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -131,33 +132,33 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
 
-          Padding(
-            padding: EdgeInsets.only(right: 24, left: 24, top: 24, bottom: 12),
-            child: Row(
-              children: [
+          // Padding(
+          //   padding: EdgeInsets.only(right: 24, left: 24, top: 24, bottom: 12),
+          //   child: Row(
+          //     children: [
 
-                Text(
-                  "53",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+          //       Text(
+          //         "53",
+          //         style: TextStyle(
+          //           fontSize: 15,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //       ),
 
-                SizedBox(
-                  width: 8,
-                ),
+          //       SizedBox(
+          //         width: 8,
+          //       ),
 
-                Text(
-                  "Results found",
-                  style: TextStyle(
-                    fontSize: 15,
-                  ),
-                ),
+          //       Text(
+          //         "Results found",
+          //         style: TextStyle(
+          //           fontSize: 15,
+          //         ),
+          //       ),
 
-              ],
-            ),
-          ),
+          //     ],
+          //   ),
+          // ),
 
           Expanded(
             child: Container(
@@ -264,7 +265,7 @@ class _SearchPageState extends State<SearchPage> {
                   padding: EdgeInsets.symmetric(vertical: 4,),
                   child: Center(
                     child: Text(
-                      "FOR " + property.label,
+                      "FOR ".tr + property.label,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -295,7 +296,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
 
                         Text(
-                          r"$" + property.price,
+                          r"TL" + property.price,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -374,7 +375,7 @@ class _SearchPageState extends State<SearchPage> {
                             ),
 
                             Text(
-                              property.review + " Reviews",
+                              property.review + " Reviews".tr,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,

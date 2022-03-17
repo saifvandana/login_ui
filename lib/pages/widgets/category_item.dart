@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_new, deprecated_member_use, no_logic_in_create_state, prefer_final_fields, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, unnecessary_import, prefer_const_constructors_in_immutables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CategoryItem extends StatelessWidget {
   CategoryItem(
@@ -45,6 +46,7 @@ class CategoryItem extends StatelessWidget {
             ),
             Expanded(
               child: Text(
+                //data.name,
                 data["name"],
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
