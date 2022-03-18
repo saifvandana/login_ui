@@ -3,7 +3,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:get/get.dart';
 import 'package:login_ui/common/theme_helper.dart';
 import 'package:login_ui/pages/forgot_password_verification_page.dart';
 import 'package:login_ui/pages/login_page.dart';
@@ -46,7 +46,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         crossAxisAlignment:  CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Forgot Password?',
+                            'Forgot Password?'.tr,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           ),
                           SizedBox(height: 10,),
                           Text(
-                            'Enter the email address associated with your account.',
+                            'Enter the email address associated with your account.'.tr,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -64,7 +64,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           ),
                           SizedBox(height: 10,),
                           Text(
-                            'We will email you a verification code.',
+                            'We will email you a verification code.'.tr,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               child: Padding(
                                 padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                                 child: Text(
-                                  "Send".toUpperCase(),
+                                  "SEND".tr,
                                   style: TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -124,9 +124,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                             child: Text.rich(
                               TextSpan(
                                 children: [
-                                  TextSpan(text: "Remembered your password? "),
+                                  TextSpan(text: "Remembered your password? ".tr),
                                   TextSpan(
-                                    text: 'Login',
+                                    text: 'Login'.tr,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = (){
                                         Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));

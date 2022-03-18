@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import
 
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 
 class Filter extends StatefulWidget {
   const Filter({ Key? key }) : super(key: key);
@@ -26,7 +26,7 @@ class _FilterState extends State<Filter> {
             children: [
 
               Text(
-                "Filter",
+                "Filter".tr,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -38,7 +38,7 @@ class _FilterState extends State<Filter> {
               ),
 
               Text(
-                "your search",
+                "your search".tr,
                 style: TextStyle(
                   fontSize: 17,
                 ),
@@ -55,7 +55,7 @@ class _FilterState extends State<Filter> {
             children: [
 
               Text(
-                "Price",
+                "Price".tr,
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class _FilterState extends State<Filter> {
               ),
 
               Text(
-                "range",
+                "range".tr,
                 style: TextStyle(
                   fontSize: 17,
                 ),
@@ -115,7 +115,7 @@ class _FilterState extends State<Filter> {
           ),
 
           Text(
-            "Rooms",
+            "Rooms".tr,
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
@@ -130,7 +130,7 @@ class _FilterState extends State<Filter> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              buildOption("Any", false),
+              buildOption("Any".tr, false),
               buildOption("1", false),
               buildOption("2", true),
               buildOption("3+", false),
@@ -143,7 +143,7 @@ class _FilterState extends State<Filter> {
           ),
 
           Text(
-            "Bathrooms",
+            "Bathrooms".tr,
             style: TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.bold,
@@ -158,7 +158,7 @@ class _FilterState extends State<Filter> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              buildOption("Any", true),
+              buildOption("Any".tr, true),
               buildOption("1", false),
               buildOption("2", false),
               buildOption("3+", false),

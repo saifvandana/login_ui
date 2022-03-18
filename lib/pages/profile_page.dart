@@ -3,7 +3,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:get/get.dart';
 import 'package:login_ui/common/theme_helper.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/login_page.dart';
@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "ProfilePage",
+            "ProfilePage".tr,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           elevation: 0.5,
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           context: context,
                           builder: (BuildContext context) {
                             return ThemeHelper().alartDialog(
-                                "Notifications", "There are no notifications", context);
+                                "Notifications".tr, "There are no notifications".tr, context);
                           },
                         );
                       });
@@ -129,7 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Splash Screen',
+                    'Splash Screen'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
@@ -150,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Login Page',
+                    'Login page'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
@@ -171,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Registration Page',
+                    'Registration Page'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
@@ -192,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Forgot Password Page',
+                    'Forgot Password Page'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
@@ -213,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Password Verification Page',
+                    'Password Verification Page'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
@@ -234,7 +234,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Logout Page',
+                    'Logout'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
@@ -288,7 +288,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                             alignment: Alignment.topLeft,
                             child: Text(
-                              'User Information',
+                              'User Information'.tr,
                               style: TextStyle(
                                 color: Colors.black54,
                                 fontWeight: FontWeight.w500,
@@ -310,23 +310,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                         tiles: [
                                           ListTile(
                                             leading: Icon(Icons.my_location),
-                                            title: Text("Location"),
+                                            title: Text("Location".tr),
                                             subtitle: Text("Turkey"),
                                           ),
                                           ListTile(
                                             leading: Icon(Icons.email),
-                                            title: Text("Email"),
+                                            title: Text("Email".tr),
                                             subtitle: Text("admin@gmail.com"),
                                           ),
                                           ListTile(
                                             leading: Icon(Icons.phone),
-                                            title: Text("Phone"),
-                                            subtitle: Text("+9055555555"),
+                                            title: Text("Phone".tr),
+                                            subtitle: Text("+905555555500"),
                                           ),
                                           ListTile(
                                             leading: Icon(Icons.person),
-                                            title: Text("About Me"),
-                                            subtitle: Text("This is about me section"),
+                                            title: Text("About Me".tr),
+                                            subtitle: Text("This is about me section".tr),
                                           ),
                                         ]
                                       )

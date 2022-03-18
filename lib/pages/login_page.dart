@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, avoid_print
 
 import 'dart:convert';
-
+import 'package:get/get.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,13 +37,13 @@ class _LoginPageState extends State<LoginPage> {
 
     if (username == "" || password == "") {
       Fluttertoast.showToast(
-        msg: "username or password cannot be blank",
+        msg: "username or password cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
     } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(username)) {
       Fluttertoast.showToast(
-        msg: "Enter a valid username",
+        msg: "Enter a valid username".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (username == "" || password == "") {
       Fluttertoast.showToast(
-        msg: "Username or password cannot be blank",
+        msg: "username or password cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
         } else {
           Fluttertoast.showToast(
-            msg: "Username or password invalid",
+            msg: "Username or password invalid".tr,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.SNACKBAR,
           );
@@ -131,8 +131,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       //backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Column(
-          children: [
+        child: Column(children: [
           Container(
             height: _headerHeight,
             child: HeaderWidget(_headerHeight, true, Icons.login_rounded),
@@ -144,12 +143,12 @@ class _LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       Text(
-                        'Welcome',
+                        'Welcome'.tr,
                         style: TextStyle(
                             fontSize: 60, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Sign in to your account',
+                        'Sign in to your account'.tr,
                         style: TextStyle(color: Colors.grey),
                       ),
                       SizedBox(height: 30.0),
@@ -161,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: TextField(
                                   controller: _username,
                                   decoration: ThemeHelper().textInputDecoration(
-                                      'Name', 'Enter your user name'),
+                                      'Name'.tr, 'Enter your user name'.tr),
                                 ),
                                 decoration:
                                     ThemeHelper().inputBoxDecorationShaddow(),
@@ -172,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                                   controller: _password,
                                   obscureText: true,
                                   decoration: ThemeHelper().textInputDecoration(
-                                      "Password", "Enter your password"),
+                                      "Password".tr, "Enter your password".tr),
                                 ),
                                 decoration:
                                     ThemeHelper().inputBoxDecorationShaddow(),
@@ -185,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                                 alignment: Alignment.topRight,
                                 child: Text.rich(TextSpan(children: [
                                   TextSpan(
-                                    text: 'Forgot your password?',
+                                    text: 'Forgot your password?'.tr,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.push(
@@ -209,16 +208,16 @@ class _LoginPageState extends State<LoginPage> {
                                   onPressed: () {
                                     //login(username, password);
                                     Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfilePage()));
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProfilePage()));
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         40, 10, 40, 10),
                                     child: Text(
-                                      "Login".toUpperCase(),
+                                      "LOGIN".tr,
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -233,9 +232,9 @@ class _LoginPageState extends State<LoginPage> {
                                 margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
                                 //child: Text('Don\'t have an account? Create'),
                                 child: Text.rich(TextSpan(children: [
-                                  TextSpan(text: "Don't have an account? "),
+                                  TextSpan(text: "Don't have an account? ".tr),
                                   TextSpan(
-                                    text: 'Create',
+                                    text: 'Create'.tr,
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         Navigator.push(

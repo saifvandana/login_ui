@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'registration_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:login_ui/common/theme_helper.dart';
-
+import 'package:get/get.dart';
 import 'login_page.dart';
 
 class LogoutPage extends StatefulWidget {
@@ -29,66 +29,63 @@ class _LogoutPageState extends State<LogoutPage> {
             child: HeaderWidget(_headerHeight, true, Icons.logout),
           ),
           SafeArea(
-            child: Container(
-              child: Column(
-                children: [
-                  Text(
-                    'Login or Register',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 30.0),
-                  Container(
-                    decoration: ThemeHelper().buttonBoxDecoration(context),
-                    child: ElevatedButton(
-                      style: ThemeHelper().buttonStyle(),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                        child: Text(
-                          "Login".toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+              child: Container(
+            child: Column(
+              children: [
+                Text(
+                  'Login or Register'.tr,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 30.0),
+                Container(
+                  decoration: ThemeHelper().buttonBoxDecoration(context),
+                  child: ElevatedButton(
+                    style: ThemeHelper().buttonStyle(),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                      child: Text(
+                        "LOGIN".tr,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 30.0),
-                  Container(
-                    decoration: ThemeHelper().buttonBoxDecoration(context),
-                    child: ElevatedButton(
-                      style: ThemeHelper().buttonStyle(),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegistrationPage()));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                        child: Text(
-                          "Register".toUpperCase(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                ),
+                SizedBox(height: 30.0),
+                Container(
+                  decoration: ThemeHelper().buttonBoxDecoration(context),
+                  child: ElevatedButton(
+                    style: ThemeHelper().buttonStyle(),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegistrationPage()));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                      child: Text(
+                        "REGISTER".tr,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 30.0),
-                ],
-              ),
-            )
-          )
+                ),
+                SizedBox(height: 30.0),
+              ],
+            ),
+          ))
         ]),
       ),
     );

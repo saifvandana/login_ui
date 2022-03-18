@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, prefer_is_not_empty, avoid_print
 
 import 'dart:convert';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +41,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     if (name == "" || password == "" || email == "") {
       Fluttertoast.showToast(
-        msg: "name, email or password cannot be blank",
+        msg: "name, email or password cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -49,7 +49,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
         .hasMatch(email)) {
       Fluttertoast.showToast(
-        msg: "Enter a valid email",
+        msg: "Enter a valid email".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -81,7 +81,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         print(response.body);
 
         Fluttertoast.showToast(
-          msg: "User registered successfully",
+          msg: "User registered successfully".tr,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.SNACKBAR,
         );
@@ -91,7 +91,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       } 
       else {
         Fluttertoast.showToast(
-          msg: "User cannot be registered",
+          msg: "User cannot be registered".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
         );
@@ -110,7 +110,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     if (username == "" || password == "" || email == "") {
       Fluttertoast.showToast(
-        msg: "Username or password is blank",
+        msg: "Username or password is blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
@@ -216,7 +216,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           child: TextFormField(
                             controller: _username,
                             decoration: ThemeHelper().textInputDecoration(
-                                'Name', 'Enter your user name'),
+                                'Name'.tr, 'Enter your user name'.tr),
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
@@ -227,7 +227,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           child: TextFormField(
                             controller: _email,
                             decoration: ThemeHelper().textInputDecoration(
-                                "E-mail address", "Enter your email"),
+                                "E-mail address".tr, "Enter your email".tr),
                             keyboardType: TextInputType.emailAddress,
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -254,7 +254,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             controller: _password,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
-                                "Password", "Enter your password"),
+                                "Password".tr, "Enter your password".tr),
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
@@ -274,7 +274,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                           });
                                         }),
                                     Text(
-                                      "I accept all terms and conditions.",
+                                      "I accept all terms and conditions.".tr,
                                       style: TextStyle(color: Colors.grey),
                                     ),
                                   ],
@@ -293,13 +293,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               ],
                             );
                           },
-                          validator: (value) {
-                            if (!checkboxValue) {
-                              return 'You need to accept terms and conditions';
-                            } else {
-                              return null;
-                            }
-                          },
+                          // validator: (value) {
+                          //   if (!checkboxValue) {
+                          //     return 'You need to accept terms and conditions'.tr;
+                          //   } else {
+                          //     return null;
+                          //   }
+                          // },
                         ),
                         SizedBox(height: 20.0),
                         Container(
@@ -314,7 +314,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               padding:
                                   const EdgeInsets.fromLTRB(40, 10, 40, 10),
                               child: Text(
-                                "Register".toUpperCase(),
+                                "REGISTER".tr,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -326,7 +326,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         SizedBox(height: 30.0),
                         Text(
-                          "Or create account using social media",
+                          "Or create account using social media".tr,
                           style: TextStyle(color: Colors.grey),
                         ),
                         SizedBox(height: 25.0),

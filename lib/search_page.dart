@@ -77,12 +77,11 @@ class _SearchPageState extends State<SearchPage> {
                             SizedBox(
                               width: 24,
                             ),
-                            buildFilter("House"),
-                            buildFilter("Price"),
-                            buildFilter("Security"),
-                            buildFilter("Bedrooms"),
-                            buildFilter("Garage"),
-                            buildFilter("Swimming Pool"),
+                            buildFilter("House".tr),
+                            buildFilter("Price".tr),
+                            buildFilter("Bedrooms".tr),
+                            buildFilter("Garage".tr),
+                            buildFilter("Swimming Pool".tr),
                             SizedBox(
                               width: 8,
                             ),

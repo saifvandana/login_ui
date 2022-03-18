@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SectionPage()),
+                                    MaterialPageRoute(builder: (context) => SearchPage()),
                                   );
                                 },
                               ),
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SectionPage()),
+                                    MaterialPageRoute(builder: (context) => SearchPage()),
                                   );
                                 },
                               ),
@@ -208,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SectionPage()),
+                                    MaterialPageRoute(builder: (context) => SearchPage()),
                                   );
                                 },
                               )

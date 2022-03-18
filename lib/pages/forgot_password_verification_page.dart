@@ -6,7 +6,7 @@ import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
-
+import 'package:get/get.dart';
 import '../common/theme_helper.dart';
 
 class ForgotPasswordVerificationPage extends StatefulWidget {
@@ -48,7 +48,7 @@ class _ForgotPasswordVerificationPageState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Verification',
+                      'Verification'.tr,
                       style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
@@ -58,7 +58,7 @@ class _ForgotPasswordVerificationPageState
                       height: 10,
                     ),
                     Text(
-                      'Enter the verification code we just sent on your email',
+                      'Enter the verification code we just sent on your email'.tr,
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -94,18 +94,18 @@ class _ForgotPasswordVerificationPageState
                       TextSpan(
                         children: [
                           TextSpan(
-                              text: "If you did not recieve a code! ",
+                              text: "If you did not recieve a code! ".tr,
                               style: TextStyle(color: Colors.black)),
                           TextSpan(
-                            text: 'Resend',
+                            text: 'Resend'.tr,
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return ThemeHelper().alartDialog(
-                                        "Successful",
-                                        "Verification code resend successful",
+                                        "Successful".tr,
+                                        "Verification code resend successful".tr,
                                         context);
                                   },
                                 );
@@ -126,7 +126,7 @@ class _ForgotPasswordVerificationPageState
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
                           child: Text(
-                            "verify".toUpperCase(),
+                            "VERIFY".tr,
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
