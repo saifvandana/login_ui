@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:footer/footer.dart';
 import 'package:flutter/services.dart';
 import 'package:footer/footer_view.dart';
-import 'package:login_ui/common/theme_helper.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/logout_page.dart';
@@ -88,11 +87,20 @@ class _HomePageState extends State<HomePage> {
           systemOverlayStyle: SystemUiOverlayStyle.light,
           centerTitle: true,
           title: SizedBox(
-            child: Icon(
-              Icons.android_outlined,
-              color: Theme.of(context).primaryColor,
-              size: 50,
-            ),
+            child: Image.asset(
+              'assets/images/logo.png'//'assets/images/newlogo.svg',
+              ),
+            height: 50,
+            // child: ImageIcon(
+            //   AssetImage('assets/images/newlogo.svg'),
+            //   //color: Theme.of(context).primaryColor,
+            //   size: 40,
+            // ),
+            // child: Icon(
+            //   Icons.android_outlined,
+            //   color: Theme.of(context).primaryColor,
+            //   size: 50,
+            // ),
           ),
           actions: <Widget>[
             Padding(
@@ -244,23 +252,25 @@ class _HomePageState extends State<HomePage> {
             ],
           )),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: IconButton(
-              onPressed: () {
-                setState(() {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ThemeHelper().alartDialog("Chat with us".tr,
-                          "Log in to chat with us".tr, context);
-                    },
-                  );
-                });
-              },
-              icon: Icon(Icons.chat)),
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {},
-        ));
+        // floatingActionButton: FloatingActionButton(
+        //   child: IconButton(
+        //       onPressed: () {
+        //         setState(() {
+        //           showDialog(
+        //             context: context,
+        //             builder: (BuildContext context) {
+        //               return ThemeHelper().alartDialog("Chat with us".tr,
+        //                   "Log in to chat with us".tr, context);
+        //             },
+        //           );
+        //         });
+        //       },
+        //       icon: Icon(Icons.chat)),
+        //   backgroundColor: Theme.of(context).primaryColor,
+        //   onPressed: () {},
+        // )
+        // 
+    );
   }
 
   Widget buildFilter(String filterName) {

@@ -23,7 +23,7 @@ List<Property> getPropertyList(){
     Property(
       "SALE".tr,
       "Clinton Villa",
-      "3,5000.00",
+      "4875000.00",
       "Ankara",
       "2,456",
       "4.4",
@@ -41,7 +41,7 @@ List<Property> getPropertyList(){
     Property(
       "RENT".tr,
       "Salu House",
-      "3,5000.00",
+      "5875000.00",
       "Mamak",
       "3,300",
       "4.6",
@@ -59,7 +59,7 @@ List<Property> getPropertyList(){
     Property(
       "RENT".tr,
       "Hilton House",
-      "3,1000.00",
+      "3891000.00",
       "Istanbul",
       "2,100",
       "4.1",
@@ -77,7 +77,7 @@ List<Property> getPropertyList(){
     Property(
       "SALE".tr,
       "Ibe House",
-      "4,5000.00",
+      "4585000.00",
       "Antalya",
       "4,100",
       "4.5",
@@ -95,7 +95,7 @@ List<Property> getPropertyList(){
     Property(
       "SALE".tr,
       "Aventura",
-      "5,2000.00",
+      "5992000.00",
       "Istanbul",
       "3,100",
       "4.2",
@@ -113,7 +113,7 @@ List<Property> getPropertyList(){
     Property(
       "SALE".tr,
       "North House",
-      "3,5000.00",
+      "3995000.00",
       "Izmir",
       "3,700",
       "4.0",
@@ -131,7 +131,7 @@ List<Property> getPropertyList(){
     Property(
       "RENT".tr,
       "Rasmus Resident",
-      "2,9000.00",
+      "2999000.00",
       "Ankara",
       "2,700",
       "4.3",
@@ -149,7 +149,7 @@ List<Property> getPropertyList(){
     Property(
       "RENT".tr,
       "Simone House",
-      "3,9000.00",
+      "3999000.00",
       "Ankara",
       "3,700",
       "4.4",

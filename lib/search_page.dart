@@ -320,7 +320,7 @@ class _SearchPageState extends State<SearchPage> {
                             Icon(
                               Icons.location_on,
                               color: Colors.white,
-                              size: 14,
+                              size: 13,
                             ),
 
                             SizedBox(
@@ -331,7 +331,7 @@ class _SearchPageState extends State<SearchPage> {
                               property.location,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
 
@@ -342,7 +342,7 @@ class _SearchPageState extends State<SearchPage> {
                             Icon(
                               Icons.zoom_out_map,
                               color: Colors.white,
-                              size: 16,
+                              size: 14,
                             ),
 
                             SizedBox(
@@ -353,7 +353,7 @@ class _SearchPageState extends State<SearchPage> {
                               property.sqm + " sq/m",
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
 
@@ -366,7 +366,7 @@ class _SearchPageState extends State<SearchPage> {
                             Icon(
                               Icons.star,
                               color: Colors.yellow[700],
-                              size: 14,
+                              size: 13,
                             ),
 
                             SizedBox(
@@ -377,7 +377,7 @@ class _SearchPageState extends State<SearchPage> {
                               property.review + " Reviews".tr,
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
 

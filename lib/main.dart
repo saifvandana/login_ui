@@ -9,6 +9,7 @@ import 'package:login_ui/LocaleStrings.dart';
 import 'package:login_ui/pages/home/home_screen.dart';
 import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
+import 'package:login_ui/pages/upload_data.dart';
 import 'package:login_ui/pages/widgets/map_widget.dart';
 
 import '/pages/splash_screen.dart';
@@ -38,10 +39,10 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.openSansTextTheme(),
         primaryColor: _primaryColor,
         accentColor: _accentColor,
-        scaffoldBackgroundColor: Colors.grey[50],
+        scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
         primarySwatch: Colors.grey,
       ),
-      home: HomePage(),//SplashScreen(title: '',),
+      home: UploadData(),//SplashScreen(title: '',),
     );
   }
 }
