@@ -58,6 +58,7 @@ dependencies:
   flutter_quill: ^4.0.10
   markdown_editable_textinput: ^2.0.2
   currency_text_input_formatter: ^2.1.5
+  multi_image_picker2: ^5.0.02
 
 dev_dependencies:
   flutter_test:
