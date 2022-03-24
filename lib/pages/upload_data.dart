@@ -1,8 +1,14 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print, unnecessary_null_comparison
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:get/get.dart';
+import 'package:login_ui/data/data.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
 import '../common/theme_helper.dart';
@@ -22,19 +28,7 @@ class _UploadDataState extends State<UploadData> {
   bool checkedValue = false;
   bool checkboxValue = false;
   String description = '';
-  String title = '',
-      name = '',
-      phone = '',
-      email = '',
-      price = '',
-      category = '',
-      about = '',
-      process = '',
-      state = '',
-      location = '',
-      region = '',
-      postalCode = '',
-      adress = '';
+  String? category, process, state, location;
 
   TextEditingController _name = TextEditingController();
   TextEditingController _title = TextEditingController();
@@ -47,21 +41,69 @@ class _UploadDataState extends State<UploadData> {
   TextEditingController _email = TextEditingController();
 
   List<Asset> images = [];
+  //Dio dio = Dio();
 
   @override
   void initState() {
     super.initState();
   }
 
+  final url = 'http://192.168.1.106/localconnect/upload.php';
+
+  _saveImage() async {
+    int count = 0;
+
+    if (images != null) {
+      for (var i = 0; i < images.length; i++) {
+        ByteData byteData = await images[i].getByteData();
+        List<int> imageData = byteData.buffer.asUint8List();
+
+        dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
+          imageData,
+          filename: images[i].name,
+          contentType: MediaType('image', 'jpg'),
+        );
+
+        dio.FormData formData = dio.FormData.fromMap({
+          "image": multipartFile,
+          'name': _name.text,
+          'title': _title.text,
+          'about': _about.text,
+          'phone': _phone.text,
+          'email': _email.text,
+          'price': _price.text,
+          'category': category,
+          'process': process,
+          'state': state,
+          'location': location,
+          'region': _region.text,
+          'postalCode': _postalCode.text,
+          'address': _address.text,
+        });
+
+        EasyLoading.show(status: 'uploading...');
+
+        var response = await dio.Dio().post(url, data: formData);
+        if (response.statusCode == 200) {
+          count++;
+          EasyLoading.dismiss();
+          EasyLoading.showSuccess('Success! $count');
+          print(response.data);
+        }
+      }
+    }
+  }
+
   Widget buildGridView() {
     return GridView.count(
-      crossAxisCount: 3,
+      crossAxisCount: 4,
+      crossAxisSpacing: 7,
       children: List.generate(images.length, (index) {
         Asset asset = images[index];
         return AssetThumb(
           asset: asset,
           width: 300,
-          height: 70,
+          height: 100,
         );
       }),
     );
@@ -72,7 +114,7 @@ class _UploadDataState extends State<UploadData> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 300,
+        maxImages: 10,
         enableCamera: true,
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(
@@ -81,7 +123,7 @@ class _UploadDataState extends State<UploadData> {
         ),
         materialOptions: MaterialOptions(
           actionBarColor: "#abcdef",
-          actionBarTitle: "Example App",
+          actionBarTitle: "Select Photos",
           allViewTitle: "All Photos",
           useDetailsView: false,
           selectCircleStrokeColor: "#000000",
@@ -161,7 +203,7 @@ class _UploadDataState extends State<UploadData> {
                             ),
                           ),
                           iconEnabledColor: Theme.of(context).primaryColor,
-                          items: items
+                          items: categories
                               .map((item) => DropdownMenuItem<String>(
                                     value: item,
                                     child: Text(
@@ -172,10 +214,10 @@ class _UploadDataState extends State<UploadData> {
                                     ),
                                   ))
                               .toList(),
-                          value: selectedValue,
+                          value: category,
                           onChanged: (value) {
                             setState(() {
-                              selectedValue = value as String;
+                              category = value as String;
                             });
                           },
                           buttonHeight: 40,
@@ -202,7 +244,7 @@ class _UploadDataState extends State<UploadData> {
                       child: MarkdownTextInput(
                         (String value) => setState(() => description = value),
                         description,
-                        label: 'Description',
+                        label: 'Description *',
                         actions: MarkdownType.values,
                         controller: _about,
                       ),
@@ -231,6 +273,84 @@ class _UploadDataState extends State<UploadData> {
                       ],
                     )),
                     SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          hint: Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'Process',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          iconEnabledColor: Theme.of(context).primaryColor,
+                          items: processes
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          value: process,
+                          onChanged: (value) {
+                            setState(() {
+                              process = value as String;
+                            });
+                          },
+                          buttonHeight: 40,
+                          buttonWidth: width,
+                          itemHeight: 40,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          hint: Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(
+                              'State',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          iconEnabledColor: Theme.of(context).primaryColor,
+                          items: states
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          value: state,
+                          onChanged: (value) {
+                            setState(() {
+                              state = value as String;
+                            });
+                          },
+                          buttonHeight: 40,
+                          buttonWidth: width,
+                          itemHeight: 40,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
                       height: 30,
                     ),
                     Text('LOCATION INFO'),
@@ -250,7 +370,7 @@ class _UploadDataState extends State<UploadData> {
                             ),
                           ),
                           iconEnabledColor: Theme.of(context).primaryColor,
-                          items: items
+                          items: locations
                               .map((item) => DropdownMenuItem<String>(
                                     value: item,
                                     child: Text(
@@ -261,10 +381,10 @@ class _UploadDataState extends State<UploadData> {
                                     ),
                                   ))
                               .toList(),
-                          value: selectedValue,
+                          value: location,
                           onChanged: (value) {
                             setState(() {
-                              selectedValue = value as String;
+                              location = value as String;
                             });
                           },
                           buttonHeight: 40,
@@ -313,8 +433,8 @@ class _UploadDataState extends State<UploadData> {
                     Container(
                       child: TextFormField(
                         controller: _name,
-                        decoration:
-                            ThemeHelper().textInputDecoration("Name".tr, "".tr),
+                        decoration: ThemeHelper()
+                            .textInputDecoration("Name *".tr, "".tr),
                         keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
@@ -324,12 +444,11 @@ class _UploadDataState extends State<UploadData> {
                       child: TextFormField(
                         controller: _phone,
                         decoration: ThemeHelper()
-                            .textInputDecoration("Phone".tr, "".tr),
+                            .textInputDecoration("Phone *".tr, "".tr),
                         keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
-                    SizedBox(height: 15.0),
                     FormField<bool>(
                       builder: (state) {
                         return Column(
@@ -350,17 +469,17 @@ class _UploadDataState extends State<UploadData> {
                                 ),
                               ],
                             ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                state.errorText ?? '',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: Theme.of(context).errorColor,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            )
+                            // Container(
+                            //   alignment: Alignment.centerLeft,
+                            //   child: Text(
+                            //     state.errorText ?? '',
+                            //     textAlign: TextAlign.left,
+                            //     style: TextStyle(
+                            //       color: Theme.of(context).errorColor,
+                            //       fontSize: 12,
+                            //     ),
+                            //   ),
+                            // )
                           ],
                         );
                       },
@@ -370,12 +489,11 @@ class _UploadDataState extends State<UploadData> {
                       child: TextFormField(
                         controller: _email,
                         decoration: ThemeHelper().textInputDecoration(
-                            "E-mail address".tr, "Enter your email".tr),
+                            "E-mail address *".tr, "Enter your email".tr),
                         keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
-                    SizedBox(height: 15.0),
                     FormField<bool>(
                       builder: (state) {
                         return Column(
@@ -396,17 +514,17 @@ class _UploadDataState extends State<UploadData> {
                                 ),
                               ],
                             ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                state.errorText ?? '',
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  color: Theme.of(context).errorColor,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            )
+                            // Container(
+                            //   alignment: Alignment.centerLeft,
+                            //   child: Text(
+                            //     state.errorText ?? '',
+                            //     textAlign: TextAlign.left,
+                            //     style: TextStyle(
+                            //       color: Theme.of(context).errorColor,
+                            //       fontSize: 12,
+                            //     ),
+                            //   ),
+                            // )
                           ],
                         );
                       },
@@ -431,8 +549,8 @@ class _UploadDataState extends State<UploadData> {
                           margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
                           child: buildGridView(),
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 240, 235, 235),
-                            borderRadius: BorderRadius.circular(5) ),
+                              color: Color.fromARGB(255, 240, 235, 235),
+                              borderRadius: BorderRadius.circular(5)),
                         ),
                         RaisedButton(
                             child: Text(
@@ -447,7 +565,9 @@ class _UploadDataState extends State<UploadData> {
                       decoration: ThemeHelper().buttonBoxDecoration(context),
                       child: ElevatedButton(
                         style: ThemeHelper().buttonStyle(),
-                        onPressed: () {},
+                        onPressed: () {
+                          _saveImage();
+                        },
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                           child: Text(

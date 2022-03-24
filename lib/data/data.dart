@@ -167,29 +167,54 @@ List<Property> getPropertyList(){
   ];
 }
 
-List categories = [
-  {
-    "name" : "All".tr,
-    "icon" :  FontAwesomeIcons.boxes
-  },
-  // {
-  //   "name" : "Villa",
-  //   "icon" :  FontAwesomeIcons.university
-  // },
-  // {
-  //   "name" : "Shop",
-  //   "icon" :  FontAwesomeIcons.storeAlt
-  // },
-  // {
-  //   "name" : "Building",
-  //   "icon" :  FontAwesomeIcons.building
-  // },
-  {
-    "name" : "Rent".tr,
-    "icon" :  FontAwesomeIcons.home
-  },
-  {
-    "name" : "Buy".tr,
-    "icon" :  FontAwesomeIcons.building
-  },
+// List categories = [
+//   {
+//     "name" : "All".tr,
+//     "icon" :  FontAwesomeIcons.boxes
+//   },
+//   // {
+//   //   "name" : "Villa",
+//   //   "icon" :  FontAwesomeIcons.university
+//   // },
+//   // {
+//   //   "name" : "Shop",
+//   //   "icon" :  FontAwesomeIcons.storeAlt
+//   // },
+//   // {
+//   //   "name" : "Building",
+//   //   "icon" :  FontAwesomeIcons.building
+//   // },
+//   {
+//     "name" : "Rent".tr,
+//     "icon" :  FontAwesomeIcons.home
+//   },
+//   {
+//     "name" : "Buy".tr,
+//     "icon" :  FontAwesomeIcons.building
+//   },
+// ];
+
+List<String> locations = [
+    'Ankara',
+    'Istanbul',
+    'Antalya',
+    'Izmir',
+];
+
+List<String> categories = [
+    'Prooerty Owner',
+    'Real-Estate Agent',
+    'Projects',
+];
+
+List<String> processes = [
+    'Sell',
+    'Rent',
+    'Exchange',
+    'All',
+];
+
+List<String> states = [
+    'New',
+    'Used',
 ];

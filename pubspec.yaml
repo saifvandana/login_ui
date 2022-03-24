@@ -59,6 +59,9 @@ dependencies:
   markdown_editable_textinput: ^2.0.2
   currency_text_input_formatter: ^2.1.5
   multi_image_picker2: ^5.0.02
+  dio: ^4.0.4
+  http_parser: ^4.0.0
+  flutter_easyloading: ^3.0.3
 
 dev_dependencies:
   flutter_test:
