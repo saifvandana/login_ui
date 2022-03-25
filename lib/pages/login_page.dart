@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
       //print(data.toString());
 
       final response = await http.post(
-          Uri.parse("http://192.168.0.101/localconnect/signin.php"),
+          Uri.parse("http://192.168.1.104/localconnect/signin.php"),
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded"
@@ -206,12 +206,12 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   onPressed: () {
-                                    //login(username, password);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ProfilePage()));
+                                    login(username, password);
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             ProfilePage()));
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(

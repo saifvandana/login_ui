@@ -12,6 +12,7 @@ import 'package:login_ui/LocaleStrings.dart';
 import 'package:login_ui/pages/home/home_screen.dart';
 import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
+import 'package:login_ui/pages/post_screen.dart';
 import 'package:login_ui/pages/upload_data.dart';
 import 'package:login_ui/pages/widgets/map_widget.dart';
 
@@ -63,12 +64,13 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
         primarySwatch: Colors.grey,
       ),
-      home: UploadData(), //SplashScreen(title: '',),
+      home: SplashScreen(title: '',), //PostScreen(),//UploadData(), //SplashScreen(title: '',),
       builder: EasyLoading.init(),
     );
   }
 }
 
+/*
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.title}) : super(key: key);
 
@@ -103,4 +105,4 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-}
+}*/

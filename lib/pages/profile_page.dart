@@ -10,6 +10,7 @@ import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/logout_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
 import 'package:login_ui/pages/splash_screen.dart';
+import 'package:login_ui/pages/upload_data.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 
 import 'forgot_password_verification_page.dart';
@@ -345,6 +346,19 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          child: IconButton(
+              onPressed: () {
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                UploadData()));
+              },
+              icon: Icon(Icons.add)),
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {},
+        )
       );
     }
 }

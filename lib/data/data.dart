@@ -202,7 +202,7 @@ List<String> locations = [
 ];
 
 List<String> categories = [
-    'Prooerty Owner',
+    'Property Owner',
     'Real-Estate Agent',
     'Projects',
 ];
@@ -217,4 +217,5 @@ List<String> processes = [
 List<String> states = [
     'New',
     'Used',
+    'All',
 ];

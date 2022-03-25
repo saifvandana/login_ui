@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:get/get.dart';
 import 'package:login_ui/data/data.dart';
+import 'package:login_ui/pages/post_screen.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
 import '../common/theme_helper.dart';
@@ -48,47 +50,60 @@ class _UploadDataState extends State<UploadData> {
     super.initState();
   }
 
-  final url = 'http://192.168.1.106/localconnect/upload.php';
+  final url = 'http://192.168.1.104/localconnect/upload.php';
 
   _saveImage() async {
-    int count = 0;
+    if (_title.text == "" || category == "" || _about.text == "" || _name.text == "") {
+      Fluttertoast.showToast(
+        msg: "required fields cannot be blank".tr,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else {
+      int count = 0;
 
-    if (images != null) {
-      for (var i = 0; i < images.length; i++) {
-        ByteData byteData = await images[i].getByteData();
-        List<int> imageData = byteData.buffer.asUint8List();
+      if (images != null) {
+        for (var i = 0; i < images.length; i++) {
+          ByteData byteData = await images[i].getByteData();
+          List<int> imageData = byteData.buffer.asUint8List();
 
-        dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
-          imageData,
-          filename: images[i].name,
-          contentType: MediaType('image', 'jpg'),
-        );
+          dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
+            imageData,
+            filename: images[i].name,
+            contentType: MediaType('image', 'jpg'),
+          );
 
-        dio.FormData formData = dio.FormData.fromMap({
-          "image": multipartFile,
-          'name': _name.text,
-          'title': _title.text,
-          'about': _about.text,
-          'phone': _phone.text,
-          'email': _email.text,
-          'price': _price.text,
-          'category': category,
-          'process': process,
-          'state': state,
-          'location': location,
-          'region': _region.text,
-          'postalCode': _postalCode.text,
-          'address': _address.text,
-        });
+          dio.FormData formData = dio.FormData.fromMap({
+            "image": multipartFile,
+            'name': _name.text,
+            'title': _title.text,
+            'about': _about.text,
+            'phone': _phone.text,
+            'email': _email.text,
+            'price': _price.text,
+            'category': category,
+            'process': process,
+            'state': state,
+            'location': location,
+            'region': _region.text,
+            'postalCode': _postalCode.text,
+            'address': _address.text,
+          });
 
-        EasyLoading.show(status: 'uploading...');
+          EasyLoading.show(status: 'uploading...');
 
-        var response = await dio.Dio().post(url, data: formData);
-        if (response.statusCode == 200) {
-          count++;
-          EasyLoading.dismiss();
-          EasyLoading.showSuccess('Success! $count');
-          print(response.data);
+          var response = await dio.Dio().post(url, data: formData);
+          if (response.statusCode == 200) {
+            count++;
+            EasyLoading.dismiss();
+            EasyLoading.showSuccess('Success! $count');
+            print(response.data);
+            Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  PostScreen()));
+          }
         }
       }
     }
