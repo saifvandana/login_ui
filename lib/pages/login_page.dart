@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
       //print(data.toString());
 
       final response = await http.post(
-          Uri.parse("http://192.168.1.104/localconnect/signin.php"),
+          Uri.parse("http://192.168.0.102/localconnect/signin.php"),
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded"

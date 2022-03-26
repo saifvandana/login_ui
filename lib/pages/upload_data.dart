@@ -11,6 +11,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:get/get.dart';
 import 'package:login_ui/data/data.dart';
 import 'package:login_ui/pages/post_screen.dart';
+import 'package:login_ui/pages/profile_page.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
 import '../common/theme_helper.dart';
@@ -29,6 +30,8 @@ class _UploadDataState extends State<UploadData> {
   Key _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
+  bool checkedValue1 = false;
+  bool checkboxValue1 = false;
   String description = '';
   String? category, process, state, location;
 
@@ -50,7 +53,7 @@ class _UploadDataState extends State<UploadData> {
     super.initState();
   }
 
-  final url = 'http://192.168.1.104/localconnect/upload.php';
+  final url = 'http://192.168.0.102/localconnect/upload.php';
 
   _saveImage() async {
     if (_title.text == "" || category == "" || _about.text == "" || _name.text == "") {
@@ -102,7 +105,7 @@ class _UploadDataState extends State<UploadData> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  PostScreen()));
+                                  ProfilePage()));
           }
         }
       }
@@ -516,10 +519,10 @@ class _UploadDataState extends State<UploadData> {
                             Row(
                               children: <Widget>[
                                 Checkbox(
-                                    value: checkboxValue,
+                                    value: checkboxValue1,
                                     onChanged: (value) {
                                       setState(() {
-                                        checkboxValue = value!;
+                                        checkboxValue1 = value!;
                                         state.didChange(value);
                                       });
                                     }),

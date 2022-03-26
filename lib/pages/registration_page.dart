@@ -174,43 +174,43 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        GestureDetector(
-                          child: Stack(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border:
-                                      Border.all(width: 5, color: Colors.white),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 20,
-                                      offset: const Offset(5, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.grey.shade300,
-                                  size: 70.0,
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(75, 75, 0, 0),
-                                child: Icon(
-                                  Icons.add_circle,
-                                  color: Colors.grey.shade700,
-                                  size: 25.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // GestureDetector(
+                        //   child: Stack(
+                        //     children: [
+                        //       Container(
+                        //         padding: EdgeInsets.all(10),
+                        //         decoration: BoxDecoration(
+                        //           borderRadius: BorderRadius.circular(100),
+                        //           border:
+                        //               Border.all(width: 5, color: Colors.white),
+                        //           color: Colors.white,
+                        //           boxShadow: [
+                        //             BoxShadow(
+                        //               color: Colors.black12,
+                        //               blurRadius: 20,
+                        //               offset: const Offset(5, 5),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         child: Icon(
+                        //           Icons.person,
+                        //           color: Colors.grey.shade300,
+                        //           size: 70.0,
+                        //         ),
+                        //       ),
+                        //       Container(
+                        //         padding: EdgeInsets.fromLTRB(75, 75, 0, 0),
+                        //         child: Icon(
+                        //           Icons.add_circle,
+                        //           color: Colors.grey.shade700,
+                        //           size: 25.0,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(
-                          height: 30,
+                          height: 120,
                         ),
                         Container(
                           child: TextFormField(

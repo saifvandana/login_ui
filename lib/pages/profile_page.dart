@@ -14,6 +14,7 @@ import 'package:login_ui/pages/upload_data.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 
 import 'forgot_password_verification_page.dart';
+import 'post_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -336,7 +337,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ],
                               )
                             ),
-                          )
+                          ),
+                          SizedBox(height: 15,),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PostScreen()));
+                            },
+                            child: Text(
+                              'ALL POSTS'.tr, 
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor,),)
+                          ),
                         ],
                       ),
                     )

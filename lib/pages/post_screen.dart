@@ -13,7 +13,7 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
-  var url = "http://192.168.1.104/localconnect/viewAll.php";
+  var url = "http://192.168.0.102/localconnect/viewAll.php";
 
   Future allPosts() async {
     var response = await http.get(Uri.parse(url));
@@ -56,7 +56,7 @@ class _PostScreenState extends State<PostScreen> {
                             margin: EdgeInsets.fromLTRB(25, 60, 25, 10),
                             padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                             child: Image.network(
-                                "http://192.168.1.104/localconnect/img/${list[index]['image']}"),
+                                "http://192.168.0.102/localconnect/img/${list[index]['image']}"),
                             width: 100,
                             height: 100,
                           ),
