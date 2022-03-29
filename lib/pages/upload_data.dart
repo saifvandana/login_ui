@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print, unnecessary_null_comparison
 
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart' as dio;
@@ -14,6 +17,7 @@ import 'package:login_ui/pages/post_screen.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../common/theme_helper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
@@ -51,22 +55,47 @@ class _UploadDataState extends State<UploadData> {
   @override
   void initState() {
     super.initState();
+    getEmail();
   }
 
-  final url = 'http://192.168.0.102/localconnect/upload.php';
+  String sha256RandomString() {
+    final randomNumber = Random().nextDouble();
+    final randomBytes = utf8.encode(randomNumber.toString());
+    final randomString = sha256.convert(randomBytes).toString();
+    return randomString;
+  }
+
+  final url = 'http://192.168.1.108/localconnect/upload.php';
+  String email = '';
+
+  Future getEmail() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      email = preferences.getString('email')!;
+      _email.text = email;
+    });
+  }
 
   _saveImage() async {
-    if (_title.text == "" || category == "" || _about.text == "" || _name.text == "") {
+    if (_title.text == "" ||
+        category == "" ||
+        _about.text == "" ||
+        _name.text == "") {
       Fluttertoast.showToast(
         msg: "required fields cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      int count = 0;
-
       if (images != null) {
+        final uniqueString = sha256RandomString();
+        String done = 'false';
+
         for (var i = 0; i < images.length; i++) {
+          if (i == images.length - 1) {
+            done = 'true';
+          }
+
           ByteData byteData = await images[i].getByteData();
           List<int> imageData = byteData.buffer.asUint8List();
 
@@ -90,23 +119,36 @@ class _UploadDataState extends State<UploadData> {
             'location': location,
             'region': _region.text,
             'postalCode': _postalCode.text,
+            'unique_string': uniqueString,
             'address': _address.text,
+            'done': done,
           });
 
-          EasyLoading.show(status: 'uploading...');
+          //EasyLoading.show(status: 'uploading...');
 
           var response = await dio.Dio().post(url, data: formData);
           if (response.statusCode == 200) {
-            count++;
-            EasyLoading.dismiss();
-            EasyLoading.showSuccess('Success! $count');
+            //EasyLoading.dismiss();
+            //EasyLoading.showSuccess('Success! $count');
+            Fluttertoast.showToast(
+              msg: "Listing added successfully",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.SNACKBAR,
+            );
             print(response.data);
-            Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ProfilePage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ProfilePage()));
           }
+
+          // if (i == images.length - 1) {
+          //   print(images.length);
+          //   var response = await dio.Dio().post(
+          //       'http://192.168.1.108/localconnect/insertPost.php',
+          //       data: formData);
+          //   if (response.statusCode == 200) {
+          //     print(response.data);
+          //   }
+          // }
         }
       }
     }
@@ -161,13 +203,13 @@ class _UploadDataState extends State<UploadData> {
     });
   }
 
-  String? selectedValue;
-  List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-  ];
+  // String? selectedValue;
+  // List<String> items = [
+  //   'Item1',
+  //   'Item2',
+  //   'Item3',
+  //   'Item4',
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -506,6 +548,7 @@ class _UploadDataState extends State<UploadData> {
                     Container(
                       child: TextFormField(
                         controller: _email,
+                        //initialValue: email,
                         decoration: ThemeHelper().textInputDecoration(
                             "E-mail address *".tr, "Enter your email".tr),
                         keyboardType: TextInputType.emailAddress,

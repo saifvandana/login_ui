@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:login_ui/pages/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'registration_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:login_ui/common/theme_helper.dart';
@@ -17,6 +20,17 @@ class LogoutPage extends StatefulWidget {
 
 class _LogoutPageState extends State<LogoutPage> {
   double _headerHeight = 130;
+
+  Future logOut() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.remove('email');
+    Fluttertoast.showToast(
+      msg: "email or password invalid",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.SNACKBAR,
+    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+  }
 
   @override
   Widget build(BuildContext context) {

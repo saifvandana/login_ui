@@ -1,8 +1,9 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-class Property {
+final String BASEURL = 'http://192.168.1.108/localconnect/';
 
+class Property {
   String label;
   String name;
   String price;
@@ -14,11 +15,20 @@ class Property {
   String ownerImage;
   List<String> images;
 
-  Property(this.label, this.name, this.price, this.location, this.sqm, this.review, this.description, this.frontImage, this.ownerImage, this.images);
-
+  Property(
+      this.label,
+      this.name,
+      this.price,
+      this.location,
+      this.sqm,
+      this.review,
+      this.description,
+      this.frontImage,
+      this.ownerImage,
+      this.images);
 }
 
-List<Property> getPropertyList(){
+List<Property> getPropertyList() {
   return <Property>[
     Property(
       "SALE".tr,
@@ -27,7 +37,8 @@ List<Property> getPropertyList(){
       "Ankara",
       "2,456",
       "4.4",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf."
+          .tr,
       "assets/images/house_01.jpg",
       "assets/images/owner.jpg",
       [
@@ -63,7 +74,8 @@ List<Property> getPropertyList(){
       "Istanbul",
       "2,100",
       "4.1",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf."
+          .tr,
       "assets/images/house_02.jpg",
       "assets/images/owner.jpg",
       [
@@ -81,7 +93,8 @@ List<Property> getPropertyList(){
       "Antalya",
       "4,100",
       "4.5",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf."
+          .tr,
       "assets/images/house_03.jpg",
       "assets/images/owner.jpg",
       [
@@ -99,7 +112,8 @@ List<Property> getPropertyList(){
       "Istanbul",
       "3,100",
       "4.2",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf."
+          .tr,
       "assets/images/house_05.jpg",
       "assets/images/owner.jpg",
       [
@@ -117,7 +131,8 @@ List<Property> getPropertyList(){
       "Izmir",
       "3,700",
       "4.0",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf."
+          .tr,
       "assets/images/house_06.jpg",
       "assets/images/owner.jpg",
       [
@@ -135,7 +150,8 @@ List<Property> getPropertyList(){
       "Ankara",
       "2,700",
       "4.3",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf."
+          .tr,
       "assets/images/house_07.jpg",
       "assets/images/owner.jpg",
       [
@@ -153,7 +169,8 @@ List<Property> getPropertyList(){
       "Ankara",
       "3,700",
       "4.4",
-      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf.".tr,
+      "The living is easy in this impressive, generously proportioned contemporary residence with lake and ocean views, located within a level stroll to the sand and surf."
+          .tr,
       "assets/images/house_08.jpg",
       "assets/images/owner.jpg",
       [
@@ -195,27 +212,27 @@ List<Property> getPropertyList(){
 // ];
 
 List<String> locations = [
-    'Ankara',
-    'Istanbul',
-    'Antalya',
-    'Izmir',
+  'Ankara',
+  'Istanbul',
+  'Antalya',
+  'Izmir',
 ];
 
 List<String> categories = [
-    'Property Owner',
-    'Real-Estate Agent',
-    'Projects',
+  'Property Owner',
+  'Real-Estate Agent',
+  'Projects',
 ];
 
 List<String> processes = [
-    'Sell',
-    'Rent',
-    'Exchange',
-    'All',
+  'Sell',
+  'Rent',
+  'Exchange',
+  'All',
 ];
 
 List<String> states = [
-    'New',
-    'Used',
-    'All',
+  'New',
+  'Used',
+  'All',
 ];

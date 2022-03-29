@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_ui/data/data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({Key? key}) : super(key: key);
@@ -13,10 +15,29 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
-  var url = "http://192.168.0.102/localconnect/viewAll.php";
+  var url = BASEURL + "viewAll.php";
+  String email = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getEmail();
+  }
+
+  Future getEmail() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      email = preferences.getString('email')!;
+    });
+  }
 
   Future allPosts() async {
-    var response = await http.get(Uri.parse(url));
+    Map data = {'email': email};
+    var response = await http.post(
+      Uri.parse(url), 
+      body: data);
+     print(response.body);
+     //print(email);
     return json.decode(response.body);
   }
 
@@ -52,24 +73,21 @@ class _PostScreenState extends State<PostScreen> {
                       List list = snapshot.data;
                       return Card(
                         child: ListTile(
-                          title: Container(
-                            margin: EdgeInsets.fromLTRB(25, 60, 25, 10),
-                            padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: Image.network(
-                                "http://192.168.0.102/localconnect/img/${list[index]['image']}"),
-                            width: 100,
-                            height: 100,
-                          ),
-                          subtitle: Center(
-                            child: Column(
+                            title: Container(
+                              margin: EdgeInsets.fromLTRB(25, 60, 25, 10),
+                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                              child: Image.network(
+                                  BASEURL + "img/${list[index]['image']}"),
+                              width: 100,
+                              height: 100,
+                            ),
+                            subtitle: Center(
+                                child: Column(
                               children: [
-                                Text("Title " + list[index]['title']),
                                 Text("Posted by " + list[index]['name']),
-                                Text("Price: " + list[index]['price']),
+                                Text("On: " + list[index]['datetime']),
                               ],
-                            )
-                          )
-                        ),
+                            ))),
                       );
                     })
                 : Center(

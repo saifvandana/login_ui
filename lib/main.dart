@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, prefer_final_fields, must_be_immutable, use_key_in_widget_constructors, unnecessary_import, prefer_const_constructors, unused_import, avoid_print
+// ignore_for_file: deprecated_member_use, prefer_final_fields, must_be_immutable, use_key_in_widget_constructors, unnecessary_import, prefer_const_constructors, unused_import, avoid_print, unused_local_variable
 
 import 'dart:async';
 
@@ -15,12 +15,20 @@ import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/post_screen.dart';
 import 'package:login_ui/pages/upload_data.dart';
 import 'package:login_ui/pages/widgets/map_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '/pages/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  var email = preferences.getString('email');
+  print(email);
+  // runApp(MaterialApp(
+  //   home: email == null ? MyApp() : LoginPage(),
+  // ));
   runApp(MyApp());
-  configLoading();
+  //configLoading();
 }
 
 void configLoading() {
@@ -37,17 +45,16 @@ void configLoading() {
     ..maskColor = Colors.blue.withOpacity(0.5)
     ..userInteractions = true
     ..dismissOnTap = false;
-  //..customAnimation = CustomAnimation();
 }
 
 class MyApp extends StatelessWidget {
   Color _primaryColor =
       Color.fromARGB(255, 4, 28, 107); //Color.fromARGB(255, 45, 110, 45);
-  Color _accentColor =
-      Color.fromARGB(167, 21, 17, 238); //Color.fromARGB(255, 55, 199, 27);
+  // Color _accentColor =
+  //     Color.fromARGB(167, 21, 17, 238); //Color.fromARGB(255, 55, 199, 27);
 
-  // Color _primaryColor = HexColor('#DC54FE');
-  // Color _accentColor = HexColor('#8A02AE');
+  //Color _primaryColor = HexColor('#2A6AB1');
+  Color _accentColor = HexColor('#2A6AB1');
 
   // This widget is the root of your application.
   @override
@@ -64,45 +71,10 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
         primarySwatch: Colors.grey,
       ),
-      home: SplashScreen(title: '',), //PostScreen(),//UploadData(), //SplashScreen(title: '',),
-      builder: EasyLoading.init(),
+      home: SplashScreen(
+        title: '',
+      ), //PostScreen(),//UploadData(), //SplashScreen(title: '',),
+      //builder: EasyLoading.init(),
     );
   }
 }
-
-/*
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
-
-  final String? title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  Timer? _timer;
-  late double _progress;
-
-  @override
-  void initState() {
-    super.initState();
-    EasyLoading.addStatusCallback((status) {
-      print('EasyLoading Status $status');
-      if (status == EasyLoadingStatus.dismiss) {
-        _timer?.cancel();
-      }
-    });
-    EasyLoading.showSuccess('Use in initState');
-    // EasyLoading.removeCallbacks();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title ?? ''),
-      ),
-    );
-  }
-}*/

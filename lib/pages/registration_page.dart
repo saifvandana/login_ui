@@ -4,12 +4,16 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:login_ui/common/theme_helper.dart';
+
+import '../data/data.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -119,14 +123,16 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
       //print(data.toString());
 
+      String url = BASEURL + "signup.php";
+
       final response = await http.post(
-          Uri.parse("http://192.168.0.101/localconnect/signup.php"),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
+        Uri.parse(url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+        encoding: Encoding.getByName("utf-8"));
 
       //If data fetching is successful
       if (response.statusCode == 200) {
@@ -140,7 +146,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
             gravity: ToastGravity.SNACKBAR,
           );
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ProfilePage()));
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
         } else {
           Fluttertoast.showToast(
             msg: "${content['message']}",
@@ -336,9 +342,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             Padding(
                               padding: EdgeInsets.all(10),
                               child: GestureDetector(
-                                child: FaIcon(
-                                  FontAwesomeIcons.googlePlus,
-                                  size: 35,
+                                child: Icon(
+                                  FontAwesomeIcons.google,
+                                  size: 25,
                                   color: Colors.red,
                                 ),
                                 onTap: () {
@@ -360,7 +366,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             GestureDetector(
                               child: FaIcon(
                                 FontAwesomeIcons.facebook,
-                                size: 35,
+                                size: 25,
                                 color: Colors.blue[700],
                               ),
                               onTap: () {

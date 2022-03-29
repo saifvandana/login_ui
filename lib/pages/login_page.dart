@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_ui/data/data.dart';
 
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:login_ui/common/theme_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -25,30 +27,30 @@ class _LoginPageState extends State<LoginPage> {
   double _headerHeight = 130;
   Key _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  String username = "", password = "";
+  String email = "", password = "";
 
-  TextEditingController _username = TextEditingController();
+  TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
   /*//API
-  login(username, password) async {
-    username = _username.text;
+  login(email, password) async {
+    email = _email.text;
     password = _password.text;
 
-    if (username == "" || password == "") {
+    if (email == "" || password == "") {
       Fluttertoast.showToast(
-        msg: "username or password cannot be blank".tr,
+        msg: "email or password cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
-    } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(username)) {
+    } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(email)) {
       Fluttertoast.showToast(
-        msg: "Enter a valid username".tr,
+        msg: "Enter a valid email".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      Map data = {'s_username': username, 's_password': password};
+      Map data = {'s_email': email, 's_password': password};
 
       print(data.toString());
 
@@ -74,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
       }
       else if (response.statusCode == 500) {
         Fluttertoast.showToast(
-          msg: "username or password invalid",
+          msg: "email or password invalid",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
         );
@@ -83,23 +85,26 @@ class _LoginPageState extends State<LoginPage> {
   }*/
 
   //API
-  login(username, password) async {
-    username = _username.text;
+  login(email, password) async {
+    email = _email.text;
     password = _password.text;
 
-    if (username == "" || password == "") {
+    if (email == "" || password == "") {
       Fluttertoast.showToast(
-        msg: "username or password cannot be blank".tr,
+        msg: "email or password cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      Map data = {'username': username, 'password': password};
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString('email', email);
+      Map data = {'email': email, 'password': password};
 
       //print(data.toString());
+      String url = BASEURL + "signin.php";
 
       final response = await http.post(
-          Uri.parse("http://192.168.0.102/localconnect/signin.php"),
+          Uri.parse(url),
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded"
@@ -117,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
               context, MaterialPageRoute(builder: (context) => ProfilePage()));
         } else {
           Fluttertoast.showToast(
-            msg: "Username or password invalid".tr,
+            msg: "email or password invalid".tr,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.SNACKBAR,
           );
@@ -158,9 +163,10 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               Container(
                                 child: TextField(
-                                  controller: _username,
+                                  controller: _email,
                                   decoration: ThemeHelper().textInputDecoration(
-                                      'Name'.tr, 'Enter your user name'.tr),
+                                      'Email'.tr, 'Enter your email'.tr),
+                                  keyboardType: TextInputType.emailAddress,
                                 ),
                                 decoration:
                                     ThemeHelper().inputBoxDecorationShaddow(),
@@ -206,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   onPressed: () {
-                                    login(username, password);
+                                    login(email, password);
                                     // Navigator.push(
                                     //     context,
                                     //     MaterialPageRoute(

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login_ui/Detail.dart';
 import 'package:login_ui/data/data.dart';
 import 'package:login_ui/filter.dart';
 
@@ -216,10 +217,10 @@ class _SearchPageState extends State<SearchPage> {
   Widget buildProperty(Property property, int index){
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => Detail(property: property)),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Detail(property: property)),
+        );
       },
       child: Card(
         margin: EdgeInsets.only(bottom: 24),
