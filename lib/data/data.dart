@@ -1,7 +1,16 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_declarations, unused_import
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-final String BASEURL = 'http://192.168.1.108/localconnect/';
+final String BASEURL = 'http://192.168.1.104/localconnect/';
+
+class Listing {
+  List info;
+  List<String> images;
+
+  Listing(this.info, this.images);
+}
 
 class Property {
   String label;

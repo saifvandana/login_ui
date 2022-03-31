@@ -63,6 +63,7 @@ dependencies:
   http_parser: ^4.0.0
   flutter_easyloading: ^3.0.3
   crypto: ^3.0.1
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:

@@ -65,7 +65,7 @@ class _UploadDataState extends State<UploadData> {
     return randomString;
   }
 
-  final url = 'http://192.168.1.108/localconnect/upload.php';
+  var url = BASEURL + "upload.php";
   String email = '';
 
   Future getEmail() async {

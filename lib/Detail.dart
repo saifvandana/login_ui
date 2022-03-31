@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:login_ui/data/data.dart';
 
@@ -241,109 +243,109 @@ class Detail extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
+                    // Padding(
+                    //   padding: EdgeInsets.all(24),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+
+                    //       Row(
+                    //         children: [
+
+                    //           Container(
+                    //             height: 65,
+                    //             width: 65,
+                    //             decoration: BoxDecoration(
+                    //               image: DecorationImage(
+                    //                 image: AssetImage(property.ownerImage), 
+                    //                 fit: BoxFit.cover,
+                    //               ),
+                    //               shape: BoxShape.circle,
+                    //             ),
+                    //           ),
+
+                    //           SizedBox(
+                    //             width: 16,
+                    //           ),
+
+                    //           Column(
+                    //             crossAxisAlignment: CrossAxisAlignment.start,
+                    //             children: [
+
+                    //               Text(
+                    //                 "James Milner",
+                    //                 style: TextStyle(
+                    //                   fontSize: 20,
+                    //                   fontWeight: FontWeight.bold,
+                    //                 ),
+                    //               ),
+
+                    //               SizedBox(
+                    //                 height: 4,
+                    //               ),
+
+                    //               Text(
+                    //                 "Property Owner",
+                    //                 style: TextStyle(
+                    //                   fontSize: 18,
+                    //                   color: Colors.grey[500],
+                    //                 ),
+                    //               ),
+
+                    //             ],
+                    //           ),
+
+                    //         ],
+                    //       ),
+
+                    //       Row(
+                    //         children: [
+
+                    //           Container(
+                    //             height: 50,
+                    //             width: 50,
+                    //             decoration: BoxDecoration(
+                    //               color: Colors.yellow[700],
+                    //               shape: BoxShape.circle,
+                    //             ),
+                    //             child: Center(
+                    //               child: Icon(
+                    //                 Icons.phone,
+                    //                 color: Colors.yellow[700],
+                    //                 size: 20,
+                    //               ),
+                    //             ),
+                    //           ),
+
+                    //           SizedBox(
+                    //             width: 16,
+                    //           ),
+
+                    //           Container(
+                    //             height: 50,
+                    //             width: 50,
+                    //             decoration: BoxDecoration(
+                    //               color: Colors.yellow[700],
+                    //               shape: BoxShape.circle,
+                    //             ),
+                    //             child: Center(
+                    //               child: Icon(
+                    //                 Icons.message,
+                    //                 color: Colors.yellow[700],
+                    //                 size: 20,
+                    //               ),
+                    //             ),
+                    //           ),
+
+                    //         ],
+                    //       ),
+
+                    //     ],
+                    //   ),
+                    // ),
+
                     Padding(
-                      padding: EdgeInsets.all(24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-
-                          Row(
-                            children: [
-
-                              Container(
-                                height: 65,
-                                width: 65,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(property.ownerImage), 
-                                    fit: BoxFit.cover,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-
-                              SizedBox(
-                                width: 16,
-                              ),
-
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-
-                                  Text(
-                                    "James Milner",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-
-                                  Text(
-                                    "Property Owner",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.grey[500],
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow[700],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.phone,
-                                    color: Colors.yellow[700],
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(
-                                width: 16,
-                              ),
-
-                              Container(
-                                height: 50,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow[700],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.message,
-                                    color: Colors.yellow[700],
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-
-                            ],
-                          ),
-
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.only(right: 24, left: 24, bottom: 24,),
+                      padding: EdgeInsets.only(right: 24, left: 24, bottom: 24, top: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

@@ -4,34 +4,43 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'data/data.dart';
 
 class PostDetail extends StatelessWidget {
   // PostDetail({required this.posts});
-  PostDetail({required this.str});
+  PostDetail({required this.newListing, required this.index});
 
-  //final List posts;
-  final String str;
+  final Listing newListing;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     var url = BASEURL + "getImages.php";
 
     Future getImages() async {
-      Map data = {'unique_string': str};
+      Map data = {'unique_string': newListing.info[index]['unique_string']};
       var response = await http.post(Uri.parse(url), body: data);
 
-      print(response.body);
+      print(newListing.info[index]['unique_string']);
+
       final content = json.decode(response.body);
-     
+
+      for (var i = 0; i < content.length; i++) {
+        if (newListing.images.length < content.length) {
+          newListing.images.add(BASEURL + "img/" + content[i]['image']);
+        }
+      }
+
+      print(newListing.images);
+
       return json.decode(response.body);
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "All Posts",
+          "Post Detail",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,
@@ -109,6 +118,19 @@ class PostDetail extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildCarousel(List<String> images) {
+    return CarouselSlider(
+      options: CarouselOptions(),
+      items: images
+            .map((item) => Container(
+                  child: Center(
+                      child:
+                          Image.network(item, fit: BoxFit.cover, width: 1000)),
+                ))
+            .toList(),
     );
   }
 }
