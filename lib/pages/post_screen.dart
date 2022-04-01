@@ -40,6 +40,27 @@ class _PostScreenState extends State<PostScreen> {
     return json.decode(response.body);
   }
 
+  Future getImages(List list, List<String> images, int index) async {
+    var url = BASEURL + "getImages.php";
+
+    Map data = {'unique_string': list[index]['unique_string']};
+    var response = await http.post(Uri.parse(url), body: data);
+
+    //print(newListing.info[index]['unique_string']);
+
+    final content = json.decode(response.body);
+
+    for (var i = 0; i < content.length; i++) {
+      if (images.length < content.length) {
+        images.add(BASEURL + "img/" + content[i]['image']);
+      }
+    }
+
+    //print(newListing.images);
+
+    //return json.decode(response.body);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +92,8 @@ class _PostScreenState extends State<PostScreen> {
                     itemBuilder: (context, index) {
                       List list = snapshot.data;
                       List<String> images = [];
+                      getImages(list, images, index);
+
                       Listing newListing = new Listing(list, images);
                       return GestureDetector(
                         child: buildListing(context, list, index),
@@ -97,7 +120,8 @@ class _PostScreenState extends State<PostScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => PostDetail(
-                                      newListing: newListing, index: index,
+                                      newListing: newListing,
+                                      index: index,
                                     )),
                           );
                         },
@@ -114,158 +138,147 @@ class _PostScreenState extends State<PostScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return SizedBox(
-      child: Card(
-          elevation: 4,
-          margin: EdgeInsets.all(16),
-          // //clipBehavior: Clip.antiAlias,
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.all(
-          //     Radius.circular(15),
-          //   ),
-          // ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // decoration: BoxDecoration(
-              //   image: DecorationImage(
-              //     image: AssetImage(BASEURL + "img/${list[0]['image']}"),
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
-              Stack(
-                clipBehavior: Clip.antiAlias,
-                children: [
-                  Container(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(4),
-                          topRight: Radius.circular(4)),
-                      child: Image.network(
-                        BASEURL + "img/${list[index]['image']}",
-                        cacheHeight: 250,
-                        cacheWidth: (width - 30).toInt(),
-                        fit: BoxFit.cover,
-                        //opacity: 1,
+        child: Card(
+            elevation: 4,
+            margin: EdgeInsets.all(16),
+            // //clipBehavior: Clip.antiAlias,
+            // shape: RoundedRectangleBorder(
+            //   borderRadius: BorderRadius.all(
+            //     Radius.circular(15),
+            //   ),
+            // ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // decoration: BoxDecoration(
+                //   image: DecorationImage(
+                //     image: AssetImage(BASEURL + "img/${list[0]['image']}"),
+                //     fit: BoxFit.cover,
+                //   ),
+                // ),
+                Stack(
+                  clipBehavior: Clip.antiAlias,
+                  children: [
+                    Container(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(4),
+                            topRight: Radius.circular(4)),
+                        child: Image.network(
+                          BASEURL + "img/${list[index]['image']}",
+                          cacheHeight: 250,
+                          cacheWidth: (width - 30).toInt(),
+                          fit: BoxFit.cover,
+                          //opacity: 1,
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color.fromARGB(0, 26, 26, 26),
+                            Color.fromARGB(255, 29, 29, 29).withOpacity(0.7),
+                          ],
+                        ),
                       ),
                     ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color.fromARGB(0, 26, 26, 26),
-                          Color.fromARGB(255, 29, 29, 29).withOpacity(0.7),
-                        ],
-                      ),
-                    ),
-                  ),
-                  
-                  Container(
-                    padding: EdgeInsets.all(20),
-                    child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 38, 64, 148),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 38, 64, 148),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
                               ),
-                            ),
-                            width: 100,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 4,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "FOR ".tr + list[index]['process'],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  //fontWeight: FontWeight.bold,
+                              width: 100,
+                              padding: EdgeInsets.symmetric(
+                                vertical: 4,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "FOR ".tr + list[index]['process'],
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    //fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ]),
-                  ),
-                ],
-              ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(list[index]['title'],
-                      style: TextStyle(
-                        color: Colors.brown,
-                        fontSize: 16,
-                      ),
+                          ]),
                     ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: list[index]['price'],
-                            style: TextStyle(
-                              color: Colors.brown,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(
-                      height: 4,
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Row(
-                          children: [
-
-                            Icon(
-                              Icons.location_on,
-                              color: Colors.brown,
-                              size: 16,
-                            ),
-
-                            SizedBox(
-                              width: 4,
-                            ),
-
-                            Text(
-                              list[index]['location'],
-                              style: TextStyle(
-                                color: Colors.brown,
-                                fontSize: 16,
-                              ),
-                            ),
-
-                            SizedBox(
-                              width: 8,
-                            ),
-
-                            SizedBox(
-                              width: 4,
-                            ),
-                          ],
-                        ),
-                     
                   ],
                 ),
-                ])
-              
-              )],
-          ))
-    );
+
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            list[index]['title'],
+                            style: TextStyle(
+                              color: Colors.brown,
+                              fontSize: 16,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: list[index]['price'],
+                                  style: TextStyle(
+                                    color: Colors.brown,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Colors.brown,
+                                    size: 16,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    list[index]['location'],
+                                    style: TextStyle(
+                                      color: Colors.brown,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ]))
+              ],
+            )));
   }
 }
