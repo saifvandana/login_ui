@@ -88,9 +88,9 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           title: SizedBox(
             child: Image.asset(
-              'assets/images/logo.png'//'assets/images/newlogo.svg',
+              'assets/images/allmenkul.jpg'//'assets/images/newlogo.svg',
               ),
-            height: 50,
+            height: 40,
             // child: ImageIcon(
             //   AssetImage('assets/images/newlogo.svg'),
             //   //color: Theme.of(context).primaryColor,

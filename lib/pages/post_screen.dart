@@ -97,24 +97,6 @@ class _PostScreenState extends State<PostScreen> {
                       Listing newListing = new Listing(list, images);
                       return GestureDetector(
                         child: buildListing(context, list, index),
-                        // child: Card(
-                        //   child: ListTile(
-                        //       title: Container(
-                        //         margin: EdgeInsets.fromLTRB(25, 60, 25, 10),
-                        //         padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        //         child: Image.network(
-                        //             BASEURL + "img/${list[index]['image']}"),
-                        //         width: 100,
-                        //         height: 100,
-                        //       ),
-                        //       subtitle: Center(
-                        //           child: Column(
-                        //         children: [
-                        //           Text("Posted by " + list[index]['name']),
-                        //           Text("On: " + list[index]['datetime']),
-                        //         ],
-                        //       ))),
-                        // ),
                         onTap: () {
                           Navigator.push(
                             context,
@@ -150,12 +132,6 @@ class _PostScreenState extends State<PostScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // decoration: BoxDecoration(
-                //   image: DecorationImage(
-                //     image: AssetImage(BASEURL + "img/${list[0]['image']}"),
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
                 Stack(
                   clipBehavior: Clip.antiAlias,
                   children: [

@@ -39,12 +39,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Theme.of(context).accentColor,
-            Theme.of(context).primaryColor
+            Colors.white,
+            Colors.white
+            //Theme.of(context).accentColor,
+            //Theme.of(context).primaryColor
           ],
           begin: const FractionalOffset(0, 0),
           end: const FractionalOffset(1.0, 0.0),
@@ -56,13 +60,13 @@ class _SplashScreenState extends State<SplashScreen> {
         opacity: 1.0,
         duration: Duration(milliseconds: 1200),
         child: Center(
-          child: Container(
+          child: SizedBox(
             height: 140.0,
-            width: 140.0,
+            width: size.width * 0.8,
             child: Center(
-              child: ClipOval(
-                child: Image.asset('assets/images/logo.png')//ImageIcon(
-                //   AssetImage('assets/images/logo.png'),
+              child: ClipRect(
+                child: Image.asset('assets/images/allmenkul.jpg')//ImageIcon(
+                //   AssetImage('assets/images/logo.png'), 
                 //   //color: Theme.of(context).primaryColor,
                 //   size: 120,
                 // ),
@@ -72,17 +76,17 @@ class _SplashScreenState extends State<SplashScreen> {
                 // ),  //put logo here
               ),
             ),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).accentColor,
-                    blurRadius: 2.0,
-                    offset: Offset(5.0, 3.0),
-                    spreadRadius: 2.0,
-                  )
-                ]),
+            // decoration: BoxDecoration(
+            //     shape: BoxShape.rectangle,
+            //     color: Colors.white,
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Theme.of(context).accentColor,
+            //         blurRadius: 2.0,
+            //         offset: Offset(5.0, 3.0),
+            //         spreadRadius: 2.0,
+            //       )
+            //     ]),
           ),
         ),
       ),
