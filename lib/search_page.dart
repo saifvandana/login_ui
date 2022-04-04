@@ -275,10 +275,6 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                 ),
 
-                Expanded(
-                  child: Container(),
-                ),
-
                 Column(
                   children: [
 

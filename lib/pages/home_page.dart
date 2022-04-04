@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:footer/footer.dart';
 import 'package:flutter/services.dart';
 import 'package:footer/footer_view.dart';
+import 'package:login_ui/allPosts.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/logout_page.dart';
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> {
             child: Image.asset(
               'assets/images/allmenkul.jpg'//'assets/images/newlogo.svg',
               ),
-            height: 40,
+            height: 30,
             // child: ImageIcon(
             //   AssetImage('assets/images/newlogo.svg'),
             //   //color: Theme.of(context).primaryColor,
@@ -198,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SectionPage()),
+                                    MaterialPageRoute(builder: (context) => AllPosts()),
                                   );
                                 },
                               ),
@@ -207,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SearchPage()),
+                                    MaterialPageRoute(builder: (context) => AllPosts()),
                                   );
                                 },
                               ),
@@ -216,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SearchPage()),
+                                    MaterialPageRoute(builder: (context) => AllPosts()),
                                   );
                                 },
                               )

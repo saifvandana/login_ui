@@ -61,8 +61,8 @@ class _SplashScreenState extends State<SplashScreen> {
         duration: Duration(milliseconds: 1200),
         child: Center(
           child: SizedBox(
-            height: 140.0,
-            width: size.width * 0.8,
+            height: 100.0,
+            width: size.width * 0.6,
             child: Center(
               child: ClipRect(
                 child: Image.asset('assets/images/allmenkul.jpg')//ImageIcon(

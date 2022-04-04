@@ -9,17 +9,17 @@ import 'package:login_ui/data/data.dart';
 import 'package:login_ui/post_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../common/theme_helper.dart';
+import 'common/theme_helper.dart';
 
-class PostScreen extends StatefulWidget {
-  const PostScreen({Key? key}) : super(key: key);
+class AllPosts extends StatefulWidget {
+  const AllPosts({Key? key}) : super(key: key);
 
   @override
-  State<PostScreen> createState() => _PostScreenState();
+  State<AllPosts> createState() => _AllPostsState();
 }
 
-class _PostScreenState extends State<PostScreen> {
-  var url = BASEURL + "viewAll.php";
+class _AllPostsState extends State<AllPosts> {
+  var url = BASEURL + "allPosts.php";
   String email = '';
 
   @override
@@ -36,8 +36,7 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Future allPosts() async {
-    Map data = {'email': email};
-    var response = await http.post(Uri.parse(url), body: data);
+    var response = await http.post(Uri.parse(url),);
     print(response.body);
     return json.decode(response.body);
   }
@@ -48,8 +47,6 @@ class _PostScreenState extends State<PostScreen> {
     Map data = {'unique_string': list[index]['unique_string']};
     var response = await http.post(Uri.parse(url), body: data);
 
-    //print(newListing.info[index]['unique_string']);
-
     final content = json.decode(response.body);
 
     for (var i = 0; i < content.length; i++) {
@@ -57,10 +54,6 @@ class _PostScreenState extends State<PostScreen> {
         images.add(BASEURL + "img/" + content[i]['image']);
       }
     }
-
-    //print(newListing.images);
-
-    //return json.decode(response.body);
   }
 
   @override
@@ -68,7 +61,7 @@ class _PostScreenState extends State<PostScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "My Posts",
+          "All Posts",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,
@@ -199,20 +192,12 @@ class _PostScreenState extends State<PostScreen> {
                             IconButton(
                               onPressed: () {
                                 setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog(
-                                          "Notifications".tr, "There are no notifications".tr, context);
-                                    },
-                                  );
                                 });
                               },
                               color: Colors.yellow[700], 
-                              icon: Icon(Icons.notifications_none_sharp),
+                              icon: Icon(Icons.favorite_border),
                             ),
-                          ]
-                        ),
+                          ]),
                     ),
 
                     Container(

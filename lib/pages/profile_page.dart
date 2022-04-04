@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:login_ui/allPosts.dart';
 import 'package:login_ui/common/theme_helper.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/login_page.dart';
@@ -339,18 +340,34 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           SizedBox(height: 15,),
-                          TextButton(
+                          Row(
+                            children: [
+                              TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PostScreen()));
+                              },
+                              child: Text(
+                                'MY POSTS'.tr, 
+                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor,),)
+                            ),
+                            TextButton(
                             onPressed: () {
                               Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PostScreen()));
+                                              AllPosts()));
                             },
                             child: Text(
                               'ALL POSTS'.tr, 
                               style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor,),)
                           ),
+                            ],
+                          )
                         ],
                       ),
                     )

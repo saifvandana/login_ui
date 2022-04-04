@@ -605,20 +605,40 @@ class _UploadDataState extends State<UploadData> {
                         ),
                         //Flexible(child: buildGridView()),
                         Container(
+                          child: Stack(
+                            children: [
+                              Positioned.fill(
+                                child: buildGridView(),
+                              ),
+                              Positioned(
+                                left: 90,
+                                top: 150,
+                                child: TextButton(
+                                  onPressed: loadAssets,
+                                  child: Text(
+                                    'Click to Upload',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           height: 250,
                           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                           margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                          child: buildGridView(),
                           decoration: BoxDecoration(
                               color: Color.fromARGB(255, 240, 235, 235),
                               borderRadius: BorderRadius.circular(5)),
                         ),
                         RaisedButton(
-                            child: Text(
-                              'Upload Photos',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            onPressed: loadAssets),
+                          child: Text(
+                            'Upload Photos',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                          onPressed: loadAssets),
                       ],
                     )),
                     SizedBox(height: 40.0),

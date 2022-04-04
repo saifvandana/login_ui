@@ -17,353 +17,113 @@ class PostDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double _percent = 0.0;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            buildCarousel(context),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                //height: size.height * 0.65,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                ),
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              right: 24, left: 24, bottom: 16, top: 15),
-                          child: Text(
-                            "Listing Info",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Property Owner",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['name'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Title",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['title'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "About",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['about'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Phone",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['phone'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Email",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['email'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Price",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['price'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Process",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['process'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "State",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['state'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Address",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['address'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            right: 24, left: 24, bottom: 16, top: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Posted on",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text(
-                              newListing.info[index]['datetime'],
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        color: Theme.of(context).primaryColor,
-                        height: 1,
-                      ),
-                    ],
-                  ),
-                ),
+      body: SafeArea(
+          child: Stack(
+        children: [
+          Positioned.fill(
+            bottom: size.height * 0.45,
+            child: buildCarousel(context),
+          ),
+          Positioned(
+            left: 20,
+            top: 20,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.white,
+                size: 24,
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+          Positioned(
+            right: 20,
+            top: 20,
+            child: GestureDetector(
+              onTap: () {},
+              child: Icon(
+                Icons.more_horiz,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+          ),
+          Positioned.fill(
+              child: NotificationListener<DraggableScrollableNotification>(
+                  // onNotification: (notification) {
+                  //   // setState(() {
+                  //   //   _percent = 2 * notification.extent - 0.8;
+                  //   // });
+
+                  //   // return true;
+                  // },
+                  child: DraggableScrollableSheet(
+            maxChildSize: 0.9,
+            minChildSize: 0.5,
+            initialChildSize: 0.7,
+            builder: (_, controller) {
+              return Material(
+                  elevation: 10,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  color: Colors.white,
+                  child: ListView(
+                    controller: controller,
+                    children: [
+                      Center(
+                          child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            height: 3,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Color.fromARGB(255, 212, 209, 209),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: 24, left: 24, bottom: 16, top: 15),
+                            child: Text(
+                              "Listing Info",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                      buildInfo(context, 'Property Owner', 'name'),
+                      buildInfo(context, 'Title', 'title'),
+                      buildInfo(context, 'About', 'about'),
+                      buildInfo(context, 'Phone', 'phone'),
+                      buildInfo(context, 'Email', 'email'),
+                      buildInfo(context, 'Price', 'price'),
+                      buildInfo(context, 'Process', 'process'),
+                      buildInfo(context, 'State', 'state'),
+                      buildInfo(context, 'Address', 'address'),
+                      buildInfo(context, 'Posted on', 'datetime'),
+                    ],
+                  ));
+            },
+          ))),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: -170 * (1 - _percent),
+            child: Opacity(opacity: _percent, child: appBar(context)),
+          ),
+        ],
+      )),
     );
   }
 
@@ -373,7 +133,7 @@ class PostDetail extends StatelessWidget {
     final List<Widget> imageSliders = newListing.images
         .map((item) => Container(
               child: Container(
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.only(left: 5, top: 1),
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     child: Stack(
@@ -381,9 +141,10 @@ class PostDetail extends StatelessWidget {
                         Image.network(
                           item,
                           fit: BoxFit.cover,
-                          //width: 1000.0,
-                          cacheWidth: (size.width).toInt(),
-                          cacheHeight: (size.height * 0.45).toInt(),
+                          width: 1000.0,
+                          height: 1000,
+                          //cacheWidth: (size.width * 1).toInt(),
+                          //cacheHeight: (size.height * 0.6).toInt(),
                         ),
                         Positioned(
                           bottom: 0.0,
@@ -404,7 +165,7 @@ class PostDetail extends StatelessWidget {
                                 vertical: 10.0, horizontal: 20.0),
                             child: Text(
                               //'',
-                              'Img. ${newListing.images.indexOf(item)}',
+                              '${newListing.images.indexOf(item)}',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 13.0,
@@ -421,12 +182,79 @@ class PostDetail extends StatelessWidget {
 
     return CarouselSlider(
       options: CarouselOptions(
+        //aspectRatio: 1,
+        //viewportFraction: 0.79,
         autoPlay: true,
-        height: size.height * 0.4,
-        // enlargeCenterPage: true,
+        height: size.height * 0.6,
+        //enlargeCenterPage: true,
         // enlargeStrategy: CenterPageEnlargeStrategy.scale,
       ),
       items: imageSliders,
     );
+  }
+
+  Widget buildInfo(BuildContext context, String title, String subtitle) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Divider(
+          color: Colors.grey[500],
+          height: 1,
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 24, left: 24, bottom: 16, top: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(
+                newListing.info[index][subtitle],
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey[500],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget appBar(BuildContext context) {
+    return Material(
+        elevation: 10,
+        child: Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 24,
+              ),
+            ),
+            Spacer(),
+            GestureDetector(
+              onTap: () {},
+              child: Icon(
+                Icons.more_horiz,
+                color: Colors.black,
+                size: 24,
+              ),
+            ),
+          ],
+        ));
   }
 }
