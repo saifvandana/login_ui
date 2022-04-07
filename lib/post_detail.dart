@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, unused_element, avoid_print, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
 
 import 'dart:convert';
-
+import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -34,10 +34,25 @@ class PostDetail extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
-                size: 24,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                        Color.fromARGB(0, 0, 0, 19),
+                        Colors.black.withOpacity(0.7),
+                    ],
+                  ),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(10),
+                  //color: Color.fromARGB(0, 221, 38, 38),
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  color: Color.fromARGB(255, 219, 214, 214),
+                  size: 30,
+                ),
               ),
             ),
           ),
@@ -46,10 +61,25 @@ class PostDetail extends StatelessWidget {
             top: 20,
             child: GestureDetector(
               onTap: () {},
-              child: Icon(
-                Icons.more_horiz,
-                color: Colors.white,
-                size: 24,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                        Color.fromARGB(0, 0, 0, 19),
+                        Colors.black.withOpacity(0.7),
+                    ],
+                  ),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(10),
+                  //color: Color.fromARGB(0, 221, 38, 38),
+                ),
+                child: Icon(
+                  Icons.more_horiz_outlined,
+                  color: Color.fromARGB(255, 219, 214, 214),
+                  size: 30,
+                ),
               ),
             ),
           ),
@@ -82,7 +112,7 @@ class PostDetail extends StatelessWidget {
                         children: [
                           Container(
                             margin: EdgeInsets.all(5),
-                            height: 3,
+                            height: 4,
                             width: 60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
@@ -93,7 +123,7 @@ class PostDetail extends StatelessWidget {
                             padding: EdgeInsets.only(
                                 right: 24, left: 24, bottom: 16, top: 15),
                             child: Text(
-                              "Listing Info",
+                              "Listing Info".tr,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -102,16 +132,16 @@ class PostDetail extends StatelessWidget {
                           ),
                         ],
                       )),
-                      buildInfo(context, 'Property Owner', 'name'),
-                      buildInfo(context, 'Title', 'title'),
-                      buildInfo(context, 'About', 'about'),
-                      buildInfo(context, 'Phone', 'phone'),
-                      buildInfo(context, 'Email', 'email'),
-                      buildInfo(context, 'Price', 'price'),
-                      buildInfo(context, 'Process', 'process'),
-                      buildInfo(context, 'State', 'state'),
-                      buildInfo(context, 'Address', 'address'),
-                      buildInfo(context, 'Posted on', 'datetime'),
+                      buildInfo(context, 'Property Owner'.tr, 'name'),
+                      buildInfo(context, 'Title'.tr, 'title'),
+                      buildInfo(context, 'About'.tr, 'about'),
+                      buildInfo(context, 'Phone'.tr, 'phone'),
+                      buildInfo(context, 'Email'.tr, 'email'),
+                      buildInfo(context, 'Price'.tr, 'price'),
+                      buildInfo(context, 'Process'.tr, 'process'),
+                      buildInfo(context, 'State'.tr, 'state'),
+                      buildInfo(context, 'Address'.tr, 'address'),
+                      buildInfo(context, 'Posted on'.tr, 'datetime'),
                     ],
                   ));
             },

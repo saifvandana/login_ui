@@ -3,7 +3,7 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-final String BASEURL = 'http://192.168.1.113/localconnect/';
+final String BASEURL = 'http://192.168.1.104/localconnect/';
 
 class Listing {
   List info;
@@ -228,20 +228,20 @@ List<String> locations = [
 ];
 
 List<String> categories = [
-  'Property Owner',
-  'Real-Estate Agent',
-  'Projects',
+  'Property Owner'.tr,
+  'Real-Estate Agent'.tr,
+  'Projects'.tr,
 ];
 
 List<String> processes = [
-  'Sell',
-  'Rent',
-  'Exchange',
-  'All',
+  'Sell'.tr,
+  'Rent'.tr,
+  'Exchange'.tr,
+  'All'.tr,
 ];
 
 List<String> states = [
-  'New',
-  'Used',
-  'All',
+  'New'.tr,
+  'Used'.tr,
+  'All'.tr,
 ];

@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,10 +31,10 @@ class UploadData extends StatefulWidget {
 
 class _UploadDataState extends State<UploadData> {
   Key _formKey = GlobalKey<FormState>();
-  bool checkedValue = false;
-  bool checkboxValue = false;
-  bool checkedValue1 = false;
-  bool checkboxValue1 = false;
+  bool checkedValue = true;
+  bool checkboxValue = true;
+  bool checkedValue1 = true;
+  bool checkboxValue1 = true;
   String description = '';
   String? category, process, state, location;
 
@@ -80,7 +79,7 @@ class _UploadDataState extends State<UploadData> {
     if (_title.text == "" ||
         category == "" ||
         _about.text == "" ||
-        _name.text == "") {
+        _name.text == "" || _phone.text == "") {
       Fluttertoast.showToast(
         msg: "required fields cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
@@ -131,7 +130,7 @@ class _UploadDataState extends State<UploadData> {
             //EasyLoading.dismiss();
             //EasyLoading.showSuccess('Success! $count');
             Fluttertoast.showToast(
-              msg: "Listing added successfully",
+              msg: "Listing added successfully".tr,
               toastLength: Toast.LENGTH_SHORT,
               gravity: ToastGravity.SNACKBAR,
             );
@@ -183,8 +182,8 @@ class _UploadDataState extends State<UploadData> {
         ),
         materialOptions: MaterialOptions(
           actionBarColor: "#abcdef",
-          actionBarTitle: "Select Photos",
-          allViewTitle: "All Photos",
+          actionBarTitle: "Select Photos".tr,
+          allViewTitle: "All Photos".tr,
           useDetailsView: false,
           selectCircleStrokeColor: "#000000",
         ),
@@ -218,7 +217,7 @@ class _UploadDataState extends State<UploadData> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Add Post".tr,
+          "Add Listing".tr,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,
@@ -246,7 +245,7 @@ class _UploadDataState extends State<UploadData> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    Text('POST INFO'),
+                    Text('LISTING INFO'.tr),
                     SizedBox(
                       height: 20,
                     ),
@@ -256,7 +255,7 @@ class _UploadDataState extends State<UploadData> {
                           hint: Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Text(
-                              'Category *',
+                              'Category *'.tr,
                               style: TextStyle(
                                 fontSize: 15,
                               ),
@@ -304,7 +303,7 @@ class _UploadDataState extends State<UploadData> {
                       child: MarkdownTextInput(
                         (String value) => setState(() => description = value),
                         description,
-                        label: 'Description *',
+                        label: 'Description *'.tr,
                         actions: MarkdownType.values,
                         controller: _about,
                       ),
@@ -318,7 +317,7 @@ class _UploadDataState extends State<UploadData> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Price',
+                          'Price'.tr,
                           style: TextStyle(
                             fontSize: 15,
                           ),
@@ -341,7 +340,7 @@ class _UploadDataState extends State<UploadData> {
                           hint: Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Text(
-                              'Process',
+                              'Process'.tr,
                               style: TextStyle(
                                 fontSize: 15,
                               ),
@@ -380,7 +379,7 @@ class _UploadDataState extends State<UploadData> {
                           hint: Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Text(
-                              'State',
+                              'State'.tr,
                               style: TextStyle(
                                 fontSize: 15,
                               ),
@@ -413,7 +412,7 @@ class _UploadDataState extends State<UploadData> {
                     SizedBox(
                       height: 30,
                     ),
-                    Text('LOCATION INFO'),
+                    Text('LOCATION INFO'.tr),
                     SizedBox(
                       height: 20,
                     ),
@@ -423,7 +422,7 @@ class _UploadDataState extends State<UploadData> {
                           hint: Padding(
                             padding: EdgeInsets.only(left: 10),
                             child: Text(
-                              'Location *',
+                              'Location *'.tr,
                               style: TextStyle(
                                 fontSize: 15,
                               ),
@@ -486,7 +485,7 @@ class _UploadDataState extends State<UploadData> {
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
                     SizedBox(height: 30.0),
-                    Text('SELLER INFO'),
+                    Text('SELLER INFO'.tr),
                     SizedBox(
                       height: 20,
                     ),
@@ -595,12 +594,12 @@ class _UploadDataState extends State<UploadData> {
                         child: Column(
                       children: [
                         Text(
-                          'PHOTOS',
+                          'PHOTOS'.tr,
                           style: TextStyle(fontSize: 15),
                         ),
                         SizedBox(height: 20.0),
                         Text(
-                          'A post can have at most 10 photos',
+                          'A post can have at most 10 photos'.tr,
                           style: TextStyle(fontSize: 15),
                         ),
                         //Flexible(child: buildGridView()),
@@ -612,11 +611,11 @@ class _UploadDataState extends State<UploadData> {
                               ),
                               Positioned(
                                 left: 90,
-                                top: 150,
+                                top: 200,
                                 child: TextButton(
                                   onPressed: loadAssets,
                                   child: Text(
-                                    'Click to Upload',
+                                    'Click to Upload'.tr,
                                     style: TextStyle(
                                       color: Colors.grey,
                                       fontSize: 20,
@@ -635,7 +634,7 @@ class _UploadDataState extends State<UploadData> {
                         ),
                         RaisedButton(
                           child: Text(
-                            'Upload Photos',
+                            'Upload Photos'.tr,
                             style: TextStyle(fontSize: 15),
                           ),
                           onPressed: loadAssets),

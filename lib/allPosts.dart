@@ -61,7 +61,7 @@ class _AllPostsState extends State<AllPosts> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "All Posts",
+          "All Posts".tr,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,
@@ -166,28 +166,28 @@ class _AllPostsState extends State<AllPosts> {
                       child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.yellow[700],
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5),
-                                ),
-                              ),
-                              width: 100,
-                              padding: EdgeInsets.symmetric(
-                                vertical: 4,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "FOR ".tr + list[index]['process'],
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    //fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Container(
+                            //   decoration: BoxDecoration(
+                            //     color: Colors.yellow[700],
+                            //     borderRadius: BorderRadius.all(
+                            //       Radius.circular(5),
+                            //     ),
+                            //   ),
+                            //   width: 100,
+                            //   padding: EdgeInsets.symmetric(
+                            //     vertical: 4,
+                            //   ),
+                            //   child: Center(
+                            //     child: Text(
+                            //       "FOR ".tr + list[index]['process'],
+                            //       style: TextStyle(
+                            //         color: Colors.white,
+                            //         fontSize: 14,
+                            //         //fontWeight: FontWeight.bold,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                             Spacer(),
                             IconButton(
                               onPressed: () {
