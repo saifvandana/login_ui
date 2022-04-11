@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
             width: size.width * 0.6,
             child: Center(
               child: ClipRect(
-                child: Image.asset('assets/images/allmenkul.jpg')//ImageIcon(
+                child: Image.asset('assets/images/all.jpg')//ImageIcon(
                 //   AssetImage('assets/images/logo.png'), 
                 //   //color: Theme.of(context).primaryColor,
                 //   size: 120,

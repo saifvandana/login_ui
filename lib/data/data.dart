@@ -3,7 +3,7 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-final String BASEURL = 'http://192.168.1.104/localconnect/';
+final String BASEURL = 'http://192.168.1.116/localconnect/';
 
 class Listing {
   List info;
@@ -192,33 +192,6 @@ List<Property> getPropertyList() {
     ),
   ];
 }
-
-// List categories = [
-//   {
-//     "name" : "All".tr,
-//     "icon" :  FontAwesomeIcons.boxes
-//   },
-//   // {
-//   //   "name" : "Villa",
-//   //   "icon" :  FontAwesomeIcons.university
-//   // },
-//   // {
-//   //   "name" : "Shop",
-//   //   "icon" :  FontAwesomeIcons.storeAlt
-//   // },
-//   // {
-//   //   "name" : "Building",
-//   //   "icon" :  FontAwesomeIcons.building
-//   // },
-//   {
-//     "name" : "Rent".tr,
-//     "icon" :  FontAwesomeIcons.home
-//   },
-//   {
-//     "name" : "Buy".tr,
-//     "icon" :  FontAwesomeIcons.building
-//   },
-// ];
 
 List<String> locations = [
   'Ankara',

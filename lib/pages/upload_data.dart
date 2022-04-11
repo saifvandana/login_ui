@@ -173,7 +173,7 @@ class _UploadDataState extends State<UploadData> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 10,
+        maxImages: 20,
         enableCamera: true,
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(
@@ -201,14 +201,6 @@ class _UploadDataState extends State<UploadData> {
       images = resultList;
     });
   }
-
-  // String? selectedValue;
-  // List<String> items = [
-  //   'Item1',
-  //   'Item2',
-  //   'Item3',
-  //   'Item4',
-  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -294,7 +286,6 @@ class _UploadDataState extends State<UploadData> {
                         decoration: ThemeHelper().textInputDecoration(
                             'Title *'.tr, 'Enter the title of your post'.tr),
                       ),
-                      //decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
                     SizedBox(
                       height: 30,
@@ -307,7 +298,6 @@ class _UploadDataState extends State<UploadData> {
                         actions: MarkdownType.values,
                         controller: _about,
                       ),
-                      //decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
                     SizedBox(
                       height: 30,
@@ -324,6 +314,7 @@ class _UploadDataState extends State<UploadData> {
                         ),
                         TextField(
                           controller: _price,
+                          keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
                             CurrencyTextInputFormatter(
                                 decimalDigits: 0, symbol: 'TL')
@@ -460,7 +451,6 @@ class _UploadDataState extends State<UploadData> {
                         controller: _region,
                         decoration: ThemeHelper()
                             .textInputDecoration("Region".tr, "".tr),
-                        keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
@@ -470,7 +460,6 @@ class _UploadDataState extends State<UploadData> {
                         controller: _postalCode,
                         decoration: ThemeHelper()
                             .textInputDecoration("Postal Code".tr, "".tr),
-                        keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
@@ -480,7 +469,6 @@ class _UploadDataState extends State<UploadData> {
                         controller: _address,
                         decoration: ThemeHelper()
                             .textInputDecoration("Address".tr, "".tr),
-                        keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
@@ -494,7 +482,6 @@ class _UploadDataState extends State<UploadData> {
                         controller: _name,
                         decoration: ThemeHelper()
                             .textInputDecoration("Name *".tr, "".tr),
-                        keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),
@@ -504,7 +491,6 @@ class _UploadDataState extends State<UploadData> {
                         controller: _phone,
                         decoration: ThemeHelper()
                             .textInputDecoration("Phone *".tr, "".tr),
-                        keyboardType: TextInputType.emailAddress,
                       ),
                       decoration: ThemeHelper().inputBoxDecorationShaddow(),
                     ),

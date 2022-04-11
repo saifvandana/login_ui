@@ -135,7 +135,7 @@ class LocaleStrings extends Translations {
       'Real-Estate Agent' : 'Emlakçı',
       'Projects' : 'Projeler',
       'Sell' : 'Satılık', 
-      'Exchange' : 'Değiş tokuş',
+      'Exchange' : 'Takas',
       'New' : 'Yeni',
       'Used' : 'Kullanılmış',
       'MY POSTS' : 'ILANLARIM',
@@ -146,7 +146,11 @@ class LocaleStrings extends Translations {
       'About' : 'Hakkında', 
       'Email' : 'Email',  
       'Posted on' : 'Tarih',
-      "My Posts" : 'Ilanlarım'
+      "My Posts" : 'Ilanlarım',
+      "3 Bedroom" : "3 Yatak Odası",
+      "2 Bathroom" : "2 Banyo",
+      "1 Kitchen" : "1 Mutfak",
+      "2 Parking" : "2 Otopark"
     }
   };
 }

@@ -163,7 +163,7 @@ class PostDetail extends StatelessWidget {
     final List<Widget> imageSliders = newListing.images
         .map((item) => Container(
               child: Container(
-                margin: EdgeInsets.only(left: 5, top: 1),
+                margin: EdgeInsets.only(left: 1, top: 1),
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     child: Stack(
@@ -216,6 +216,7 @@ class PostDetail extends StatelessWidget {
         //viewportFraction: 0.79,
         autoPlay: true,
         height: size.height * 0.6,
+        autoPlayCurve: Curves.fastOutSlowIn,
         //enlargeCenterPage: true,
         // enlargeStrategy: CenterPageEnlargeStrategy.scale,
       ),
