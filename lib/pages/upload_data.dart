@@ -7,12 +7,10 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:get/get.dart';
 import 'package:login_ui/data/data.dart';
-import 'package:login_ui/pages/post_screen.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:markdown_editable_textinput/format_markdown.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
@@ -129,16 +127,17 @@ class _UploadDataState extends State<UploadData> {
           if (response.statusCode == 200) {
             //EasyLoading.dismiss();
             //EasyLoading.showSuccess('Success! $count');
-            Fluttertoast.showToast(
-              msg: "Listing added successfully".tr,
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.SNACKBAR,
-            );
-            print(response.data);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ProfilePage()));
+            if (done == 'true') {
+              Fluttertoast.showToast(
+                msg: "Listing added successfully".tr,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+              );
+              //print(response.data);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()));
+            }  
           }
-
           // if (i == images.length - 1) {
           //   print(images.length);
           //   var response = await dio.Dio().post(
@@ -173,7 +172,7 @@ class _UploadDataState extends State<UploadData> {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 20,
+        maxImages: 10,
         enableCamera: true,
         selectedAssets: images,
         cupertinoOptions: CupertinoOptions(
@@ -181,7 +180,7 @@ class _UploadDataState extends State<UploadData> {
           doneButtonTitle: "Fatto",
         ),
         materialOptions: MaterialOptions(
-          actionBarColor: "#abcdef",
+          actionBarColor: '#2A6AB1',
           actionBarTitle: "Select Photos".tr,
           allViewTitle: "All Photos".tr,
           useDetailsView: false,

@@ -106,7 +106,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     "FOR ".tr + widget.newListing.info[widget.index]['process'],
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -115,8 +115,8 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           ),
           Positioned(
-            right: 10,
-            top: 170,
+            left: 10,
+            top: 220,
             child: Padding(
               padding: EdgeInsets.all(10),
               child: Row(
@@ -126,7 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     widget.newListing.info[widget.index]['title'],
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 32,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -146,7 +146,7 @@ class _DetailsPageState extends State<DetailsPage> {
                   child: DraggableScrollableSheet(
             maxChildSize: 0.9,
             minChildSize: 0.5,
-            initialChildSize: 0.7,
+            initialChildSize: 0.6,
             builder: (_, controller) {
               return Material(
                 elevation: 10,
@@ -156,6 +156,8 @@ class _DetailsPageState extends State<DetailsPage> {
                 ),
                 color: Colors.white,
                 child: ListView(
+                  //physics: BouncingScrollPhysics(),
+                  //shrinkWrap: true,
                   controller: controller,
                   children: [
                     Center(
@@ -261,25 +263,25 @@ class _DetailsPageState extends State<DetailsPage> {
                       ),
                     ),
 
-                    ListView(
-                      physics: NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      children: buildPhotos(widget.newListing.images),
+                    Container(
+                      height: 170,
+                        child: ListView(
+                          physics: ClampingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          children: buildPhotos(widget.newListing.images),
+                        ),
                     ),
+
                     // Expanded(
-                    //   child: Padding(
-                    //     padding: EdgeInsets.only(
-                    //       bottom: 24,
-                    //     ),
-                    //     child: ListView(
-                    //       physics: BouncingScrollPhysics(),
-                    //       scrollDirection: Axis.horizontal,
-                    //       shrinkWrap: true,
-                    //       children: [],//buildPhotos(widget.newListing.images),
-                    //     ),
+                    //   child: ListView(
+                    //     physics: ClampingScrollPhysics(),
+                    //     scrollDirection: Axis.horizontal,
+                    //     //shrinkWrap: true,
+                    //     children: buildPhotos(widget.newListing.images),
                     //   ),
                     // ),
+              
                     buildInfo(context, 'Title'.tr, 'title'),
                     buildInfo(context, 'About'.tr, 'about'),
                     buildInfo(context, 'Phone'.tr, 'phone'),
@@ -408,7 +410,7 @@ class _DetailsPageState extends State<DetailsPage> {
   List<Widget> buildPhotos(List<String> images) {
     List<Widget> list = [];
     list.add(SizedBox(
-      width: 24,
+      width: 15,
     ));
     for (var i = 0; i < images.length; i++) {
       list.add(buildPhoto(images[i]));
@@ -418,21 +420,17 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget buildPhoto(String url) {
     return SizedBox(
-      child: Card(
-        elevation: 4,
+      child: Container(
+        width: 180,
         margin: EdgeInsets.all(16),
-        child: Container(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              url,
-              height: 150,
-              cacheHeight: 150,
-              fit: BoxFit.cover,
-              //opacity: 1,
-            ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(
+            url,
+            fit: BoxFit.cover,
           ),
-        ),),
+        ),
+      ),
     );
   }
 
