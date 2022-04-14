@@ -107,6 +107,7 @@ class LocaleStrings extends Translations {
       "Listing added successfully" : "Ilan başarıyla eklendi",
       "Select Photos" : "Fotoğrafları Seç",
       "All Photos" : "Tüm fotoğraflar",
+      "Photos" : "fotoğraflar",
       "Add Listing" : "İlan Ekle",
       'LISTING INFO' : 'ILAN BİLGİSİ',
       'Category *' : 'Kategori *',
@@ -131,7 +132,7 @@ class LocaleStrings extends Translations {
       'Click to Upload' : 'Yüklemek için tıklayın',
       'Upload Photos' : 'Fotoğrafları yükle',
       "UPLOAD" : "YÜKLE",
-      'Property Owner' : 'Sahibinden',
+      'Property Owner' : 'Sahibi',
       'Real-Estate Agent' : 'Emlakçı',
       'Projects' : 'Projeler',
       'Sell' : 'Satılık', 
@@ -150,7 +151,12 @@ class LocaleStrings extends Translations {
       "3 Bedroom" : "3 Yatak Odası",
       "2 Bathroom" : "2 Banyo",
       "1 Kitchen" : "1 Mutfak",
-      "2 Parking" : "2 Otopark"
+      "2 Parking" : "2 Otopark",
+      "User Logged out" : "",
+      'Do you want to log out?' : '',
+      "YES" : "Evet",
+      "NO" : "",
+      'uploading...' : ''
     }
   };
 }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_ui/data/data.dart';
+import 'package:login_ui/details_page.dart';
 import 'package:login_ui/post_detail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,9 +104,9 @@ class _PostScreenState extends State<PostScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PostDetail(
-                                      newListing: newListing,
-                                      index: index,
+                                builder: (context) => DetailsPage(
+                                      newListing,
+                                      index,
                                     )),
                           );
                         },
@@ -208,8 +209,9 @@ class _PostScreenState extends State<PostScreen> {
                                   );
                                 });
                               },
-                              color: Colors.yellow[700], 
+                              color: Colors.white, 
                               icon: Icon(Icons.notifications_none_sharp),
+                              iconSize: 30,
                             ),
                           ]
                         ),

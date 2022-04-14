@@ -24,12 +24,14 @@ class _LogoutPageState extends State<LogoutPage> {
   Future logOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     preferences.remove('email');
+    preferences.remove('loggedIn');
     Fluttertoast.showToast(
-      msg: "email or password invalid",
+      msg: "User Logged out".tr,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.SNACKBAR,
     );
-    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomePage()));
   }
 
   @override
@@ -47,7 +49,7 @@ class _LogoutPageState extends State<LogoutPage> {
             child: Column(
               children: [
                 Text(
-                  'Login or Register'.tr,
+                  'Do you want to log out?'.tr,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 30.0),
@@ -56,13 +58,12 @@ class _LogoutPageState extends State<LogoutPage> {
                   child: ElevatedButton(
                     style: ThemeHelper().buttonStyle(),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
+                      logOut();
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                       child: Text(
-                        "LOGIN".tr,
+                        "YES".tr,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -78,15 +79,12 @@ class _LogoutPageState extends State<LogoutPage> {
                   child: ElevatedButton(
                     style: ThemeHelper().buttonStyle(),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegistrationPage()));
+                      Navigator.pop(context);
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                       child: Text(
-                        "REGISTER".tr,
+                        "NO".tr,
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

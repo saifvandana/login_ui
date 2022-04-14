@@ -177,11 +177,11 @@ class _HomePageState extends State<HomePage> {
                         child: SearchWidget(
                           //onChanged: (value) {},
                           press: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SearchPage()),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => SearchPage()),
+                            // );
                           },
                         ),
                       ),

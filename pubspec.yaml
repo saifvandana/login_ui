@@ -65,6 +65,7 @@ dependencies:
   crypto: ^3.0.1
   carousel_slider: ^4.0.0
   flutter_launcher_icons: ^0.9.2
+  photo_view: ^0.13.0
 
 dev_dependencies:
   flutter_test:
@@ -122,5 +123,5 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/applogo1.jpg"
-  #adaptive_icon_background: "#ffffff"
+  image_path: "assets/images/logo_1.jpg"
+  adaptive_icon_background: "#ffffff"

@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(
         title: '',
       ), //PostScreen(),//UploadData(), //SplashScreen(title: '',),
-      //builder: EasyLoading.init(),
+      builder: EasyLoading.init(),
     );
   }
 }

@@ -1,15 +1,24 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_declarations, unused_import
 
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-final String BASEURL = 'http://192.168.1.104/localconnect/';
+final String BASEURL = 'http://192.168.1.105/localconnect/';
 
 class Listing {
   List info;
   List<String> images;
 
   Listing(this.info, this.images);
+}
+
+class CDM {
+  final IconData icon;
+  final String title;
+  final List<Widget> submenus;
+
+  CDM(this.icon, this.title, this.submenus);
 }
 
 class Property {

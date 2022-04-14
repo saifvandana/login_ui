@@ -119,12 +119,6 @@ class _AllPostsState extends State<AllPosts> {
         child: Card(
             elevation: 4,
             margin: EdgeInsets.all(16),
-            // //clipBehavior: Clip.antiAlias,
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.all(
-            //     Radius.circular(15),
-            //   ),
-            // ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -190,13 +184,23 @@ class _AllPostsState extends State<AllPosts> {
                             //   ),
                             // ),
                             Spacer(),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                });
-                              },
-                              color: Colors.yellow[700], 
-                              icon: Icon(Icons.favorite_border),
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                    });
+                                  },
+                                  color: Colors.yellow[700], 
+                                  icon: Icon(Icons.favorite_border),
+                                ),
+                              ),
                             ),
                           ]),
                     ),
@@ -208,7 +212,7 @@ class _AllPostsState extends State<AllPosts> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
-                          //fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),

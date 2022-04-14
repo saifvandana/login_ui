@@ -98,13 +98,13 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString('email', email);
+      preferences.setString('loggedIn', 'true');
       Map data = {'email': email, 'password': password};
 
       //print(data.toString());
       String url = BASEURL + "signin.php";
 
-      final response = await http.post(
-          Uri.parse(url),
+      final response = await http.post(Uri.parse(url),
           headers: {
             "Accept": "application/json",
             "Content-Type": "application/x-www-form-urlencoded"

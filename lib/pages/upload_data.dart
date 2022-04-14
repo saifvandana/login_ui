@@ -7,6 +7,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:get/get.dart';
@@ -121,13 +122,12 @@ class _UploadDataState extends State<UploadData> {
             'done': done,
           });
 
-          //EasyLoading.show(status: 'uploading...');
+          EasyLoading.show(status: 'uploading...'.tr);
 
           var response = await dio.Dio().post(url, data: formData);
           if (response.statusCode == 200) {
-            //EasyLoading.dismiss();
-            //EasyLoading.showSuccess('Success! $count');
             if (done == 'true') {
+              EasyLoading.dismiss();
               Fluttertoast.showToast(
                 msg: "Listing added successfully".tr,
                 toastLength: Toast.LENGTH_SHORT,
