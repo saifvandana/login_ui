@@ -23,7 +23,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var email = preferences.getString('email');
+  var loggedIn = preferences.getString('loggedIn');
   print(email);
+  print(loggedIn);
   // runApp(MaterialApp(
   //   home: email == null ? MyApp() : LoginPage(),
   // ));

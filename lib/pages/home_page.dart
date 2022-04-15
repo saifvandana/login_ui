@@ -12,10 +12,12 @@ import 'package:login_ui/allPosts.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/logout_page.dart';
+import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
 import 'package:login_ui/pages/section_page.dart';
 import 'package:login_ui/pages/splash_screen.dart';
 import 'package:login_ui/search_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'forgot_password_verification_page.dart';
 import '../common/theme_helper.dart';
 import '../data/data.dart';
@@ -32,6 +34,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double _drawerIconSize = 15;
   double _drawerFontSize = 15;
+
+  String email = '';
+  String loggedIn = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
+  }
+
+  Future getUserInfo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      email = preferences.getString('email')!;
+      loggedIn = preferences.getString('loggedIn')!;
+    });
+  }
 
   final List locale = [
     {'name': 'English', 'locale': Locale('en', 'US')},
@@ -83,194 +102,208 @@ class _HomePageState extends State<HomePage> {
     double bgImageHeight = height / 2.8;
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          centerTitle: true,
-          title: SizedBox(
-            child: Image.asset(
-              'assets/images/allmenkul.jpg'//'assets/images/newlogo.svg',
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        centerTitle: true,
+        title: SizedBox(
+          child: Image.asset(
+              'assets/images/allmenkul.jpg' //'assets/images/newlogo.svg',
               ),
-            height: 30,
-            // child: ImageIcon(
-            //   AssetImage('assets/images/newlogo.svg'),
-            //   //color: Theme.of(context).primaryColor,
-            //   size: 40,
-            // ),
-            // child: Icon(
-            //   Icons.android_outlined,
-            //   color: Theme.of(context).primaryColor,
-            //   size: 50,
-            // ),
+          height: 30,
+          // child: ImageIcon(
+          //   AssetImage('assets/images/newlogo.svg'),
+          //   //color: Theme.of(context).primaryColor,
+          //   size: 40,
+          // ),
+          // child: Icon(
+          //   Icons.android_outlined,
+          //   color: Theme.of(context).primaryColor,
+          //   size: 50,
+          // ),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
           ),
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-            ),
-            TextButton(
-              onPressed: () {
-                buildLanguageDialog(context);
-              },
-              child: Text('ENG'.tr),
-            ),
-            IconButton(
-              onPressed: () {
+          TextButton(
+            onPressed: () {
+              buildLanguageDialog(context);
+            },
+            child: Text('ENG'.tr),
+          ),
+          IconButton(
+            onPressed: () {
+              if (loggedIn == 'true') {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+              }
+              else {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
-              },
-              icon: Icon(
-                Icons.person,
-                color: Theme.of(context).primaryColor,
-              ),
-            )
-          ],
-          backgroundColor: Colors.white,
-          elevation: 10,
-          iconTheme: IconThemeData(color: Theme.of(context).accentColor),
-        ),
-        drawer: buildDrawer(context),
-        body: FooterView(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  height: bgImageHeight,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/ankara_02.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: bgImageHeight - 90,
-                        ),
-                        child: Center(
-                          child: RichText(
-                              text: TextSpan(children: <TextSpan>[
-                            TextSpan(
-                                text: "All",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 45,
-                                )),
-                            TextSpan(
-                                text: "Menkul",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 45,
-                                )),
-                          ])),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 15, left: 20, right: 20),
-                        child: SearchWidget(
-                          //onChanged: (value) {},
-                          press: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => SearchPage()),
-                            // );
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        child: Center(
-                          //child: listCategories(),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                child: buildCategory(context, FontAwesomeIcons.boxes, "All".tr),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => AllPosts()),
-                                  );
-                                },
-                              ),
-                              GestureDetector(
-                                child: buildCategory(context, FontAwesomeIcons.home, "Buy".tr),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => AllPosts()),
-                                  );
-                                },
-                              ),
-                              GestureDetector(
-                                child: buildCategory(context, FontAwesomeIcons.building, "Rent".tr),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => AllPosts()),
-                                  );
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-          footer: Footer(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+              }
+            },
+            icon: Icon(
+              Icons.person,
+              color: Theme.of(context).primaryColor,
+            ),
+          )
+        ],
+        backgroundColor: Colors.white,
+        elevation: 10,
+        iconTheme: IconThemeData(color: Theme.of(context).accentColor),
+      ),
+      drawer: buildDrawer(context),
+      body: FooterView(
+        children: [
+          Stack(
             children: [
-              Text(
-                'Copyright ©2022, All Rights Reserved.'.tr,
-                style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 12.0,
-                    color: Color(0xFF162A49)),
+              Container(
+                height: bgImageHeight,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/ankara_02.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-              Text(
-                'Powered by Allmenkul'.tr,
-                style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 12.0,
-                    color: Color(0xFF162A49)),
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                        top: bgImageHeight - 90,
+                      ),
+                      child: Center(
+                        child: RichText(
+                            text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                              text: "All",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 45,
+                              )),
+                          TextSpan(
+                              text: "Menkul",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 45,
+                              )),
+                        ])),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15, left: 20, right: 20),
+                      child: SearchWidget(
+                        //onChanged: (value) {},
+                        press: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => SearchPage()),
+                          // );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      child: Center(
+                        //child: listCategories(),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              child: buildCategory(
+                                  context, FontAwesomeIcons.boxes, "All".tr),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AllPosts()),
+                                );
+                              },
+                            ),
+                            GestureDetector(
+                              child: buildCategory(
+                                  context, FontAwesomeIcons.home, "Buy".tr),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AllPosts()),
+                                );
+                              },
+                            ),
+                            GestureDetector(
+                              child: buildCategory(context,
+                                  FontAwesomeIcons.building, "Rent".tr),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AllPosts()),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
-          )),
-        ),
-        // floatingActionButton: FloatingActionButton(
-        //   child: IconButton(
-        //       onPressed: () {
-        //         setState(() {
-        //           showDialog(
-        //             context: context,
-        //             builder: (BuildContext context) {
-        //               return ThemeHelper().alartDialog("Chat with us".tr,
-        //                   "Log in to chat with us".tr, context);
-        //             },
-        //           );
-        //         });
-        //       },
-        //       icon: Icon(Icons.chat)),
-        //   backgroundColor: Theme.of(context).primaryColor,
-        //   onPressed: () {},
-        // )
-        // 
+          )
+        ],
+        footer: Footer(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              'Copyright ©2022, All Rights Reserved.'.tr,
+              style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                  fontSize: 12.0,
+                  color: Color(0xFF162A49)),
+            ),
+            Text(
+              'Powered by Allmenkul'.tr,
+              style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                  fontSize: 12.0,
+                  color: Color(0xFF162A49)),
+            ),
+          ],
+        )),
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: IconButton(
+      //       onPressed: () {
+      //         setState(() {
+      //           showDialog(
+      //             context: context,
+      //             builder: (BuildContext context) {
+      //               return ThemeHelper().alartDialog("Chat with us".tr,
+      //                   "Log in to chat with us".tr, context);
+      //             },
+      //           );
+      //         });
+      //       },
+      //       icon: Icon(Icons.chat)),
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   onPressed: () {},
+      // )
+      //
     );
   }
 
@@ -485,8 +518,7 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Column(
           children: [
-            Icon(icon,
-                size: 15, color: selected ? Colors.white : primary),
+            Icon(icon, size: 15, color: selected ? Colors.white : primary),
             SizedBox(
               height: 5,
             ),

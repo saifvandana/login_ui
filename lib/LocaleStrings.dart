@@ -152,11 +152,13 @@ class LocaleStrings extends Translations {
       "2 Bathroom" : "2 Banyo",
       "1 Kitchen" : "1 Mutfak",
       "2 Parking" : "2 Otopark",
-      "User Logged out" : "",
-      'Do you want to log out?' : '',
+      "User Logged out" : "Kullanıcı Oturumu Kapattı",
+      'Do you want to log out?' : 'Çıkış yapmak istiyor musunuz?',
       "YES" : "Evet",
-      "NO" : "",
-      'uploading...' : ''
+      "NO" : "Hayır",
+      'uploading...' : 'yükleniyor...',
+      'Settings' : 'Ayarlar',
+      'Homepage' : 'Ana Ekran',
     }
   };
 }

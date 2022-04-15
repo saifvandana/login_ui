@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-final String BASEURL = 'http://192.168.1.105/localconnect/';
+final String BASEURL = 'http://192.168.1.104/localconnect/';
 
 class Listing {
   List info;

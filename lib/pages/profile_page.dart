@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:login_ui/allPosts.dart';
 import 'package:login_ui/common/theme_helper.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
+import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/logout_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
@@ -25,8 +26,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  double _drawerIconSize = 24;
-  double _drawerFontSize = 17;
+  double _drawerIconSize = 20;
+  double _drawerFontSize = 15;
 
   @override
   Widget build(BuildContext context) {
@@ -70,27 +71,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     }, 
                     icon: Icon(Icons.notifications),
                   )
-                  // Positioned(
-                  //   right: 0,
-                  //   child: Container(
-                  //     padding: EdgeInsets.all(1),
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.red,
-                  //       borderRadius: BorderRadius.circular(6),
-                  //     ),
-                  //     constraints: BoxConstraints(
-                  //       minWidth: 12,
-                  //       minHeight: 12,
-                  //     ),
-                  //     child: Text(
-                  //       '5',
-                  //       style: TextStyle(
-                  //         color: Colors.white,
-                  //         fontSize: 8,
-                  //       ),
-                  //       textAlign: TextAlign.center,
-                  //     ),
-                  //   ))
                 ],
               ),
             )
@@ -145,15 +125,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SplashScreen(title: "Splash Screen")));
                   },
                 ),
-                Divider(color: Theme.of(context).primaryColor, height: 1,),
+                 Divider(color: Theme.of(context).primaryColor, height: 1, indent: 10,
+											endIndent: 10,),
                 ListTile(
                   leading: Icon(
-                    Icons.login_rounded,
+                    Icons.home_outlined,
                     size: _drawerIconSize,
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Login page'.tr,
+                    'Homepage'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
@@ -163,31 +144,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                LoginPage()));
+                                HomePage()));
                   },
                 ),
-                Divider(color: Theme.of(context).primaryColor, height: 1,),
-                ListTile(
-                  leading: Icon(
-                    Icons.person_add_alt_1,
-                    size: _drawerIconSize,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  title: Text(
-                    'Registration Page'.tr,
-                    style: TextStyle(
-                        fontSize: _drawerFontSize,
-                        color: Theme.of(context).accentColor),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                RegistrationPage()));
-                  },
-                ),
-                Divider(color: Theme.of(context).primaryColor, height: 1,),
+                Divider(color: Theme.of(context).primaryColor, height: 1, indent: 10,
+											endIndent: 10,),
                 ListTile(
                   leading: Icon(
                     Icons.password_rounded,
@@ -195,38 +156,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Theme.of(context).accentColor,
                   ),
                   title: Text(
-                    'Forgot Password Page'.tr,
+                    'Settings'.tr,
                     style: TextStyle(
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
                   ),
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ForgotPasswordPage()));
-                  },
-                ),
-                 Divider(color: Theme.of(context).primaryColor, height: 1,),
-                ListTile(
-                  leading: Icon(
-                    Icons.password_rounded,
-                    size: _drawerIconSize,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  title: Text(
-                    'Password Verification Page'.tr,
-                    style: TextStyle(
-                        fontSize: _drawerFontSize,
-                        color: Theme.of(context).accentColor),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ForgotPasswordVerificationPage()));
                   },
                 ),
                 Divider(color: Theme.of(context).primaryColor, height: 1,),
