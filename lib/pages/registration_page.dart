@@ -24,14 +24,21 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   Key _formKey = GlobalKey<FormState>();
-  bool checkedValue = false;
-  bool checkboxValue = false;
-  String username = "", password = "", email = "" ;
-  bool isLoading = false;
+  bool obscure = true;
+  bool obscure2 = true;
+  String username = "", password = "", password2 = "", phone = "", email = "" ;
 
   TextEditingController _username = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
+  TextEditingController _password2 = TextEditingController();
+  TextEditingController _phone = TextEditingController();
+
+  void _toggle() {
+    setState(() {
+      obscure = !obscure;
+    });
+  }
 
   /*//API
   signup(name, email, password) async {
@@ -103,27 +110,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }*/
 
-  signup(username, email, password) async {
-    setState(() {
-      isLoading = true;
-    });
+  signup(username, email, password, password2, phone) async {
 
     username = _username.text;
     email = _email.text;
     password = _password.text;
+    password2 = _password2.text;
+    phone = _phone.text;
 
-    if (username == "" || password == "" || email == "") {
+    if (username == "" || password == "" || password2 == "" || email == "") {
       Fluttertoast.showToast(
-        msg: "Username or password is blank".tr,
+        msg: "Username, email or password is blank".tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      Map data = {'username': username, 'email': email, 'password': password};
+      Map data = {'s_name': username, 's_email': email, 's_password': password, 's_password2': password2, 's_phone_mobile' : phone};
 
-      //print(data.toString());
-
-      String url = BASEURL + "signup.php";
+      String url = "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/user/";
 
       final response = await http.post(
         Uri.parse(url),
@@ -132,28 +136,27 @@ class _RegistrationPageState extends State<RegistrationPage> {
           "Content-Type": "application/x-www-form-urlencoded"
         },
         body: data,
-        encoding: Encoding.getByName("utf-8"));
+      );
+
+      final content = jsonDecode(response.body);
 
       //If data fetching is successful
       if (response.statusCode == 200) {
         print(response.body);
-        final content = jsonDecode(response.body);
 
-        if (!content['error']) {
-          Fluttertoast.showToast(
-            msg: "${content['message']}",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.SNACKBAR,
-          );
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => LoginPage()));
-        } else {
-          Fluttertoast.showToast(
-            msg: "${content['message']}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.SNACKBAR,
-          );
-        }
+        Fluttertoast.showToast(
+          msg: "${content['message']}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.SNACKBAR,
+        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
+      } else {
+        Fluttertoast.showToast(
+          msg: "${content['message']}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
       }
     }
   }
@@ -180,44 +183,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        // GestureDetector(
-                        //   child: Stack(
-                        //     children: [
-                        //       Container(
-                        //         padding: EdgeInsets.all(10),
-                        //         decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(100),
-                        //           border:
-                        //               Border.all(width: 5, color: Colors.white),
-                        //           color: Colors.white,
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: Colors.black12,
-                        //               blurRadius: 20,
-                        //               offset: const Offset(5, 5),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         child: Icon(
-                        //           Icons.person,
-                        //           color: Colors.grey.shade300,
-                        //           size: 70.0,
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         padding: EdgeInsets.fromLTRB(75, 75, 0, 0),
-                        //         child: Icon(
-                        //           Icons.add_circle,
-                        //           color: Colors.grey.shade700,
-                        //           size: 25.0,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         SizedBox(
                           height: 120,
                         ),
+                        Text(
+                        'Create account'.tr,
+                        style: TextStyle(color: Colors.grey, fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 30.0),
                         Container(
                           child: TextFormField(
                             controller: _username,
@@ -227,7 +200,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                         Container(
                           child: TextFormField(
@@ -238,74 +211,64 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
-                        SizedBox(height: 20.0),
-                        // Container(
-                        //   child: TextFormField(
-                        //     decoration: ThemeHelper().textInputDecoration(
-                        //         "Mobile Number", "Enter your mobile number"),
-                        //     keyboardType: TextInputType.phone,
-                        //     validator: (val) {
-                        //       if (!(val!.isEmpty) &&
-                        //           !RegExp(r"^(\d+)*$").hasMatch(val)) {
-                        //         return "Enter a valid phone number";
-                        //       }
-                        //       return null;
-                        //     },
-                        //   ),
-                        //   decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                        // ),
-                        // SizedBox(height: 20.0),
+                        SizedBox(
+                          height: 20,
+                        ),
                         Container(
                           child: TextFormField(
                             controller: _password,
-                            obscureText: true,
+                            obscureText: obscure,
+                            decoration: InputDecoration(
+                              labelText: "Password".tr, 
+                              contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey)),
+                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.only(right: 5),
+                                child: GestureDetector(
+                                  child: obscure ? Icon(Icons.lock) : Icon(Icons.lock_open),
+                                  onTap: _toggle,
+                                ),)
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          child: TextFormField(
+                            controller: _password2,
+                            obscureText: obscure,
+                            decoration: InputDecoration(
+                              labelText: "Confirm Password".tr, 
+                              contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey)),
+                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey.shade400)),
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.only(right: 5),
+                                child: GestureDetector(
+                                  child: obscure ? Icon(Icons.lock) : Icon(Icons.lock_open),
+                                  onTap: _toggle,
+                                ),)
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20.0),
+                        Container(
+                          child: TextFormField(
+                            controller: _phone,
                             decoration: ThemeHelper().textInputDecoration(
-                                "Password".tr, "Enter your password".tr),
+                                "Phone".tr, "Phone".tr),
+                            keyboardType: TextInputType.phone,
+                            // validator: (val) {
+                            //   if (!(val!.isEmpty) &&
+                            //       !RegExp(r"^(\d+)*$").hasMatch(val)) {
+                            //     return "Enter a valid phone number";
+                            //   }
+                            //   return null;
+                            // },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
-                        ),
-                        SizedBox(height: 15.0),
-                        FormField<bool>(
-                          builder: (state) {
-                            return Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    Checkbox(
-                                        value: checkboxValue,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            checkboxValue = value!;
-                                            state.didChange(value);
-                                          });
-                                        }),
-                                    Text(
-                                      "I accept all terms and conditions.".tr,
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    state.errorText ?? '',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      color: Theme.of(context).errorColor,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            );
-                          },
-                          // validator: (value) {
-                          //   if (!checkboxValue) {
-                          //     return 'You need to accept terms and conditions'.tr;
-                          //   } else {
-                          //     return null;
-                          //   }
-                          // },
                         ),
                         SizedBox(height: 20.0),
                         Container(
@@ -314,7 +277,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           child: ElevatedButton(
                             style: ThemeHelper().buttonStyle(),
                             onPressed: () {
-                              signup(username, email, password);
+                              signup(username, email, password, password2, phone);
                             },
                             child: Padding(
                               padding:

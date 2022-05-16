@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
    <application
-        android:label="login_ui"
+        android:label="Allmenkul"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="{{AIzaSyBf7DG40n2shzerenZZmgl1UQg4CIRes-o}}"/>

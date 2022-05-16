@@ -38,7 +38,7 @@ class _AllPostsState extends State<AllPosts> {
 
   Future allPosts() async {
     var response = await http.post(Uri.parse(url),);
-    print(response.body);
+    //print(response.body);
     return json.decode(response.body);
   }
 

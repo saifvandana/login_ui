@@ -76,7 +76,9 @@ class _DetailsPageState extends State<DetailsPage> {
 						right: 20,
 						top: 20,
 						child: GestureDetector(
-							onTap: () {},
+							onTap: () {
+                _showBottomSheet();
+              },
 							child: Container(
 								decoration: BoxDecoration(
 									gradient: LinearGradient(
@@ -104,32 +106,41 @@ class _DetailsPageState extends State<DetailsPage> {
 						top: 180,
 						child: Padding(
 							padding: EdgeInsets.symmetric(vertical: 8),
-							child: Container(
-								decoration: BoxDecoration(
-									color: Colors.yellow[700],
-									borderRadius: BorderRadius.all(
-										Radius.circular(5),
-									),
-								),
-								width: 100,
-								padding: EdgeInsets.symmetric(
-									vertical: 4,
-								),
-								child: Center(
-									child: Text(
-										widget.newListing.info[widget.index]['process'],
-										style: TextStyle(
-											color: Colors.white,
-											fontSize: 15,
-											fontWeight: FontWeight.bold,
-										),
-									),
-								),
-							),
+              child: Text(
+                widget.newListing.info[widget.index]["i_price"] == null ?  "TL5000000" :
+                                  widget.newListing.info[widget.index]["i_price"] + 'TL',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+							// child: Container(
+							// 	decoration: BoxDecoration(
+							// 		color: Colors.yellow[700],
+							// 		borderRadius: BorderRadius.all(
+							// 			Radius.circular(5),
+							// 		),
+							// 	),
+							// 	width: 100,
+							// 	padding: EdgeInsets.symmetric(
+							// 		vertical: 4,
+							// 	),
+							// 	child: Center(
+							// 		child: Text(
+							// 			widget.newListing.info[widget.index]['process'],
+							// 			style: TextStyle(
+							// 				color: Colors.white,
+							// 				fontSize: 15,
+							// 				fontWeight: FontWeight.bold,
+							// 			),
+							// 		),
+							// 	),
+							// ),
 						),
 					),
 					Positioned(
-						left: 10,
+						//left: 10,
 						top: 220,
 						child: Padding(
 							padding: EdgeInsets.all(10),
@@ -137,7 +148,7 @@ class _DetailsPageState extends State<DetailsPage> {
 								mainAxisAlignment: MainAxisAlignment.spaceBetween,
 								children: [
 									Text(
-										widget.newListing.info[widget.index]['title'],
+										widget.newListing.info[widget.index]['s_title'] ?? "No Title",
 										style: TextStyle(
 											color: Colors.white,
 											fontSize: 24,
@@ -222,7 +233,8 @@ class _DetailsPageState extends State<DetailsPage> {
 																children: [
 																	Text(
 																		widget.newListing.info[widget.index]
-																				['name'],
+																				['s_user_name'] ?? widget.newListing.info[widget.index]
+																				['s_contact_name'],
 																		style: TextStyle(
 																			fontSize: 20,
 																			fontWeight: FontWeight.bold,
@@ -278,15 +290,14 @@ class _DetailsPageState extends State<DetailsPage> {
 													style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,),
 												),
 												children: [
-													buildInfo(context, 'Title'.tr, 'title'),
-													buildInfo(context, 'About'.tr, 'about'),
-													buildInfo(context, 'Phone'.tr, 'phone'),
-													buildInfo(context, 'Email'.tr, 'email'),
-													buildInfo(context, 'Price'.tr, 'price'),
-													buildInfo(context, 'Process'.tr, 'process'),
-													buildInfo(context, 'State'.tr, 'state'),
-													buildInfo(context, 'Address'.tr, 'address'),
-													buildInfo(context, 'Posted on'.tr, 'datetime'),
+													buildInfo(context, 'Title'.tr, 's_title'),
+													buildInfo(context, 'About'.tr, 's_description'),
+													buildInfo(context, 'Phone'.tr, 's_contact_phone'),
+													buildInfo(context, 'Email'.tr, 's_contact_email'),
+													//buildInfo(context, 'Price'.tr, 'i_price'),
+													buildInfo(context, 'State'.tr, 's_region'),
+													buildInfo(context, 'Address'.tr, 's_address'),
+													buildInfo(context, 'Posted on'.tr, 'dt_pub_date'),
 												],
 											),
 										),
@@ -422,7 +433,7 @@ class _DetailsPageState extends State<DetailsPage> {
 								height: 4,
 							),
 							Text(
-								widget.newListing.info[widget.index][subtitle],
+								widget.newListing.info[widget.index][subtitle] ?? "Not Specified",
 								style: TextStyle(
 									fontSize: 15,
 									color: Colors.grey[500],
@@ -511,6 +522,29 @@ class _DetailsPageState extends State<DetailsPage> {
 			),
 		);
 	}
+
+  void _showBottomSheet(){
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      builder: (BuildContext context){ 
+        return Wrap(
+          children: [
+            buildInfo(context, 'Edit'.tr, ''),
+            buildInfo(context, 'Share'.tr, ''),
+            buildInfo(context, 'Delete'.tr, ''),
+            //Filter(),
+          ],
+        );
+      }
+    );
+  }
 
 	// Widget blackIconTiles(){
 	// 	return Container(

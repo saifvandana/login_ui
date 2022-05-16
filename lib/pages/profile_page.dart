@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:login_ui/allPosts.dart';
 import 'package:login_ui/common/theme_helper.dart';
+import 'package:login_ui/data/data.dart';
+import 'package:login_ui/my_post.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
@@ -14,6 +16,7 @@ import 'package:login_ui/pages/registration_page.dart';
 import 'package:login_ui/pages/splash_screen.dart';
 import 'package:login_ui/pages/upload_data.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'forgot_password_verification_page.dart';
 import 'post_screen.dart';
@@ -28,13 +31,35 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   double _drawerIconSize = 20;
   double _drawerFontSize = 15;
+  List<String> catIds = [];
+  List<String> cats = [];
+  String name = '';
+  String email = '';
+  String phone = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getUserInfo();
+  }
+
+  Future getUserInfo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      email = preferences.getString('email')!;
+      name = preferences.getString('name')!;
+      phone = preferences.getString('phone')!;
+      getCategories(catIds, cats);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "ProfilePage".tr,
+            "Profile".tr,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           elevation: 0.5,
@@ -63,12 +88,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return ThemeHelper().alartDialog(
-                                "Notifications".tr, "There are no notifications".tr, context);
+                            return ThemeHelper().alartDialog("Notifications".tr,
+                                "There are no notifications".tr, context);
                           },
                         );
                       });
-                    }, 
+                    },
                     icon: Icon(Icons.notifications),
                   )
                 ],
@@ -91,8 +116,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             1.0
                           ],
                           colors: [
-                            Theme.of(context).primaryColor,//.withOpacity(0.2),
-                            Theme.of(context).accentColor,//.withOpacity(0.2),
+                            Theme.of(context).primaryColor, //.withOpacity(0.2),
+                            Theme.of(context).accentColor, //.withOpacity(0.2),
                           ])),
                   child: Container(
                     alignment: Alignment.bottomLeft,
@@ -125,8 +150,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SplashScreen(title: "Splash Screen")));
                   },
                 ),
-                 Divider(color: Theme.of(context).primaryColor, height: 1, indent: 10,
-											endIndent: 10,),
+                Divider(
+                  color: Theme.of(context).primaryColor,
+                  height: 1,
+                  indent: 10,
+                  endIndent: 10,
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.home_outlined,
@@ -140,15 +169,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).accentColor),
                   ),
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                HomePage()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage()));
                   },
                 ),
-                Divider(color: Theme.of(context).primaryColor, height: 1, indent: 10,
-											endIndent: 10,),
+                Divider(
+                  color: Theme.of(context).primaryColor,
+                  height: 1,
+                  indent: 10,
+                  endIndent: 10,
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.password_rounded,
@@ -161,10 +191,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontSize: _drawerFontSize,
                         color: Theme.of(context).accentColor),
                   ),
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
-                Divider(color: Theme.of(context).primaryColor, height: 1,),
+                Divider(
+                  color: Theme.of(context).primaryColor,
+                  height: 1,
+                ),
                 ListTile(
                   leading: Icon(
                     Icons.logout_rounded,
@@ -178,11 +210,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Theme.of(context).accentColor),
                   ),
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                LogoutPage()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LogoutPage()));
                   },
                 ),
               ],
@@ -192,7 +221,10 @@ class _ProfilePageState extends State<ProfilePage> {
         body: SingleChildScrollView(
           child: Stack(
             children: [
-              Container(height: 100, child: HeaderWidget(100, false, Icons.house_rounded),),
+              Container(
+                height: 100,
+                child: HeaderWidget(100, false, Icons.house_rounded),
+              ),
               Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
@@ -200,107 +232,125 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        border: Border.all(width: 5, color: Colors.white),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey, blurRadius: 20, offset: const Offset(5, 5),
-                          ),
-                        ],
-                      ),
-                      child: Icon(Icons.person, size: 80, color: Colors.grey.shade300,)
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(width: 5, color: Colors.white),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 20,
+                              offset: const Offset(5, 5),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          size: 80,
+                          color: Colors.grey.shade300,
+                        )),
+                    SizedBox(
+                      height: 20,
                     ),
-                    SizedBox(height: 20,),
-                    Text('Admin', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
-                    SizedBox(height: 20,),
-                    Text('Allmenkul', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                    SizedBox(height: 10,),
+                    Text(
+                      name,
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       padding: EdgeInsets.all(10),
                       child: Column(
                         children: <Widget>[
                           Container(
-                            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                            padding:
+                                const EdgeInsets.only(left: 8.0, bottom: 4.0),
                             alignment: Alignment.topLeft,
-                            child: Text(
-                              'User Information'.tr,
-                              style: TextStyle(
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                            child: Center(
+                              child: Text(
+                                'User Information'.tr,
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.left,
                               ),
-                              textAlign: TextAlign.left,
                             ),
                           ),
                           Card(
                             child: Container(
-                              alignment: Alignment.topLeft,
-                              padding: EdgeInsets.all(15),
-                              child: Column(
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      ...ListTile.divideTiles(
-                                        color: Colors.grey,
-                                        tiles: [
-                                          ListTile(
-                                            leading: Icon(Icons.my_location),
-                                            title: Text("Location".tr),
-                                            subtitle: Text("Turkey"),
-                                          ),
-                                          ListTile(
-                                            leading: Icon(Icons.email),
-                                            title: Text("Email".tr),
-                                            subtitle: Text("admin@gmail.com"),
-                                          ),
-                                          ListTile(
-                                            leading: Icon(Icons.phone),
-                                            title: Text("Phone".tr),
-                                            subtitle: Text("+905555555500"),
-                                          ),
-                                          ListTile(
-                                            leading: Icon(Icons.person),
-                                            title: Text("About Me".tr),
-                                            subtitle: Text("This is about me section".tr),
-                                          ),
-                                        ]
-                                      )
-                                    ],
-                                  )
-                                ],
-                              )
-                            ),
+                                alignment: Alignment.topLeft,
+                                padding: EdgeInsets.all(15),
+                                child: Column(
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        ...ListTile.divideTiles(
+                                            color: Colors.grey,
+                                            tiles: [
+                                              ListTile(
+                                                leading:
+                                                    Icon(Icons.my_location),
+                                                title: Text("Location".tr),
+                                                subtitle: Text("Turkey"),
+                                              ),
+                                              ListTile(
+                                                leading: Icon(Icons.email),
+                                                title: Text("Email".tr),
+                                                subtitle:
+                                                    Text(email),
+                                              ),
+                                              ListTile(
+                                                leading: Icon(Icons.phone),
+                                                title: Text("Phone".tr),
+                                                subtitle: Text(phone),
+                                              ),
+                                            ])
+                                      ],
+                                    )
+                                  ],
+                                )),
                           ),
-                          SizedBox(height: 15,),
+                          SizedBox(
+                            height: 15,
+                          ),
                           Row(
                             children: [
                               TextButton(
-                              onPressed: () {
-                                Navigator.push(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => MyPost()));
+                                  },
+                                  child: Text(
+                                    'MY POSTS'.tr,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 PostScreen()));
-                              },
-                              child: Text(
-                                'MY POSTS'.tr, 
-                                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor,),)
-                            ),
-                            TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AllPosts()));
-                            },
-                            child: Text(
-                              'ALL POSTS'.tr, 
-                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor,),)
-                          ),
+                                  },
+                                  child: Text(
+                                    'ALL POSTS'.tr,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  )),
                             ],
                           )
                         ],
@@ -315,16 +365,14 @@ class _ProfilePageState extends State<ProfilePage> {
         floatingActionButton: FloatingActionButton(
           child: IconButton(
               onPressed: () {
-                Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                UploadData()));
+                print(catIds);
+                print(cats);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UploadData()));
               },
               icon: Icon(Icons.add)),
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {},
-        )
-      );
-    }
+        ));
+  }
 }

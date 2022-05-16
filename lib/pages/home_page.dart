@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print
 
 import 'dart:ui';
 
@@ -9,9 +9,11 @@ import 'package:footer/footer.dart';
 import 'package:flutter/services.dart';
 import 'package:footer/footer_view.dart';
 import 'package:login_ui/allPosts.dart';
+import 'package:login_ui/my_post.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/logout_page.dart';
+import 'package:login_ui/pages/post_screen.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
 import 'package:login_ui/pages/section_page.dart';
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
 
   String email = '';
   String loggedIn = '';
+
 
   @override
   void initState() {
@@ -139,12 +142,13 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage()),
                 );
-              }
-              else {
+                //print(cats);
+              } else {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginPage()),
                 );
+                //print(cats);
               }
             },
             icon: Icon(
@@ -228,7 +232,7 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AllPosts()),
+                                      builder: (context) => PostScreen()),
                                 );
                               },
                             ),
@@ -239,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AllPosts()),
+                                      builder: (context) => PostScreen()),
                                 );
                               },
                             ),
@@ -250,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => AllPosts()),
+                                      builder: (context) => PostScreen()),
                                 );
                               },
                             )
@@ -286,24 +290,6 @@ class _HomePageState extends State<HomePage> {
           ],
         )),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: IconButton(
-      //       onPressed: () {
-      //         setState(() {
-      //           showDialog(
-      //             context: context,
-      //             builder: (BuildContext context) {
-      //               return ThemeHelper().alartDialog("Chat with us".tr,
-      //                   "Log in to chat with us".tr, context);
-      //             },
-      //           );
-      //         });
-      //       },
-      //       icon: Icon(Icons.chat)),
-      //   backgroundColor: Theme.of(context).primaryColor,
-      //   onPressed: () {},
-      // )
-      //
     );
   }
 

@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print, unnecessary_null_comparison
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print, unnecessary_null_comparison, unused_local_variable, import_of_legacy_library_into_null_safe, non_constant_identifier_names
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +23,7 @@ import '../common/theme_helper.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
+import 'package:path/path.dart';
 
 class UploadData extends StatefulWidget {
   const UploadData({Key? key}) : super(key: key);
@@ -34,8 +38,13 @@ class _UploadDataState extends State<UploadData> {
   bool checkboxValue = true;
   bool checkedValue1 = true;
   bool checkboxValue1 = true;
+  bool showButton = false;
   String description = '';
-  String? category, process, state, location;
+  String? process, state, location, category, altCategory, currency;
+  //String category = 'Konut', altCategory = 'Daire';
+  //     process = 'Sell',
+  //     state = 'New',
+  //     location = 'Ankara';
 
   TextEditingController _name = TextEditingController();
   TextEditingController _title = TextEditingController();
@@ -48,7 +57,6 @@ class _UploadDataState extends State<UploadData> {
   TextEditingController _email = TextEditingController();
 
   List<Asset> images = [];
-  //Dio dio = Dio();
 
   @override
   void initState() {
@@ -63,22 +71,209 @@ class _UploadDataState extends State<UploadData> {
     return randomString;
   }
 
-  var url = BASEURL + "upload.php";
-  String email = '';
+  var url =
+      'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/';
+
+  String token = '';
 
   Future getEmail() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      email = preferences.getString('email')!;
-      _email.text = email;
+      _email.text = preferences.getString('email')!;
+      _name.text = preferences.getString('name')!;
+      _phone.text = preferences.getString('phone')!;
+       
     });
   }
 
-  _saveImage() async {
+  Future getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
+  }
+
+  Future uploadItem(BuildContext context) async {
     if (_title.text == "" ||
         category == "" ||
         _about.text == "" ||
-        _name.text == "" || _phone.text == "") {
+        _name.text == "" ||
+        _phone.text == "") {
+      Fluttertoast.showToast(
+        msg: "required fields cannot be blank".tr,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else {
+      EasyLoading.show(status: 'uploading...'.tr);
+
+      String token = await getToken();
+      var uri = Uri.parse(
+          'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/');
+      http.MultipartRequest request = http.MultipartRequest('POST', uri);
+
+      request.fields['contactName'] = _name.text;
+      request.fields['title[tr_TR]'] = _title.text;
+      request.fields['description[tr_TR]'] = _about.text;
+      request.fields['contactPhone'] = _phone.text;
+      request.fields['contactEmail'] = _email.text;
+      request.fields['price'] = _price.text;
+      request.fields['currency'] = currency as String;
+      request.fields['catId'] =
+          altCatIds[altCats.indexOf(altCategory as String)]; //'130';
+      request.fields['countryId'] = 'TR';
+      request.fields['zip'] = _postalCode.text;
+      request.fields['address'] = _address.text;
+
+      request.headers['Authorization'] = 'Bearer $token';
+      List<http.MultipartFile> newList = <http.MultipartFile>[];
+
+      for (int i = 0; i < images.length; i++) {
+        var path =
+            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+        File imageFile = File(path);
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile("qqfile", stream, length,
+            filename: basename(imageFile.path));
+        newList.add(multipartFile);
+        //request.fields['ajax_photos[]'] = _address.text;
+      }
+
+      request.files.addAll(newList);
+      var response = await request.send();
+      print(response.toString());
+      var res = await http.Response.fromStream(response);
+      print(res.body);
+      // var content = json.decode(res.body);
+      // print(content);
+
+      if (response.statusCode == 200) {
+        EasyLoading.dismiss();
+        Fluttertoast.showToast(
+          msg: "Listing added successfully".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ProfilePage()));
+      } else {
+        Fluttertoast.showToast(
+          msg: "Listing could be added".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
+      }
+    }
+  }
+
+  Future _addListing(BuildContext context) async {
+    if (_title.text == "" ||
+        category == "" ||
+        _about.text == "" ||
+        _name.text == "" ||
+        _phone.text == "") {
+      Fluttertoast.showToast(
+        msg: "required fields cannot be blank".tr,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+    } else {
+      ByteData byteData = await images[0].getByteData();
+      List<int> imageData = byteData.buffer.asUint8List();
+
+      dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
+        imageData,
+        filename: images[0].name,
+        contentType: MediaType('image', 'jpg'),
+      );
+      // var path =
+      //     await FlutterAbsolutePath.getAbsolutePath(images[0].identifier);
+      // File imageFile = File(path);
+      // var stream = http.ByteStream(imageFile.openRead());
+      // var length = await imageFile.length();
+      // var multipartFile = http.MultipartFile("qqfile", stream, length,
+      //     filename: basename(imageFile.path));
+
+      dio.FormData formData = dio.FormData.fromMap({
+        //'qqfile': multipartFile,
+        //'ajax_photos[]': multipartFile,
+        'photos': multipartFile,
+        'contactName': _name.text,
+        'title[tr_TR]': _title.text,
+        'description[tr_TR]': _about.text,
+        'contactPhone': _phone.text,
+        'contactEmail': _email.text,
+        'price': _price.text,
+        'catId': '130', //altCatIds[altCats.indexOf(altCategory as String)],
+        //'currency' : 'TL',
+        'countryId': 'TR',
+        // 'sTransaction': '',
+        // 'sCondition': '',
+        // 'cityId': '',
+        // 'regionId': '',
+        //'regionName': location,
+        'zip': _postalCode.text,
+        'address': _address.text,
+      });
+
+      var thisUrl =
+          'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image';
+
+      EasyLoading.show(status: 'uploading...'.tr);
+
+      String token = await getToken();
+      var diio = dio.Dio();
+      diio.options.headers["Authorization"] = "Bearer $token";
+
+      var response = await diio.post(url, data: formData);
+      //final content = jsonDecode(response.data);
+      print(response.data);
+
+      // for (int i = 0; i < images.length; i++) {
+      //   print("uploading images");
+      //   var path =
+      //       await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+      //   File imageFile = File(path);
+      //   var stream = http.ByteStream(imageFile.openRead());
+      //   var length = await imageFile.length();
+      //   var multipartFile = http.MultipartFile("qqfile", stream, length,
+      //       filename: basename(imageFile.path));
+
+      //   dio.FormData formData = dio.FormData.fromMap({
+      //     'photos': multipartFile,
+      //   });
+
+      //   var response = await dio.Dio().post(thisUrl, data: formData);
+      //   print(response.data);
+      //   print("uploading done");
+      // }
+
+      if (response.statusCode == 200) {
+        EasyLoading.dismiss();
+        Fluttertoast.showToast(
+          msg: "Listing added successfully".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ProfilePage()));
+      } else {
+        EasyLoading.dismiss();
+        Fluttertoast.showToast(
+          msg: "Listing not added successfully"
+              .tr, //"${content['message']}", //"email or password invalid".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
+      }
+    }
+  }
+
+  Future _saveImage(BuildContext context) async {
+    if (_title.text == "" ||
+        category == "" ||
+        _about.text == "" ||
+        _name.text == "" ||
+        _phone.text == "") {
       Fluttertoast.showToast(
         msg: "required fields cannot be blank".tr,
         toastLength: Toast.LENGTH_SHORT,
@@ -86,69 +281,79 @@ class _UploadDataState extends State<UploadData> {
       );
     } else {
       if (images != null) {
-        final uniqueString = sha256RandomString();
-        String done = 'false';
+        // final uniqueString = sha256RandomString();
+        // String done = 'false';
 
-        for (var i = 0; i < images.length; i++) {
-          if (i == images.length - 1) {
-            done = 'true';
-          }
+        // for (var i = 0; i < images.length; i++) {
+        //   if (i == images.length - 1) {
+        //     done = 'true';
+        //   }
 
-          ByteData byteData = await images[i].getByteData();
-          List<int> imageData = byteData.buffer.asUint8List();
+        ByteData byteData = await images[0].getByteData();
+        List<int> imageData = byteData.buffer.asUint8List();
 
-          dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
-            imageData,
-            filename: images[i].name,
-            contentType: MediaType('image', 'jpg'),
+        dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
+          imageData,
+          filename: images[0].name,
+          contentType: MediaType('image', 'jpg'),
+        );
+
+        Map<String, dynamic> formData = {
+          //'photos': images.cast<String>(),
+          //'qqfile': images,
+          'ajax_photos[]': multipartFile,
+          'contactName': _name.text,
+          'title[tr_TR]': _title.text,
+          'description[tr_TR]': _about.text,
+          'contactPhone': _phone.text,
+          'contactEmail': _email.text,
+          'price': _price.text, //double.parse(_price.text),
+          'catId': '130',
+          //'currency' : 'TL',
+          'countryId': 'TR',
+          // 'sTransaction': '',
+          // 'sCondition': '',
+          // 'cityId': '',
+          // 'regionId': '',
+          'regionName': location,
+          'zip': _postalCode.text,
+          'address': _address.text,
+        };
+
+        EasyLoading.show(status: 'uploading...'.tr);
+
+        String token = await getToken();
+        final url =
+            "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/";
+        final response = await http.post(Uri.parse(url),
+            headers: {
+              'Authorization': 'Bearer $token',
+              "Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData);
+
+        final content = jsonDecode(response.body);
+        print(response.body);
+
+        if (response.statusCode == 200) {
+          EasyLoading.dismiss();
+          Fluttertoast.showToast(
+            msg: "${content['message']}", //"Listing added successfully".tr,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
           );
-
-          dio.FormData formData = dio.FormData.fromMap({
-            "image": multipartFile,
-            'name': _name.text,
-            'title': _title.text,
-            'about': _about.text,
-            'phone': _phone.text,
-            'email': _email.text,
-            'price': _price.text,
-            'category': category,
-            'process': process,
-            'state': state,
-            'location': location,
-            'region': _region.text,
-            'postalCode': _postalCode.text,
-            'unique_string': uniqueString,
-            'address': _address.text,
-            'done': done,
-          });
-
-          EasyLoading.show(status: 'uploading...'.tr);
-
-          var response = await dio.Dio().post(url, data: formData);
-          if (response.statusCode == 200) {
-            if (done == 'true') {
-              EasyLoading.dismiss();
-              Fluttertoast.showToast(
-                msg: "Listing added successfully".tr,
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.SNACKBAR,
-              );
-              //print(response.data);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()));
-            }  
-          }
-          // if (i == images.length - 1) {
-          //   print(images.length);
-          //   var response = await dio.Dio().post(
-          //       'http://192.168.1.108/localconnect/insertPost.php',
-          //       data: formData);
-          //   if (response.statusCode == 200) {
-          //     print(response.data);
-          //   }
-          // }
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => ProfilePage()));
+        } else {
+          Fluttertoast.showToast(
+            msg: "${content['message']}", //"email or password invalid".tr,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+          );
         }
       }
+      //}
     }
   }
 
@@ -240,42 +445,115 @@ class _UploadDataState extends State<UploadData> {
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton2(
-                          hint: Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                              'Category *'.tr,
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          iconEnabledColor: Theme.of(context).primaryColor,
-                          items: categories
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                          value: category,
-                          onChanged: (value) {
-                            setState(() {
-                              category = value as String;
-                            });
-                          },
-                          buttonHeight: 40,
-                          buttonWidth: width,
-                          itemHeight: 40,
-                        ),
+                    showCats(context),
+                    // Container(
+                    //   child: DropdownButtonHideUnderline(
+                    //     child: DropdownButton2(
+                    //       hint: Padding(
+                    //         padding: EdgeInsets.only(left: 10),
+                    //         child: Text(
+                    //           'Category *'.tr,
+                    //           style: TextStyle(
+                    //             fontSize: 15,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       iconEnabledColor: Theme.of(context).primaryColor,
+                    //       items: cats
+                    //           .map((item) => DropdownMenuItem<String>(
+                    //                 value: item,
+                    //                 child: Text(
+                    //                   item,
+                    //                   style: const TextStyle(
+                    //                     fontSize: 15,
+                    //                   ),
+                    //                 ),
+                    //               ))
+                    //           .toList(),
+                    //       value: category,
+                    //       onChanged: (value) {
+                    //         setState(() {
+                    //           category = value as String;
+                    //           List<String> _altCats = [];
+                    //           List<String> _altCatIds = [];
+                    //           getAlts(_altCatIds, _altCats, category as String);
+                    //           showButton = true;
+                    //           showAlt = false;
+                    //           Future.delayed(const Duration(seconds: 5));
+                    //         });
+                    //       },
+                    //       buttonHeight: 40,
+                    //       buttonWidth: width,
+                    //       itemHeight: 40,
+                    //     ),
+                    //   ),
+                    // ),
+                    if (showButton) ...[
+                      SizedBox(
+                        height: 20,
                       ),
-                    ),
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            showButton = false;
+                            showAlt = true;
+                            altCategory = null;
+                            print(altCatIds);
+                            print(altCats);
+                          });
+                        },
+                        child: Text(
+                          'Choose alt category',
+                          style: TextStyle(
+                            //color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                    if (showAlt) ...[
+                      SizedBox(
+                        height: 30,
+                      ),
+                      showAlts(context),
+                      // Container(
+                      //   child: DropdownButtonHideUnderline(
+                      //     child: DropdownButton2(
+                      //       hint: Padding(
+                      //         padding: EdgeInsets.only(left: 10),
+                      //         child: Text(
+                      //           'Sub-Category *'.tr,
+                      //           style: TextStyle(
+                      //             fontSize: 15,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       iconEnabledColor: Theme.of(context).primaryColor,
+                      //       items: altCats
+                      //           .map((item) => DropdownMenuItem<String>(
+                      //                 value: item,
+                      //                 child: Text(
+                      //                   item,
+                      //                   style: const TextStyle(
+                      //                     fontSize: 15,
+                      //                   ),
+                      //                 ),
+                      //               ))
+                      //           .toList(),
+                      //       value: altCategory,
+                      //       onChanged: (value) {
+                      //         setState(() {
+                      //           altCategory = value as String;
+                      //           print(altCategory);
+                      //         });
+                      //       },
+                      //       buttonHeight: 40,
+                      //       buttonWidth: width,
+                      //       itemHeight: 40,
+                      //     ),
+                      //   ),
+                      // ),
+                    ],
                     SizedBox(
                       height: 30,
                     ),
@@ -301,26 +579,57 @@ class _UploadDataState extends State<UploadData> {
                     SizedBox(
                       height: 30,
                     ),
-                    Container(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text(
-                          'Price'.tr,
-                          style: TextStyle(
-                            fontSize: 15,
+                        SizedBox(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2(
+                              hint: Text(
+                                'Symbol'.tr,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  //backgroundColor: Colors.grey
+                                ),
+                              ),
+                              iconEnabledColor: Theme.of(context).primaryColor,
+                              isDense:  true,
+                              items: currencies
+                                  .map((item) => DropdownMenuItem<String>(
+                                        value: item,
+                                        child: Text(
+                                          item,
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ))
+                                  .toList(),
+                              value: currency,
+                              onChanged: (value) {
+                                setState(() {
+                                  currency = value as String;
+                                });
+                              },
+                              buttonHeight: 40,
+                              //buttonWidth: width / 4,
+                              //itemHeight: 40,
+                              //dropdownWidth: width / 2,
+                            ),
                           ),
                         ),
-                        TextField(
-                          controller: _price,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            CurrencyTextInputFormatter(
-                                decimalDigits: 0, symbol: 'TL')
-                          ],
+                        Expanded(
+                          child: Container(
+                            child: TextFormField(
+                              controller: _price,
+                              keyboardType: TextInputType.number,
+                              decoration: ThemeHelper()
+                                  .textInputDecoration("Price".tr, "".tr),
+                            ),
+                            decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                          ),
                         ),
                       ],
-                    )),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -513,17 +822,6 @@ class _UploadDataState extends State<UploadData> {
                                 ),
                               ],
                             ),
-                            // Container(
-                            //   alignment: Alignment.centerLeft,
-                            //   child: Text(
-                            //     state.errorText ?? '',
-                            //     textAlign: TextAlign.left,
-                            //     style: TextStyle(
-                            //       color: Theme.of(context).errorColor,
-                            //       fontSize: 12,
-                            //     ),
-                            //   ),
-                            // )
                           ],
                         );
                       },
@@ -559,17 +857,6 @@ class _UploadDataState extends State<UploadData> {
                                 ),
                               ],
                             ),
-                            // Container(
-                            //   alignment: Alignment.centerLeft,
-                            //   child: Text(
-                            //     state.errorText ?? '',
-                            //     textAlign: TextAlign.left,
-                            //     style: TextStyle(
-                            //       color: Theme.of(context).errorColor,
-                            //       fontSize: 12,
-                            //     ),
-                            //   ),
-                            // )
                           ],
                         );
                       },
@@ -587,7 +874,6 @@ class _UploadDataState extends State<UploadData> {
                           'A post can have at most 10 photos'.tr,
                           style: TextStyle(fontSize: 15),
                         ),
-                        //Flexible(child: buildGridView()),
                         Container(
                           child: Stack(
                             children: [
@@ -618,11 +904,11 @@ class _UploadDataState extends State<UploadData> {
                               borderRadius: BorderRadius.circular(5)),
                         ),
                         RaisedButton(
-                          child: Text(
-                            'Upload Photos'.tr,
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          onPressed: loadAssets),
+                            child: Text(
+                              'Upload Photos'.tr,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            onPressed: loadAssets),
                       ],
                     )),
                     SizedBox(height: 40.0),
@@ -630,8 +916,9 @@ class _UploadDataState extends State<UploadData> {
                       decoration: ThemeHelper().buttonBoxDecoration(context),
                       child: ElevatedButton(
                         style: ThemeHelper().buttonStyle(),
-                        onPressed: () {
-                          _saveImage();
+                        onPressed: () async {
+                          //_addListing(context);
+                          uploadItem(context);
                         },
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
@@ -646,12 +933,99 @@ class _UploadDataState extends State<UploadData> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 30.0),
                   ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget showCats(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    return Container(
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          hint: Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              'Category *'.tr,
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
+          ),
+          iconEnabledColor: Theme.of(context).primaryColor,
+          items: cats
+              .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                  ))
+              .toList(),
+          value: category,
+          onChanged: (value) {
+            setState(() {
+              category = value as String;
+              List<String> _altCats = [];
+              List<String> _altCatIds = [];
+              getAlts(_altCatIds, _altCats, category as String);
+              showButton = true;
+              showAlt = false;
+              Future.delayed(const Duration(seconds: 5));
+            });
+          },
+          buttonHeight: 40,
+          buttonWidth: width,
+          itemHeight: 40,
+        ),
+      ),
+    );
+  }
+
+  Widget showAlts(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    return Container(
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton2(
+          hint: Padding(
+            padding: EdgeInsets.only(left: 10),
+            child: Text(
+              'Sub-Category *'.tr,
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
+          ),
+          iconEnabledColor: Theme.of(context).primaryColor,
+          items: altCats
+              .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                  ))
+              .toList(),
+          value: altCategory,
+          onChanged: (value) {
+            setState(() {
+              altCategory = value as String;
+            });
+          },
+          buttonHeight: 40,
+          buttonWidth: width,
+          itemHeight: 40,
         ),
       ),
     );

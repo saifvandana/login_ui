@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, avoid_print
 
 import 'dart:convert';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_ui/data/data.dart';
-
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
@@ -26,63 +26,18 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   double _headerHeight = 130;
   Key _formKey = GlobalKey<FormState>();
-  bool isLoading = false;
+  bool _obscureText = true;
   String email = "", password = "";
 
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
-  /*//API
-  login(email, password) async {
-    email = _email.text;
-    password = _password.text;
-
-    if (email == "" || password == "") {
-      Fluttertoast.showToast(
-        msg: "email or password cannot be blank".tr,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
-    } else if (!RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$").hasMatch(email)) {
-      Fluttertoast.showToast(
-        msg: "Enter a valid email".tr,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
-    } else {
-      Map data = {'s_email': email, 's_password': password};
-
-      print(data.toString());
-
-      final response = await http.post(
-        Uri.parse("http://localhost:8080/osclass/login"),
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data,
-        //encoding: Encoding.getByName("utf-8")
-      );
-
-      //If data fetching is successful
-      if (response.statusCode == 200) {
-        print(response.body);
-        final content = jsonDecode(response.body);
-
-        if (content['pk_i_id'] != null) {                         //if (!content['error']) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ProfilePage()));
-        } 
-      }
-      else if (response.statusCode == 500) {
-        Fluttertoast.showToast(
-          msg: "email or password invalid",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-        );
-      }
-    }
-  }*/
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   //API
   login(email, password) async {
@@ -96,37 +51,52 @@ class _LoginPageState extends State<LoginPage> {
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      preferences.setString('email', email);
-      preferences.setString('loggedIn', 'true');
       Map data = {'email': email, 'password': password};
 
       //print(data.toString());
-      String url = BASEURL + "signin.php";
+      String url =
+          "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/user/login";
 
-      final response = await http.post(Uri.parse(url),
-          headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: data,
-          encoding: Encoding.getByName("utf-8"));
+      EasyLoading.show(status: 'loggin in...'.tr);
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: data,
+      );
 
+      final content = jsonDecode(response.body);
       //If data fetching is successful
       if (response.statusCode == 200) {
-        print(response.body);
-        final content = jsonDecode(response.body);
+        EasyLoading.dismiss();
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString('email', email);
+        preferences.setString('loggedIn', 'true');
+        preferences.setString('name', content['user']['s_name']);
+        preferences.setString('phone', content['user']['s_phone_mobile']);
 
-        if (!content['error']) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ProfilePage()));
-        } else {
-          Fluttertoast.showToast(
-            msg: "email or password invalid".tr,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.SNACKBAR,
-          );
-        }
+        print(response.body);
+
+        preferences.setString('refresh_token', content['refresh_token']);
+        preferences.setString('access_token', content['access_token']);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ProfilePage()));
+        
+        // else {
+        //   Fluttertoast.showToast(
+        //     msg: "email or password invalid".tr,
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.SNACKBAR,
+        //   );
+        // }
+      } else {
+        Fluttertoast.showToast(
+          msg: "${content['message']}", //"email or password invalid".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
       }
     }
   }
@@ -175,12 +145,31 @@ class _LoginPageState extends State<LoginPage> {
                               Container(
                                 child: TextField(
                                   controller: _password,
-                                  obscureText: true,
-                                  decoration: ThemeHelper().textInputDecoration(
-                                      "Password".tr, "Enter your password".tr),
+                                  obscureText: _obscureText,
+                                  decoration: InputDecoration(
+                                      labelText: "Password".tr,
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(20, 10, 20, 10),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100.0),
+                                          borderSide:
+                                              BorderSide(color: Colors.grey)),
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(100.0),
+                                          borderSide: BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      suffixIcon: Padding(
+                                        padding: EdgeInsets.only(right: 5),
+                                        child: GestureDetector(
+                                          child: _obscureText
+                                              ? Icon(Icons.lock)
+                                              : Icon(Icons.lock_open),
+                                          onTap: _toggle,
+                                        ),
+                                      )),
                                 ),
-                                decoration:
-                                    ThemeHelper().inputBoxDecorationShaddow(),
                               ),
                               SizedBox(
                                 height: 15,

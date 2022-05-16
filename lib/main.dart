@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use, prefer_final_fields, must_be_immutable, use_key_in_widget_constructors, unnecessary_import, prefer_const_constructors, unused_import, avoid_print, unused_local_variable
+// @dart=2.9
 
 import 'dart:async';
 
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_ui/LocaleStrings.dart';
+import 'package:login_ui/data/data.dart';
 import 'package:login_ui/pages/home/home_screen.dart';
 import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
@@ -24,8 +26,11 @@ void main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var email = preferences.getString('email');
   var loggedIn = preferences.getString('loggedIn');
-  print(email);
-  print(loggedIn);
+  // print(email);
+  // print(loggedIn);
+  print(preferences.getString('refresh_token'));
+  print(preferences.getString('access_token'));
+  //getCategories();
   // runApp(MaterialApp(
   //   home: email == null ? MyApp() : LoginPage(),
   // ));

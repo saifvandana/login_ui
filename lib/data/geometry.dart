@@ -11,3 +11,4 @@ class Geometry {
     return Geometry(location: json['location'], viewPort: json['viewport']);
   }
 }
+

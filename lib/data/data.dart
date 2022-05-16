@@ -1,10 +1,13 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_declarations, unused_import
+// ignore_for_file: non_constant_identifier_names, prefer_const_declarations, unused_import, avoid_print
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
-final String BASEURL = 'http://192.168.1.104/localconnect/';
+final String BASEURL = 'http://192.168.0.105/localconnect/';
 
 class Listing {
   List info;
@@ -13,13 +16,50 @@ class Listing {
   Listing(this.info, this.images);
 }
 
-class CDM {
-  final IconData icon;
-  final String title;
-  final List<Widget> submenus;
+List<String> catIds = [];
+List<String> cats = [];
+List<String> altCats = [];
+List<String> altCatIds = [];
+bool showAlt = false;
 
-  CDM(this.icon, this.title, this.submenus);
+Future getCategories(List<String> _catIds, List<String> _cats) async {
+  var url =
+      'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/category/all';
+  var response = await http.get(Uri.parse(url));
+  var content = json.decode(response.body);
+  content.forEach((s) => _catIds.add(s["pk_i_id"]));
+  content.forEach((s) => _cats.add(s["s_name"]));
+  catIds = _catIds;
+  cats = _cats;
+  // print(catIds);
+  // print(cats);
 }
+
+Future getAlts(
+    List<String> _altCatIds, List<String> _altCats, String category) async {
+  var url =
+      'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/category/' +
+          catIds[cats.indexOf(category)];
+  var response = await http.get(Uri.parse(url));
+  var content = json.decode(response.body);
+  content.forEach((s) => _altCatIds.add(s["pk_i_id"]));
+  content.forEach((s) => _altCats.add(s["s_name"]));
+  altCatIds = _altCatIds;
+  altCats = _altCats;
+  //showAlt = true;
+  //showAlts(category);
+  // print(altCatIds.isEmpty);
+  // print(altCats.isEmpty);
+  //print(altCatIds[altCats.indexOf(altCategory as String)]);
+  //return true;
+}
+
+// void showAlts(String category) {
+//   List<String> altCats = [];
+//   List<String> altCatIds = [];
+//   getAlts(altCatIds, altCats, category);
+//   showAlt = true;
+// }
 
 class Property {
   String label;
@@ -210,9 +250,11 @@ List<String> locations = [
 ];
 
 List<String> categories = [
-  'Property Owner'.tr,
-  'Real-Estate Agent'.tr,
-  'Projects'.tr,
+  'Konut',
+  'İşyeri'.tr,
+  'Arsa'.tr,
+  'Turistik İşletme'.tr,
+  'Devremülk'
 ];
 
 List<String> processes = [
@@ -226,4 +268,11 @@ List<String> states = [
   'New'.tr,
   'Used'.tr,
   'All'.tr,
+];
+
+List<String> currencies = [
+  "EUR",
+  "GBP",
+  "TRY",
+  "USD",
 ];

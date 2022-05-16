@@ -1,15 +1,16 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:login_ui/pages/home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'registration_page.dart';
+import 'package:http/http.dart' as http;
 import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:login_ui/common/theme_helper.dart';
 import 'package:get/get.dart';
-import 'login_page.dart';
 
 class LogoutPage extends StatefulWidget {
   const LogoutPage({Key? key}) : super(key: key);
@@ -23,15 +24,38 @@ class _LogoutPageState extends State<LogoutPage> {
 
   Future logOut() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.remove('email');
-    preferences.remove('loggedIn');
-    Fluttertoast.showToast(
+    var rToken = preferences.getString('refresh_token');
+    Map data = {'refresh_token': rToken};
+
+    String url =
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/user/logout";
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: data,
+    );
+    
+    final content = jsonDecode(response.body);
+
+    if (content['status'] == 1) {
+
+      preferences.remove('email');
+      preferences.remove('loggedIn');
+      preferences.remove('access_token');
+      preferences.remove('refresh_token');
+      
+      Fluttertoast.showToast(
       msg: "User Logged out".tr,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.SNACKBAR,
-    );
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomePage()));
+      );
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+      }
   }
 
   @override
