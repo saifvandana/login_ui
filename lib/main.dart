@@ -3,15 +3,16 @@
 
 import 'dart:async';
 
+import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_ui/LocaleStrings.dart';
 import 'package:login_ui/data/data.dart';
-import 'package:login_ui/pages/home/home_screen.dart';
 import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/post_screen.dart';
@@ -24,17 +25,13 @@ import '/pages/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  var email = preferences.getString('email');
-  var loggedIn = preferences.getString('loggedIn');
-  // print(email);
-  // print(loggedIn);
+  String locale = await Devicelocale.currentLocale;
+  Locale defaultLanguage =
+      Locale(locale.substring(0, 2) ?? 'tr', locale.substring(3, 5) ?? 'TR');
+  print(defaultLanguage);
   print(preferences.getString('refresh_token'));
   print(preferences.getString('access_token'));
-  //getCategories();
-  // runApp(MaterialApp(
-  //   home: email == null ? MyApp() : LoginPage(),
-  // ));
-  runApp(MyApp());
+  runApp(MyApp(preferences: preferences, lng: defaultLanguage,));
   //configLoading();
 }
 
@@ -55,6 +52,8 @@ void configLoading() {
 }
 
 class MyApp extends StatelessWidget {
+  MyApp({this.preferences, this.lng});
+
   Color _primaryColor =
       Color.fromARGB(255, 4, 28, 107); //Color.fromARGB(255, 45, 110, 45);
   // Color _accentColor =
@@ -62,13 +61,16 @@ class MyApp extends StatelessWidget {
 
   //Color _primaryColor = HexColor('#2A6AB1');
   Color _accentColor = HexColor('#2A6AB1');
+  SharedPreferences preferences;
+  Locale lng;
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: LocaleStrings(),
-      locale: Locale('en', 'US'),
+      locale: Locale(preferences.getString('locale0') ?? 'tr',
+          preferences.getString('locale1') ?? 'TR') ?? lng,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Login',
       theme: ThemeData(

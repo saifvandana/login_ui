@@ -263,7 +263,7 @@ class _PostScreenState extends State<PostScreen> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: list[index]["i_price"] == null ?  "TL5000000" : list[index]["i_price"] + (list[index]["fk_c_currency_code"] ?? 'TL'),
+                                  text: list[index]["i_price"] == null ?  "TL5000000" : getPrice(list[index]["i_price"]) + (list[index]["fk_c_currency_code"] ?? 'TL'),
                                   style: TextStyle(
                                     color: Colors.brown,
                                     fontWeight: FontWeight.bold,

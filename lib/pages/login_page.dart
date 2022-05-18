@@ -92,6 +92,7 @@ class _LoginPageState extends State<LoginPage> {
         //   );
         // }
       } else {
+        EasyLoading.dismiss();
         Fluttertoast.showToast(
           msg: "${content['message']}", //"email or password invalid".tr,
           toastLength: Toast.LENGTH_SHORT,

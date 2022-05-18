@@ -82,7 +82,6 @@ class _UploadDataState extends State<UploadData> {
       _email.text = preferences.getString('email')!;
       _name.text = preferences.getString('name')!;
       _phone.text = preferences.getString('phone')!;
-       
     });
   }
 
@@ -118,7 +117,7 @@ class _UploadDataState extends State<UploadData> {
       request.fields['price'] = _price.text;
       request.fields['currency'] = currency as String;
       request.fields['catId'] =
-          altCatIds[altCats.indexOf(altCategory as String)]; //'130';
+          altCatIds[altCats.indexOf(altCategory as String)];
       request.fields['countryId'] = 'TR';
       request.fields['zip'] = _postalCode.text;
       request.fields['address'] = _address.text;
@@ -135,14 +134,13 @@ class _UploadDataState extends State<UploadData> {
         var multipartFile = http.MultipartFile("qqfile", stream, length,
             filename: basename(imageFile.path));
         newList.add(multipartFile);
-        //request.fields['ajax_photos[]'] = _address.text;
       }
 
       request.files.addAll(newList);
       var response = await request.send();
       print(response.toString());
-      var res = await http.Response.fromStream(response);
-      print(res.body);
+      // var res = await http.Response.fromStream(response);
+      // print(res.body);
       // var content = json.decode(res.body);
       // print(content);
 
@@ -156,6 +154,7 @@ class _UploadDataState extends State<UploadData> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ProfilePage()));
       } else {
+        EasyLoading.dismiss();
         Fluttertoast.showToast(
           msg: "Listing could be added".tr,
           toastLength: Toast.LENGTH_SHORT,
@@ -185,18 +184,11 @@ class _UploadDataState extends State<UploadData> {
         filename: images[0].name,
         contentType: MediaType('image', 'jpg'),
       );
-      // var path =
-      //     await FlutterAbsolutePath.getAbsolutePath(images[0].identifier);
-      // File imageFile = File(path);
-      // var stream = http.ByteStream(imageFile.openRead());
-      // var length = await imageFile.length();
-      // var multipartFile = http.MultipartFile("qqfile", stream, length,
-      //     filename: basename(imageFile.path));
 
       dio.FormData formData = dio.FormData.fromMap({
         //'qqfile': multipartFile,
         //'ajax_photos[]': multipartFile,
-        'photos': multipartFile,
+        "photos": multipartFile,
         'contactName': _name.text,
         'title[tr_TR]': _title.text,
         'description[tr_TR]': _about.text,
@@ -221,31 +213,32 @@ class _UploadDataState extends State<UploadData> {
       EasyLoading.show(status: 'uploading...'.tr);
 
       String token = await getToken();
+      //dio.Dio().options.headers["Authorization"] = "Bearer $token";
       var diio = dio.Dio();
       diio.options.headers["Authorization"] = "Bearer $token";
 
-      var response = await diio.post(url, data: formData);
+      var response = await diio.post(url, data: formData,);
       //final content = jsonDecode(response.data);
       print(response.data);
 
-      // for (int i = 0; i < images.length; i++) {
-      //   print("uploading images");
-      //   var path =
-      //       await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
-      //   File imageFile = File(path);
-      //   var stream = http.ByteStream(imageFile.openRead());
-      //   var length = await imageFile.length();
-      //   var multipartFile = http.MultipartFile("qqfile", stream, length,
-      //       filename: basename(imageFile.path));
+      for (int i = 0; i < images.length; i++) {
+        print("uploading images");
+        var path =
+            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+        File imageFile = File(path);
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile("qqfile", stream, length,
+            filename: basename(imageFile.path));
 
-      //   dio.FormData formData = dio.FormData.fromMap({
-      //     'photos': multipartFile,
-      //   });
+        dio.FormData formData = dio.FormData.fromMap({
+          'photos': multipartFile,
+        });
 
-      //   var response = await dio.Dio().post(thisUrl, data: formData);
-      //   print(response.data);
-      //   print("uploading done");
-      // }
+        var reponse = await dio.Dio().post(thisUrl, data: formData);
+        print(reponse.data);
+        print("uploading done");
+      }
 
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
@@ -265,95 +258,6 @@ class _UploadDataState extends State<UploadData> {
           gravity: ToastGravity.SNACKBAR,
         );
       }
-    }
-  }
-
-  Future _saveImage(BuildContext context) async {
-    if (_title.text == "" ||
-        category == "" ||
-        _about.text == "" ||
-        _name.text == "" ||
-        _phone.text == "") {
-      Fluttertoast.showToast(
-        msg: "required fields cannot be blank".tr,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-      );
-    } else {
-      if (images != null) {
-        // final uniqueString = sha256RandomString();
-        // String done = 'false';
-
-        // for (var i = 0; i < images.length; i++) {
-        //   if (i == images.length - 1) {
-        //     done = 'true';
-        //   }
-
-        ByteData byteData = await images[0].getByteData();
-        List<int> imageData = byteData.buffer.asUint8List();
-
-        dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
-          imageData,
-          filename: images[0].name,
-          contentType: MediaType('image', 'jpg'),
-        );
-
-        Map<String, dynamic> formData = {
-          //'photos': images.cast<String>(),
-          //'qqfile': images,
-          'ajax_photos[]': multipartFile,
-          'contactName': _name.text,
-          'title[tr_TR]': _title.text,
-          'description[tr_TR]': _about.text,
-          'contactPhone': _phone.text,
-          'contactEmail': _email.text,
-          'price': _price.text, //double.parse(_price.text),
-          'catId': '130',
-          //'currency' : 'TL',
-          'countryId': 'TR',
-          // 'sTransaction': '',
-          // 'sCondition': '',
-          // 'cityId': '',
-          // 'regionId': '',
-          'regionName': location,
-          'zip': _postalCode.text,
-          'address': _address.text,
-        };
-
-        EasyLoading.show(status: 'uploading...'.tr);
-
-        String token = await getToken();
-        final url =
-            "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/";
-        final response = await http.post(Uri.parse(url),
-            headers: {
-              'Authorization': 'Bearer $token',
-              "Accept": "application/json",
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: formData);
-
-        final content = jsonDecode(response.body);
-        print(response.body);
-
-        if (response.statusCode == 200) {
-          EasyLoading.dismiss();
-          Fluttertoast.showToast(
-            msg: "${content['message']}", //"Listing added successfully".tr,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.SNACKBAR,
-          );
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ProfilePage()));
-        } else {
-          Fluttertoast.showToast(
-            msg: "${content['message']}", //"email or password invalid".tr,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.SNACKBAR,
-          );
-        }
-      }
-      //}
     }
   }
 
@@ -592,7 +496,7 @@ class _UploadDataState extends State<UploadData> {
                                 ),
                               ),
                               iconEnabledColor: Theme.of(context).primaryColor,
-                              isDense:  true,
+                              isDense: true,
                               items: currencies
                                   .map((item) => DropdownMenuItem<String>(
                                         value: item,
@@ -625,7 +529,8 @@ class _UploadDataState extends State<UploadData> {
                               decoration: ThemeHelper()
                                   .textInputDecoration("Price".tr, "".tr),
                             ),
-                            decoration: ThemeHelper().inputBoxDecorationShaddow(),
+                            decoration:
+                                ThemeHelper().inputBoxDecorationShaddow(),
                           ),
                         ),
                       ],

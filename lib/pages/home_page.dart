@@ -16,7 +16,6 @@ import 'package:login_ui/pages/logout_page.dart';
 import 'package:login_ui/pages/post_screen.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
-import 'package:login_ui/pages/section_page.dart';
 import 'package:login_ui/pages/splash_screen.dart';
 import 'package:login_ui/search_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,10 +35,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double _drawerIconSize = 15;
   double _drawerFontSize = 15;
+  late SharedPreferences preferences;
 
   String email = '';
   String loggedIn = '';
-
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future getUserInfo() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences = await SharedPreferences.getInstance();
     setState(() {
       email = preferences.getString('email')!;
       loggedIn = preferences.getString('loggedIn')!;
@@ -81,8 +80,20 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         child: Text(locale[index]['name']),
                         onTap: () {
-                          //print(locale[index]['name']);
                           updateLanguage(locale[index]['locale']);
+                          switch (locale[index]['name']) {
+                            case 'English':
+                              preferences.setString('locale0', 'en');
+                              preferences.setString('locale1', 'US');
+                              break;
+                            case 'Türkçe':
+                              preferences.setString('locale0', 'tr');
+                              preferences.setString('locale1', 'TR');
+                              break;
+                            default:
+                              preferences.setString('locale0', 'tr');
+                              preferences.setString('locale1', 'TR'); 
+                          }
                         },
                       ),
                     );
@@ -523,26 +534,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  listCategories() {
-    List<Widget> lists = List.generate(
-        categories.length,
-        (index) => CategoryItem(
-              data: categories[index],
-              selected: index == selectedCategory,
-              onTap: () {
-                setState(() {
-                  selectedCategory = index;
-                });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SectionPage()),
-                );
-              },
-            ));
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: EdgeInsets.only(bottom: 5, left: 15),
-      child: Row(children: lists),
-    );
-  }
+  // listCategories() {
+  //   List<Widget> lists = List.generate(
+  //       categories.length,
+  //       (index) => CategoryItem(
+  //             data: categories[index],
+  //             selected: index == selectedCategory,
+  //             onTap: () {
+  //               setState(() {
+  //                 selectedCategory = index;
+  //               });
+  //               Navigator.push(
+  //                 context,
+  //                 MaterialPageRoute(builder: (context) => SectionPage()),
+  //               );
+  //             },
+  //           ));
+  //   return SingleChildScrollView(
+  //     scrollDirection: Axis.horizontal,
+  //     padding: EdgeInsets.only(bottom: 5, left: 15),
+  //     child: Row(children: lists),
+  //   );
+  // }
 }

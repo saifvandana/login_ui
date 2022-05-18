@@ -31,8 +31,6 @@ Future getCategories(List<String> _catIds, List<String> _cats) async {
   content.forEach((s) => _cats.add(s["s_name"]));
   catIds = _catIds;
   cats = _cats;
-  // print(catIds);
-  // print(cats);
 }
 
 Future getAlts(
@@ -46,20 +44,12 @@ Future getAlts(
   content.forEach((s) => _altCats.add(s["s_name"]));
   altCatIds = _altCatIds;
   altCats = _altCats;
-  //showAlt = true;
-  //showAlts(category);
-  // print(altCatIds.isEmpty);
-  // print(altCats.isEmpty);
-  //print(altCatIds[altCats.indexOf(altCategory as String)]);
-  //return true;
 }
 
-// void showAlts(String category) {
-//   List<String> altCats = [];
-//   List<String> altCatIds = [];
-//   getAlts(altCatIds, altCats, category);
-//   showAlt = true;
-// }
+String getPrice(String price) {
+  int len = price.length;
+  return price.substring(0, len - 6);
+}
 
 class Property {
   String label;
