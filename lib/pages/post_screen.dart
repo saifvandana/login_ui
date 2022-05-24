@@ -69,7 +69,7 @@ class _PostScreenState extends State<PostScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Listings".tr,
+          "All Posts".tr,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,
@@ -263,7 +263,7 @@ class _PostScreenState extends State<PostScreen> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: list[index]["i_price"] == null ?  "TL5000000" : getPrice(list[index]["i_price"]) + (list[index]["fk_c_currency_code"] ?? 'TL'),
+                                  text: list[index]["i_price"] == null ?  "5.000.000 TL" : getPrice(list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL')),
                                   style: TextStyle(
                                     color: Colors.brown,
                                     fontWeight: FontWeight.bold,

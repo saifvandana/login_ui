@@ -102,6 +102,11 @@ class _UploadDataState extends State<UploadData> {
         gravity: ToastGravity.BOTTOM,
       );
     } else {
+      List<String> ajaxPhotos = [];
+
+      for (int i = 0; i < images.length; i++) {
+        ajaxPhotos.add(images[i].name as String);
+      }
       EasyLoading.show(status: 'uploading...'.tr);
 
       String token = await getToken();
@@ -121,6 +126,7 @@ class _UploadDataState extends State<UploadData> {
       request.fields['countryId'] = 'TR';
       request.fields['zip'] = _postalCode.text;
       request.fields['address'] = _address.text;
+      request.fields['ajax_photos'] = ajaxPhotos[0];
 
       request.headers['Authorization'] = 'Bearer $token';
       List<http.MultipartFile> newList = <http.MultipartFile>[];
@@ -131,7 +137,7 @@ class _UploadDataState extends State<UploadData> {
         File imageFile = File(path);
         var stream = http.ByteStream(imageFile.openRead());
         var length = await imageFile.length();
-        var multipartFile = http.MultipartFile("qqfile", stream, length,
+        var multipartFile = http.MultipartFile("photos", stream, length,
             filename: basename(imageFile.path));
         newList.add(multipartFile);
       }
@@ -143,6 +149,8 @@ class _UploadDataState extends State<UploadData> {
       // print(res.body);
       // var content = json.decode(res.body);
       // print(content);
+      var url = Uri.parse(
+          'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image');
 
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
@@ -156,7 +164,7 @@ class _UploadDataState extends State<UploadData> {
       } else {
         EasyLoading.dismiss();
         Fluttertoast.showToast(
-          msg: "Listing could be added".tr,
+          msg: "Listing could not be added".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
         );
@@ -176,71 +184,122 @@ class _UploadDataState extends State<UploadData> {
         gravity: ToastGravity.BOTTOM,
       );
     } else {
-      ByteData byteData = await images[0].getByteData();
-      List<int> imageData = byteData.buffer.asUint8List();
+      // var thisUrl =
+      //     'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image';
 
-      dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
-        imageData,
-        filename: images[0].name,
-        contentType: MediaType('image', 'jpg'),
-      );
+      // for (int i = 0; i < images.length; i++) {
+      //   print("uploading images");
+      //   var path =
+      //       await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+      //   File imageFile = File(path);
+      //   var stream = http.ByteStream(imageFile.openRead());
+      //   var length = await imageFile.length();
+      //   var multipartFile = http.MultipartFile("qqfile", stream, length,
+      //       filename: basename(imageFile.path));
 
-      dio.FormData formData = dio.FormData.fromMap({
-        //'qqfile': multipartFile,
-        //'ajax_photos[]': multipartFile,
-        "photos": multipartFile,
+      //   dio.FormData formData = dio.FormData.fromMap({
+      //     'photos': multipartFile,
+      //   });
+
+      //   var reponse = await dio.Dio().post(thisUrl, data: formData);
+      //   print(reponse.data);
+      //   print("uploading done");
+      // }
+
+      //List<String> ajaxPhotos = [];
+
+      // for (int i = 0; i < images.length; i++) {
+      //   ajaxPhotos.add(images[i].name as String);
+      // }
+
+      // dio.FormData formData = dio.FormData.fromMap({
+      //   // 'ajax_photos': ajaxPhotos,
+      //   'contactName': _name.text,
+      //   'title[tr_TR]': _title.text,
+      //   'description[tr_TR]': _about.text,
+      //   'contactPhone': _phone.text,
+      //   'contactEmail': _email.text,
+      //   'price': _price.text,
+      //   'catId': altCatIds[altCats.indexOf(altCategory as String)],
+      //   'currency': currency as String,
+      //   'countryId': 'TR',
+      //   // 'sTransaction': '',
+      //   // 'sCondition': '',
+      //   // 'cityId': '',
+      //   // 'regionId': '',
+      //   //'regionName': location,
+      //   'zip': _postalCode.text,
+      //   'address': _address.text,
+      // });
+
+      Map formData = {
         'contactName': _name.text,
         'title[tr_TR]': _title.text,
         'description[tr_TR]': _about.text,
         'contactPhone': _phone.text,
         'contactEmail': _email.text,
         'price': _price.text,
-        'catId': '130', //altCatIds[altCats.indexOf(altCategory as String)],
-        //'currency' : 'TL',
+        'catId': altCatIds[altCats.indexOf(altCategory as String)],
+        'currency': currency as String,
         'countryId': 'TR',
         // 'sTransaction': '',
         // 'sCondition': '',
         // 'cityId': '',
-        // 'regionId': '',
-        //'regionName': location,
+         'regionId': regionIds[regions.indexOf(location as String)],
+        //'region': location,
         'zip': _postalCode.text,
         'address': _address.text,
-      });
-
-      var thisUrl =
-          'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image';
+      };
 
       EasyLoading.show(status: 'uploading...'.tr);
 
       String token = await getToken();
-      //dio.Dio().options.headers["Authorization"] = "Bearer $token";
-      var diio = dio.Dio();
-      diio.options.headers["Authorization"] = "Bearer $token";
+      // var diio = dio.Dio();
+      // diio.options.headers["Authorization"] = "Bearer $token";
 
-      var response = await diio.post(url, data: formData,);
-      //final content = jsonDecode(response.data);
-      print(response.data);
+      var response = await http.post(Uri.parse(url), body: formData, headers: {
+        'Authorization': 'Bearer $token',
+      });
 
-      for (int i = 0; i < images.length; i++) {
-        print("uploading images");
-        var path =
-            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
-        File imageFile = File(path);
-        var stream = http.ByteStream(imageFile.openRead());
-        var length = await imageFile.length();
-        var multipartFile = http.MultipartFile("qqfile", stream, length,
-            filename: basename(imageFile.path));
+      // var response = await diio.post(
+      //   url,
+      //   data: formData,
+      // );
 
-        dio.FormData formData = dio.FormData.fromMap({
-          'photos': multipartFile,
-        });
-
-        var reponse = await dio.Dio().post(thisUrl, data: formData);
-        print(reponse.data);
-        print("uploading done");
-      }
+      final content = jsonDecode(response.body);
+      print(response.body);
+      print(content['id']);
 
       if (response.statusCode == 200) {
+        //uploading images
+        final dburl = 'https://allmenkul.com/oc-admin/1upload.php';
+
+        for (var i = 0; i < images.length; i++) {
+          //print(images[i].name?.split(".").last);
+          final uniqueString = sha256RandomString();
+
+          ByteData byteData = await images[i].getByteData();
+          List<int> imageData = byteData.buffer.asUint8List();
+
+          dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
+            imageData,
+            filename: images[i].name,
+            contentType: MediaType('image', 'jpeg'),
+          );
+
+          dio.FormData formData = dio.FormData.fromMap({
+            'fk_i_item_id': content['id'] as String,
+            's_name': images[i].name,
+            's_extension': images[i].name?.split(".").last,
+            "s_content_type": "image/jpeg",
+            "s_path": "oc-admin/images/",
+            "image": multipartFile,
+          });
+
+          var reponse = await dio.Dio().post(dburl, data: formData);
+          print(reponse.data);
+        }
+
         EasyLoading.dismiss();
         Fluttertoast.showToast(
           msg: "Listing added successfully".tr,
@@ -257,6 +316,46 @@ class _UploadDataState extends State<UploadData> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
         );
+      }
+    }
+  }
+
+  _saveImage(BuildContext context) async {
+    final url =
+        'https://allmenkul.com/oc-admin/1upload.php'; //'http://192.168.1.111/localconnect/upload.php';
+    int count = 0;
+    final uniqueString = sha256RandomString();
+
+    for (var i = 0; i < images.length; i++) {
+
+      ByteData byteData = await images[i].getByteData();
+      List<int> imageData = byteData.buffer.asUint8List();
+
+      dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
+        imageData,
+        filename: images[i].name,
+        contentType: MediaType('image', 'jpeg'),
+      );
+
+      dio.FormData formData = dio.FormData.fromMap({
+        'fk_i_item_id': '131',
+        's_name': images[i].name,
+        's_extension': 'jpeg',
+        "s_content_type": "image/jpeg",
+        "s_path": "oc-admin/images/",
+        "image": multipartFile,
+      });
+
+      EasyLoading.show(status: 'uploading...');
+
+      var response = await dio.Dio().post(url, data: formData);
+      if (response.statusCode == 200) {
+        count++;
+        EasyLoading.dismiss();
+        EasyLoading.showSuccess('Success! $count');
+        print(response.data);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => ProfilePage()));
       }
     }
   }
@@ -350,48 +449,6 @@ class _UploadDataState extends State<UploadData> {
                       height: 20,
                     ),
                     showCats(context),
-                    // Container(
-                    //   child: DropdownButtonHideUnderline(
-                    //     child: DropdownButton2(
-                    //       hint: Padding(
-                    //         padding: EdgeInsets.only(left: 10),
-                    //         child: Text(
-                    //           'Category *'.tr,
-                    //           style: TextStyle(
-                    //             fontSize: 15,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //       iconEnabledColor: Theme.of(context).primaryColor,
-                    //       items: cats
-                    //           .map((item) => DropdownMenuItem<String>(
-                    //                 value: item,
-                    //                 child: Text(
-                    //                   item,
-                    //                   style: const TextStyle(
-                    //                     fontSize: 15,
-                    //                   ),
-                    //                 ),
-                    //               ))
-                    //           .toList(),
-                    //       value: category,
-                    //       onChanged: (value) {
-                    //         setState(() {
-                    //           category = value as String;
-                    //           List<String> _altCats = [];
-                    //           List<String> _altCatIds = [];
-                    //           getAlts(_altCatIds, _altCats, category as String);
-                    //           showButton = true;
-                    //           showAlt = false;
-                    //           Future.delayed(const Duration(seconds: 5));
-                    //         });
-                    //       },
-                    //       buttonHeight: 40,
-                    //       buttonWidth: width,
-                    //       itemHeight: 40,
-                    //     ),
-                    //   ),
-                    // ),
                     if (showButton) ...[
                       SizedBox(
                         height: 20,
@@ -407,7 +464,7 @@ class _UploadDataState extends State<UploadData> {
                           });
                         },
                         child: Text(
-                          'Choose alt category',
+                          'Choose sub category'.tr,
                           style: TextStyle(
                             //color: Colors.grey,
                             fontWeight: FontWeight.bold,
@@ -420,43 +477,6 @@ class _UploadDataState extends State<UploadData> {
                         height: 30,
                       ),
                       showAlts(context),
-                      // Container(
-                      //   child: DropdownButtonHideUnderline(
-                      //     child: DropdownButton2(
-                      //       hint: Padding(
-                      //         padding: EdgeInsets.only(left: 10),
-                      //         child: Text(
-                      //           'Sub-Category *'.tr,
-                      //           style: TextStyle(
-                      //             fontSize: 15,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       iconEnabledColor: Theme.of(context).primaryColor,
-                      //       items: altCats
-                      //           .map((item) => DropdownMenuItem<String>(
-                      //                 value: item,
-                      //                 child: Text(
-                      //                   item,
-                      //                   style: const TextStyle(
-                      //                     fontSize: 15,
-                      //                   ),
-                      //                 ),
-                      //               ))
-                      //           .toList(),
-                      //       value: altCategory,
-                      //       onChanged: (value) {
-                      //         setState(() {
-                      //           altCategory = value as String;
-                      //           print(altCategory);
-                      //         });
-                      //       },
-                      //       buttonHeight: 40,
-                      //       buttonWidth: width,
-                      //       itemHeight: 40,
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                     SizedBox(
                       height: 30,
@@ -489,7 +509,7 @@ class _UploadDataState extends State<UploadData> {
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton2(
                               hint: Text(
-                                'Symbol'.tr,
+                                'Currency'.tr,
                                 style: TextStyle(
                                   fontSize: 15,
                                   //backgroundColor: Colors.grey
@@ -633,7 +653,7 @@ class _UploadDataState extends State<UploadData> {
                             ),
                           ),
                           iconEnabledColor: Theme.of(context).primaryColor,
-                          items: locations
+                          items: regions
                               .map((item) => DropdownMenuItem<String>(
                                     value: item,
                                     child: Text(
@@ -822,11 +842,12 @@ class _UploadDataState extends State<UploadData> {
                       child: ElevatedButton(
                         style: ThemeHelper().buttonStyle(),
                         onPressed: () async {
-                          //_addListing(context);
-                          uploadItem(context);
+                          _addListing(context);
+                          //uploadItem(context);
+                          //_saveImage(context);
                         },
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: Text(
                             "UPLOAD".tr,
                             style: TextStyle(

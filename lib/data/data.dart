@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 final String BASEURL = 'http://192.168.0.105/localconnect/';
 
@@ -20,6 +21,11 @@ List<String> catIds = [];
 List<String> cats = [];
 List<String> altCats = [];
 List<String> altCatIds = [];
+List<String> regionIds = [];
+List<String> regions = [];
+List<String> cities = [];
+List<String> cityIds = [];
+Map<String, List<String>> districts = {};
 bool showAlt = false;
 
 Future getCategories(List<String> _catIds, List<String> _cats) async {
@@ -46,9 +52,45 @@ Future getAlts(
   altCats = _altCats;
 }
 
-String getPrice(String price) {
+Future getRegions(List<String> _regions, List<String> _regionIds) async {
+  var url =
+      'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/location/region/all';
+  var response = await http.get(Uri.parse(url));
+  var content = json.decode(response.body);
+  content.forEach((s) => _regionIds.add(s["pk_i_id"]));
+  content.forEach((s) => _regions.add(s["s_name"]));
+  regionIds = _regionIds;
+  regions = _regions;
+  //print(regionIds + regions);
+}
+
+Future getLang() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString('locale0');
+}
+
+String getPrice(String price, String currency) {
   int len = price.length;
-  return price.substring(0, len - 6);
+  len = len - 6;
+  String lng = getLang() as String;
+  if (currency == 'TRY' || currency == 'TL') {
+    print('Currency is: ' + currency);
+    print(len);
+    String str = price.substring(0, len);
+    if (len > 3 && len < 7) {
+      str = str.substring(0, len - 3) + '.' + str.substring(len - 3, len);
+    } else if (len >= 7 && len < 10) {
+      str = str.substring(0, len - 6) +
+          '.' +
+          str.substring(len - 6, len - 3) +
+          '.' +
+          str.substring(len - 3, len);
+    }
+    print(str + currency);
+    return (currency == 'TRY') ? str + ' TL' : str + ' ' + currency;
+  } else {
+    return price.substring(0, len) + ' ' + currency;
+  }
 }
 
 class Property {
@@ -232,19 +274,12 @@ List<Property> getPropertyList() {
   ];
 }
 
-List<String> locations = [
-  'Ankara',
-  'Istanbul',
-  'Antalya',
-  'Izmir',
-];
-
 List<String> categories = [
-  'Konut',
+  'Konut'.tr,
   'İşyeri'.tr,
   'Arsa'.tr,
   'Turistik İşletme'.tr,
-  'Devremülk'
+  'Devremülk'.tr
 ];
 
 List<String> processes = [

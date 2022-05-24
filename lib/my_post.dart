@@ -75,7 +75,8 @@ class _MyPostState extends State<MyPost> {
     String token = await getToken();
 
     final url =
-        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/" + itemId;
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/" +
+            itemId;
     var response = await http.delete(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token',
@@ -105,11 +106,20 @@ class _MyPostState extends State<MyPost> {
 
   void getImages(List list, List<String> images) {
     for (var i = 0; i < list.length; i++) {
-      images.add("https://allmenkul.com/" +
-          list[i]['s_path'] +
-          list[i]['pk_i_id'] +
-          "." +
-          list[i]['s_extension']);
+      if (list[i]['s_path'] == 'oc-content/uploads/0/') {
+        images.add("https://allmenkul.com/" +
+            list[i]['s_path'] +
+            list[i]['pk_i_id'] +
+            "." +
+            list[i]['s_extension']);
+      } else if (list[i]['s_path'] == 'oc-admin/images/') {
+        images.add("https://allmenkul.com/" +
+            list[i]['s_path'] +
+            list[i]['s_name'] );
+            //  +
+            // "." +
+            // list[i]['s_extension']);
+      }
     }
   }
 
@@ -118,7 +128,7 @@ class _MyPostState extends State<MyPost> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Listings".tr,
+          "My Posts".tr,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         elevation: 0.5,
@@ -310,56 +320,62 @@ class _MyPostState extends State<MyPost> {
                           SizedBox(
                             height: 4,
                           ),
-                          Row(children: [
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: list[index]["i_price"] == null
-                                        ? "TL5000000"
-                                        : getPrice(list[index]["i_price"])  + (list[index]["fk_c_currency_code"] ?? 'TL'),
-                                    style: TextStyle(
-                                      color: Colors.brown,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
+                          Row(
+                            children: [
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: list[index]["i_price"] == null
+                                          ? "TL5.000.000"
+                                          : getPrice(list[index]["i_price"], (list[index]
+                                                      ["fk_c_currency_code"] ??
+                                                  'TL')),
+                                      style: TextStyle(
+                                        color: Colors.brown,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Spacer(),
-                            IconButton(
-                              onPressed: () {
-                                //setState(() {
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  //setState(() {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return customDialog(
                                           "Delete Listing".tr,
                                           "Do you want to delete listing".tr,
-                                          context, list[index]["pk_i_id"]);
+                                          context,
+                                          list[index]["pk_i_id"]);
                                     },
                                   );
-                                //});
-                              },
-                              color: Colors.red,
-                              icon: Icon(Icons.delete),
-                              iconSize: 30,
-                            ),
-                          ],)
+                                  //});
+                                },
+                                color: Colors.red,
+                                icon: Icon(Icons.delete),
+                                iconSize: 30,
+                              ),
+                            ],
+                          )
                         ]))
               ],
             )));
   }
 
-  AlertDialog customDialog(String title, String content, BuildContext context, String itemId) {
+  AlertDialog customDialog(
+      String title, String content, BuildContext context, String itemId) {
     return AlertDialog(
       title: Text(title),
       content: Text(content),
       actions: [
         TextButton(
           child: Text(
-            "Yes",
+            "Yes".tr,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           style: ButtonStyle(
@@ -371,11 +387,12 @@ class _MyPostState extends State<MyPost> {
         ),
         TextButton(
           child: Text(
-            "No",
+            "No".tr,
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Color.fromARGB(96, 0, 0, 0))),
+              backgroundColor:
+                  MaterialStateProperty.all(Color.fromARGB(96, 0, 0, 0))),
           onPressed: () {
             Navigator.of(context).pop();
           },

@@ -17,7 +17,6 @@ import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/post_screen.dart';
 import 'package:login_ui/pages/upload_data.dart';
-import 'package:login_ui/pages/widgets/map_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '/pages/splash_screen.dart';
@@ -31,7 +30,13 @@ void main() async {
   print(defaultLanguage);
   print(preferences.getString('refresh_token'));
   print(preferences.getString('access_token'));
-  runApp(MyApp(preferences: preferences, lng: defaultLanguage,));
+  List<String> _regions = [];
+  List<String> _regionIds = [];
+  getRegions(_regions, _regionIds);
+  runApp(MyApp(
+    preferences: preferences,
+    lng: defaultLanguage,
+  ));
   //configLoading();
 }
 
@@ -69,8 +74,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: LocaleStrings(),
-      locale: Locale(preferences.getString('locale0') ?? 'tr',
-          preferences.getString('locale1') ?? 'TR') ?? lng,
+      locale: Locale(preferences.getString('locale0'),
+              preferences.getString('locale1')) ??
+          lng,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Login',
       theme: ThemeData(

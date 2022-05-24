@@ -107,40 +107,17 @@ class _DetailsPageState extends State<DetailsPage> {
 						child: Padding(
 							padding: EdgeInsets.symmetric(vertical: 8),
               child: Text(
-                widget.newListing.info[widget.index]["i_price"] == null ?  "TL5000000" :
-                                  widget.newListing.info[widget.index]["i_price"] + 'TL',
+                widget.newListing.info[widget.index]["i_price"] == null ?  "TL5.000.000" :
+                                  getPrice(widget.newListing.info[widget.index]["i_price"], (widget.newListing.info[widget.index]["fk_c_currency_code"] ?? 'TL')),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-							// child: Container(
-							// 	decoration: BoxDecoration(
-							// 		color: Colors.yellow[700],
-							// 		borderRadius: BorderRadius.all(
-							// 			Radius.circular(5),
-							// 		),
-							// 	),
-							// 	width: 100,
-							// 	padding: EdgeInsets.symmetric(
-							// 		vertical: 4,
-							// 	),
-							// 	child: Center(
-							// 		child: Text(
-							// 			widget.newListing.info[widget.index]['process'],
-							// 			style: TextStyle(
-							// 				color: Colors.white,
-							// 				fontSize: 15,
-							// 				fontWeight: FontWeight.bold,
-							// 			),
-							// 		),
-							// 	),
-							// ),
 						),
 					),
 					Positioned(
-						//left: 10,
 						top: 220,
 						child: Padding(
 							padding: EdgeInsets.all(10),

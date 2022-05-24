@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
   final List locale = [
     {'name': 'English', 'locale': Locale('en', 'US')},
     {'name': 'Türkçe', 'locale': Locale('tr', 'TR')},
+    {'name': 'Deutsche', 'locale': Locale('de', 'DE')},
   ];
 
   updateLanguage(Locale locale) {
@@ -89,6 +90,10 @@ class _HomePageState extends State<HomePage> {
                             case 'Türkçe':
                               preferences.setString('locale0', 'tr');
                               preferences.setString('locale1', 'TR');
+                              break;
+                            case 'Deutsche':
+                              preferences.setString('locale0', 'de');
+                              preferences.setString('locale1', 'DE');
                               break;
                             default:
                               preferences.setString('locale0', 'tr');
@@ -125,16 +130,6 @@ class _HomePageState extends State<HomePage> {
               'assets/images/allmenkul.jpg' //'assets/images/newlogo.svg',
               ),
           height: 30,
-          // child: ImageIcon(
-          //   AssetImage('assets/images/newlogo.svg'),
-          //   //color: Theme.of(context).primaryColor,
-          //   size: 40,
-          // ),
-          // child: Icon(
-          //   Icons.android_outlined,
-          //   color: Theme.of(context).primaryColor,
-          //   size: 50,
-          // ),
         ),
         actions: <Widget>[
           Padding(
@@ -360,30 +355,6 @@ class _HomePageState extends State<HomePage> {
           ),
           ListTile(
             leading: Icon(
-              Icons.screen_lock_landscape_rounded,
-              size: _drawerIconSize,
-              color: Theme.of(context).accentColor,
-            ),
-            title: Text(
-              'Splash Screen'.tr,
-              style: TextStyle(
-                  fontSize: _drawerFontSize,
-                  color: Theme.of(context).accentColor),
-            ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SplashScreen(title: "Splash Screen".tr)));
-            },
-          ),
-          Divider(
-            color: Theme.of(context).primaryColor,
-            height: 1,
-          ),
-          ListTile(
-            leading: Icon(
               Icons.login_rounded,
               size: _drawerIconSize,
               color: Theme.of(context).accentColor,
@@ -446,30 +417,6 @@ class _HomePageState extends State<HomePage> {
           ),
           Divider(
             color: Theme.of(context).primaryColor,
-            height: 10,
-            thickness: 1,
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.password_rounded,
-              size: _drawerIconSize,
-              color: Theme.of(context).accentColor,
-            ),
-            title: Text(
-              'Password Verification Page'.tr,
-              style: TextStyle(
-                  fontSize: _drawerFontSize,
-                  color: Theme.of(context).accentColor),
-            ),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ForgotPasswordVerificationPage()));
-            },
-          ),
-          Divider(
-            color: Theme.of(context).primaryColor,
             height: 1,
           ),
           ListTile(
@@ -505,10 +452,10 @@ class _HomePageState extends State<HomePage> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.fastOutSlowIn,
-        padding: EdgeInsets.fromLTRB(5, 10, 5, 0),
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         margin: EdgeInsets.only(right: 10),
-        width: 60,
-        height: 60,
+        width: 65,
+        height: 50,
         decoration: BoxDecoration(
           color: selected ? primary : cardColor,
           borderRadius: BorderRadius.circular(10),
@@ -525,7 +472,7 @@ class _HomePageState extends State<HomePage> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    fontSize: 13, color: selected ? Colors.white : primary),
+                    fontSize: 9, color: selected ? Colors.white : primary),
               ),
             ),
           ],

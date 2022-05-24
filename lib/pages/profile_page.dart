@@ -132,32 +132,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.screen_lock_landscape_rounded,
-                    size: _drawerIconSize,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  title: Text(
-                    'Splash Screen'.tr,
-                    style: TextStyle(
-                        fontSize: _drawerFontSize,
-                        color: Theme.of(context).accentColor),
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SplashScreen(title: "Splash Screen")));
-                  },
-                ),
-                Divider(
-                  color: Theme.of(context).primaryColor,
-                  height: 1,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                ListTile(
-                  leading: Icon(
                     Icons.home_outlined,
                     size: _drawerIconSize,
                     color: Theme.of(context).accentColor,

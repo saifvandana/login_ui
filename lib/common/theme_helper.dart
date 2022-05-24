@@ -78,7 +78,7 @@ class ThemeHelper{
         ],
       ),
       color: Colors.deepPurple.shade300,
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(20),
     );
   }
 
@@ -86,10 +86,10 @@ class ThemeHelper{
     return ButtonStyle(
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(20.0),
         ),
       ),
-      minimumSize: MaterialStateProperty.all(Size(50, 50)),
+      minimumSize: MaterialStateProperty.all(Size(30, 50)),
       backgroundColor: MaterialStateProperty.all(Colors.transparent),
       shadowColor: MaterialStateProperty.all(Colors.transparent),
     );

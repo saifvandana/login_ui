@@ -98,14 +98,6 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                 ),
               ),
             ),
-            // clipper: new ShapeClipper(
-            //     [
-            //       Offset(width / 5, _height),
-            //       Offset(width / 2, _height - 40),
-            //       Offset(width / 5 * 4, _height - 80),
-            //       Offset(width, _height - 20)
-            //     ]
-            // ),
           ),
           Visibility(
             visible: _showIcon,
