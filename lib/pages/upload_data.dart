@@ -322,8 +322,7 @@ class _UploadDataState extends State<UploadData> {
 
   _saveImage(BuildContext context) async {
     final url =
-        'https://allmenkul.com/oc-admin/1upload.php'; //'http://192.168.1.111/localconnect/upload.php';
-    int count = 0;
+        'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image'; //'http://192.168.1.111/localconnect/upload.php';
     final uniqueString = sha256RandomString();
 
     for (var i = 0; i < images.length; i++) {
