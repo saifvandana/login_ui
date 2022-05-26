@@ -81,24 +81,26 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         child: Text(locale[index]['name']),
                         onTap: () {
-                          updateLanguage(locale[index]['locale']);
-                          switch (locale[index]['name']) {
-                            case 'English':
-                              preferences.setString('locale0', 'en');
-                              preferences.setString('locale1', 'US');
-                              break;
-                            case 'Türkçe':
-                              preferences.setString('locale0', 'tr');
-                              preferences.setString('locale1', 'TR');
-                              break;
-                            case 'Deutsche':
-                              preferences.setString('locale0', 'de');
-                              preferences.setString('locale1', 'DE');
-                              break;
-                            default:
-                              preferences.setString('locale0', 'tr');
-                              preferences.setString('locale1', 'TR'); 
-                          }
+                          setState(() {
+                            updateLanguage(locale[index]['locale']);
+                            switch (locale[index]['name']) {
+                              case 'English':
+                                preferences.setString('locale0', 'en');
+                                preferences.setString('locale1', 'US');
+                                break;
+                              case 'Türkçe':
+                                preferences.setString('locale0', 'tr');
+                                preferences.setString('locale1', 'TR');
+                                break;
+                              case 'Deutsche':
+                                preferences.setString('locale0', 'de');
+                                preferences.setString('locale1', 'DE');
+                                break;
+                              default:
+                                preferences.setString('locale0', 'tr');
+                                preferences.setString('locale1', 'TR'); 
+                            }
+                          });
                         },
                       ),
                     );

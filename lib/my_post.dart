@@ -113,12 +113,11 @@ class _MyPostState extends State<MyPost> {
             "." +
             list[i]['s_extension']);
       } else if (list[i]['s_path'] == 'oc-admin/images/') {
-        images.add("https://allmenkul.com/" +
-            list[i]['s_path'] +
-            list[i]['s_name'] );
-            //  +
-            // "." +
-            // list[i]['s_extension']);
+        images.add(
+            "https://allmenkul.com/" + list[i]['s_path'] + list[i]['s_name']);
+        //  +
+        // "." +
+        // list[i]['s_extension']);
       }
     }
   }
@@ -187,7 +186,8 @@ class _MyPostState extends State<MyPost> {
 
   Widget buildListing(BuildContext context, List list, int index, String img) {
     double width = MediaQuery.of(context).size.width;
-
+    String price = getPrice(
+        list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL'));
     return SizedBox(
         child: Card(
             elevation: 4,
@@ -327,10 +327,8 @@ class _MyPostState extends State<MyPost> {
                                   children: [
                                     TextSpan(
                                       text: list[index]["i_price"] == null
-                                          ? "TL5.000.000"
-                                          : getPrice(list[index]["i_price"], (list[index]
-                                                      ["fk_c_currency_code"] ??
-                                                  'TL')),
+                                          ? "5.000.000 TL"
+                                          : price,
                                       style: TextStyle(
                                         color: Colors.brown,
                                         fontWeight: FontWeight.bold,

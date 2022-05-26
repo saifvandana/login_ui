@@ -27,6 +27,7 @@ class _DetailsPageState extends State<DetailsPage> {
 	@override
 	Widget build(BuildContext context) {
 		Size size = MediaQuery.of(context).size;
+    String price = getPrice(widget.newListing.info[widget.index]["i_price"], (widget.newListing.info[widget.index]["fk_c_currency_code"] ?? 'TL'));
 
 		return Scaffold(
 				body: SafeArea(
@@ -107,8 +108,7 @@ class _DetailsPageState extends State<DetailsPage> {
 						child: Padding(
 							padding: EdgeInsets.symmetric(vertical: 8),
               child: Text(
-                widget.newListing.info[widget.index]["i_price"] == null ?  "TL5.000.000" :
-                                  getPrice(widget.newListing.info[widget.index]["i_price"], (widget.newListing.info[widget.index]["fk_c_currency_code"] ?? 'TL')),
+                widget.newListing.info[widget.index]["i_price"] == null ?  "TL5.000.000" : price,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,

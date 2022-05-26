@@ -127,6 +127,8 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget buildListing(BuildContext context, List list, int index, String img) {
     double width = MediaQuery.of(context).size.width;
+    String price = getPrice(
+        list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL'));
 
     return SizedBox(
         child: Card(
@@ -263,7 +265,7 @@ class _PostScreenState extends State<PostScreen> {
                             TextSpan(
                               children: [
                                 TextSpan(
-                                  text: list[index]["i_price"] == null ?  "5.000.000 TL" : getPrice(list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL')),
+                                  text: price,
                                   style: TextStyle(
                                     color: Colors.brown,
                                     fontWeight: FontWeight.bold,

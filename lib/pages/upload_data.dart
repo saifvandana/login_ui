@@ -245,7 +245,7 @@ class _UploadDataState extends State<UploadData> {
         // 'sTransaction': '',
         // 'sCondition': '',
         // 'cityId': '',
-         'regionId': regionIds[regions.indexOf(location as String)],
+        'regionId': regionIds[regions.indexOf(location as String)],
         //'region': location,
         'zip': _postalCode.text,
         'address': _address.text,
@@ -324,9 +324,9 @@ class _UploadDataState extends State<UploadData> {
     final url =
         'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image'; //'http://192.168.1.111/localconnect/upload.php';
     final uniqueString = sha256RandomString();
+    List<String> ajaxPhotos = [];
 
     for (var i = 0; i < images.length; i++) {
-
       ByteData byteData = await images[i].getByteData();
       List<int> imageData = byteData.buffer.asUint8List();
 
@@ -337,11 +337,6 @@ class _UploadDataState extends State<UploadData> {
       );
 
       dio.FormData formData = dio.FormData.fromMap({
-        'fk_i_item_id': '131',
-        's_name': images[i].name,
-        's_extension': 'jpeg',
-        "s_content_type": "image/jpeg",
-        "s_path": "oc-admin/images/",
         "image": multipartFile,
       });
 
@@ -349,9 +344,7 @@ class _UploadDataState extends State<UploadData> {
 
       var response = await dio.Dio().post(url, data: formData);
       if (response.statusCode == 200) {
-        count++;
         EasyLoading.dismiss();
-        EasyLoading.showSuccess('Success! $count');
         print(response.data);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ProfilePage()));

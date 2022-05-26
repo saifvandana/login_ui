@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
         preferences.setString('access_token', content['access_token']);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ProfilePage()));
-        
+
         // else {
         //   Fluttertoast.showToast(
         //     msg: "email or password invalid".tr,
@@ -93,11 +93,12 @@ class _LoginPageState extends State<LoginPage> {
         // }
       } else {
         EasyLoading.dismiss();
-        Fluttertoast.showToast(
-          msg: "${content['message']}", //"email or password invalid".tr,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-        );
+        print(response.body);
+        // Fluttertoast.showToast(
+        //   msg: "${content['message']}", //"email or password invalid".tr,
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   gravity: ToastGravity.SNACKBAR,
+        // );
       }
     }
   }

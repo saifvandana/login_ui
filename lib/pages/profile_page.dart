@@ -155,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.password_rounded,
+                    Icons.settings,
                     size: _drawerIconSize,
                     color: Theme.of(context).accentColor,
                   ),

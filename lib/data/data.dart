@@ -27,6 +27,7 @@ List<String> cities = [];
 List<String> cityIds = [];
 Map<String, List<String>> districts = {};
 bool showAlt = false;
+String lang = '';
 
 Future getCategories(List<String> _catIds, List<String> _cats) async {
   var url =
@@ -66,30 +67,46 @@ Future getRegions(List<String> _regions, List<String> _regionIds) async {
 
 Future getLang() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('locale0');
+  lang = prefs.getString('locale0') as String;
+  print(lang);
 }
 
 String getPrice(String price, String currency) {
-  int len = price.length;
-  len = len - 6;
-  String lng = getLang() as String;
-  if (currency == 'TRY' || currency == 'TL') {
-    print('Currency is: ' + currency);
-    print(len);
-    String str = price.substring(0, len);
-    if (len > 3 && len < 7) {
-      str = str.substring(0, len - 3) + '.' + str.substring(len - 3, len);
-    } else if (len >= 7 && len < 10) {
-      str = str.substring(0, len - 6) +
-          '.' +
-          str.substring(len - 6, len - 3) +
-          '.' +
-          str.substring(len - 3, len);
+  if (price != null) {
+    int len = price.length;
+    len = len - 6;
+    getLang();
+    if (lang == 'tr') {
+      String str = price.substring(0, len);
+      if (len > 3 && len < 7) {
+        str = str.substring(0, len - 3) + '.' + str.substring(len - 3, len);
+      } else if (len >= 7 && len < 10) {
+        str = str.substring(0, len - 6) +
+            '.' +
+            str.substring(len - 6, len - 3) +
+            '.' +
+            str.substring(len - 3, len);
+      }
+      print(str + currency);
+      return (currency == 'TRY') ? str + ' TL' : str + ' ' + currency;
+    } else {
+      return (currency == 'TRY')
+          ? price.substring(0, len) + ' TL'
+          : price.substring(0, len) + ' ' + currency;
     }
-    print(str + currency);
-    return (currency == 'TRY') ? str + ' TL' : str + ' ' + currency;
   } else {
-    return price.substring(0, len) + ' ' + currency;
+    return "5.000.000 TL";
+  }
+}
+
+Future getProperties() async {
+  var url =
+      'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/attr/130';
+  var response = await http.get(Uri.parse(url));
+  var content = json.decode(response.body);
+  print(content);
+  if (content.length != 0) {
+    for (int i = 0; i < content.length; i++) {}
   }
 }
 

@@ -28,11 +28,12 @@ void main() async {
   Locale defaultLanguage =
       Locale(locale.substring(0, 2) ?? 'tr', locale.substring(3, 5) ?? 'TR');
   print(defaultLanguage);
-  print(preferences.getString('refresh_token'));
-  print(preferences.getString('access_token'));
+  // print(preferences.getString('refresh_token'));
+  // print(preferences.getString('access_token'));
   List<String> _regions = [];
   List<String> _regionIds = [];
   getRegions(_regions, _regionIds);
+  //getProperties();
   runApp(MyApp(
     preferences: preferences,
     lng: defaultLanguage,
