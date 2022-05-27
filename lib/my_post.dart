@@ -104,21 +104,24 @@ class _MyPostState extends State<MyPost> {
     }
   }
 
-  void getImages(List list, List<String> images) {
+  void getImages(List list, List<String> images, String itemId) {
+    // int id = int.parse(itemId);
+    // id = id ~/ 100;
+    // String folder = id.toString();
     for (var i = 0; i < list.length; i++) {
-      if (list[i]['s_path'] == 'oc-content/uploads/0/') {
+      //if (list[i]['s_path'] == 'oc-content/uploads/0/') {
         images.add("https://allmenkul.com/" +
             list[i]['s_path'] +
             list[i]['pk_i_id'] +
             "." +
             list[i]['s_extension']);
-      } else if (list[i]['s_path'] == 'oc-admin/images/') {
-        images.add(
-            "https://allmenkul.com/" + list[i]['s_path'] + list[i]['s_name']);
-        //  +
-        // "." +
-        // list[i]['s_extension']);
-      }
+      // } else if (list[i]['s_path'] == 'oc-admin/images/') {
+      //   images.add(
+      //       "https://allmenkul.com/" + list[i]['s_path'] + list[i]['s_name']);
+      //   //  +
+      //   // "." +
+      //   // list[i]['s_extension']);
+      // }
     }
   }
 
@@ -153,11 +156,8 @@ class _MyPostState extends State<MyPost> {
                     itemBuilder: (context, index) {
                       List list = snapshot.data;
                       List<String> images = [];
-                      getImages(list[index]['resources'], images);
-
-                      // print("length of resources: " +
-                      //     list[index]['resources'].length.toString());
-                      // print(images);
+                      getImages(list[index]['resources'], images,
+                          list[index]['pk_i_id']);
                       Listing newListing = (images.isNotEmpty)
                           ? new Listing(list, images)
                           : new Listing(list, testurl);

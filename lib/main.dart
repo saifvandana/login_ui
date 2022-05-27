@@ -27,7 +27,8 @@ void main() async {
   String locale = await Devicelocale.currentLocale;
   Locale defaultLanguage =
       Locale(locale.substring(0, 2) ?? 'tr', locale.substring(3, 5) ?? 'TR');
-  print(defaultLanguage);
+  print(defaultLanguage.toString());
+  preferences.setString('defaultLanguage', defaultLanguage.toString());
   // print(preferences.getString('refresh_token'));
   // print(preferences.getString('access_token'));
   List<String> _regions = [];

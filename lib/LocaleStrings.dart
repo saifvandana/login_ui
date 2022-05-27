@@ -170,6 +170,9 @@ class LocaleStrings extends Translations {
       "Currency" : "Birimi",
       "Delete Listing" : "Ilan Sil",
       "Do you want to delete listing": "Ilan silmek istiyor musunuz",
+      "Internal Features" : "İç Özellikler",
+      "External Features" : "Dış Özellikler",
+      "Usages" : "Kullanım Amacı",
     },
 
     "de_DE":{
