@@ -293,61 +293,61 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 30.0),
-                        Text(
-                          "Or create account using social media".tr,
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        SizedBox(height: 25.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: GestureDetector(
-                                child: Icon(
-                                  FontAwesomeIcons.google,
-                                  size: 25,
-                                  color: Colors.red,
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return ThemeHelper().alartDialog(
-                                            "Google Plus",
-                                            "You tap on GooglePlus icon",
-                                            context);
-                                      },
-                                    );
-                                  });
-                                },
-                              ),
-                            ),
+                        // SizedBox(height: 30.0),
+                        // Text(
+                        //   "Or create account using social media".tr,
+                        //   style: TextStyle(color: Colors.grey),
+                        // ),
+                        // SizedBox(height: 25.0),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Padding(
+                        //       padding: EdgeInsets.all(10),
+                        //       child: GestureDetector(
+                        //         child: Icon(
+                        //           FontAwesomeIcons.google,
+                        //           size: 25,
+                        //           color: Colors.red,
+                        //         ),
+                        //         onTap: () {
+                        //           setState(() {
+                        //             showDialog(
+                        //               context: context,
+                        //               builder: (BuildContext context) {
+                        //                 return ThemeHelper().alartDialog(
+                        //                     "Google Plus",
+                        //                     "You tap on GooglePlus icon",
+                        //                     context);
+                        //               },
+                        //             );
+                        //           });
+                        //         },
+                        //       ),
+                        //     ),
                             
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.facebook,
-                                size: 25,
-                                color: Colors.blue[700],
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog(
-                                          "Facebook",
-                                          "You tap on Facebook icon",
-                                          context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                          ],
-                        ),
+                        //     GestureDetector(
+                        //       child: FaIcon(
+                        //         FontAwesomeIcons.facebook,
+                        //         size: 25,
+                        //         color: Colors.blue[700],
+                        //       ),
+                        //       onTap: () {
+                        //         setState(() {
+                        //           showDialog(
+                        //             context: context,
+                        //             builder: (BuildContext context) {
+                        //               return ThemeHelper().alartDialog(
+                        //                   "Facebook",
+                        //                   "You tap on Facebook icon",
+                        //                   context);
+                        //             },
+                        //           );
+                        //         });
+                        //       },
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),

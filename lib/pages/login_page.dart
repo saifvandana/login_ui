@@ -75,7 +75,11 @@ class _LoginPageState extends State<LoginPage> {
         preferences.setString('email', email);
         preferences.setString('loggedIn', 'true');
         preferences.setString('name', content['user']['s_name']);
-        preferences.setString('phone', content['user']['s_phone_mobile']);
+        preferences.setString('id', content['user']['pk_i_id']);
+        if (content['user']['s_phone_mobile'].toString().isNotEmpty) {
+          preferences.setString('phone', content['user']['s_phone_mobile']);
+        }
+        //preferences.setString('phone', content['user']['s_phone_mobile']);
 
         print(response.body);
 
@@ -94,11 +98,11 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         EasyLoading.dismiss();
         print(response.body);
-        // Fluttertoast.showToast(
-        //   msg: "${content['message']}", //"email or password invalid".tr,
-        //   toastLength: Toast.LENGTH_SHORT,
-        //   gravity: ToastGravity.SNACKBAR,
-        // );
+        Fluttertoast.showToast(
+          msg: "email or password invalid".tr, //"${content['message']}", //"email or password invalid".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
       }
     }
   }
@@ -204,11 +208,6 @@ class _LoginPageState extends State<LoginPage> {
                                   style: ThemeHelper().buttonStyle(),
                                   onPressed: () {
                                     login(email, password);
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             ProfilePage()));
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.fromLTRB(
@@ -245,6 +244,21 @@ class _LoginPageState extends State<LoginPage> {
                                         color: Theme.of(context).accentColor),
                                   ),
                                 ])),
+                              ),
+                              SizedBox(height: 20),
+                              FloatingActionButton.extended(
+                                onPressed: () {},
+                                icon: Image.asset(
+                                  'assets/images/google-logo.png',
+                                  height: 25,
+                                  width: 25,
+                                ),
+                                label: Text(
+                                  'Sign In with Google'.tr,
+                                  style: TextStyle(
+                                    color: Colors.black
+                                  )),
+                                backgroundColor: Colors.white,
                               )
                             ],
                           ))

@@ -40,7 +40,8 @@ class _UploadDataState extends State<UploadData> {
   bool checkboxValue1 = true;
   bool showButton = false;
   String description = '';
-  String? process, state, location, category, altCategory, currency;
+  //String process = '', state = '', location = '', currency = '';
+  String? category, altCategory, process, state, location, currency;
   //String locale0 = '', locale1 = '';
 
   TextEditingController _name = TextEditingController();
@@ -128,7 +129,7 @@ class _UploadDataState extends State<UploadData> {
         }
       }
     }
-    print(innerProp);
+    //print(innerProp);
     // print(outerProp);
     // print(konum);
     // print(uses);
@@ -367,6 +368,7 @@ class _UploadDataState extends State<UploadData> {
   _saveImage(BuildContext context) async {
     if (_title.text == "" ||
         category == "" ||
+        altCategory == "" ||
         _about.text == "" ||
         _name.text == "" ||
         _phone.text == "") {
@@ -376,12 +378,14 @@ class _UploadDataState extends State<UploadData> {
         gravity: ToastGravity.BOTTOM,
       );
     } else {
+      final url =
+          'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/';
       final thisUrl =
-          'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image'; //'http://192.168.1.111/localconnect/upload.php';
+          'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/image';
       //final uniqueString = sha256RandomString();
       List<String> ajaxPhotos = [];
 
-      EasyLoading.show(status: 'uploading...');
+      EasyLoading.show(status: 'uploading...'.tr);
 
       //start uploading images
       for (int i = 0; i < images.length; i++) {
@@ -401,8 +405,7 @@ class _UploadDataState extends State<UploadData> {
         ajaxPhotos.add(content['name']);
       }
 
-      // print(ajaxPhotos.length);
-      // print(ajaxPhotos.toString());
+      print(ajaxPhotos.length);
 
       //start uploading item
       Map formData = {
@@ -419,8 +422,8 @@ class _UploadDataState extends State<UploadData> {
         'catId': altCatIds[altCats.indexOf(altCategory as String)],
         'currency': currency as String,
         'countryId': 'TR',
-        'sTransaction': process,
-        'sCondition': state,
+        'sTransaction': process as String,
+        'sCondition': state as String,
         'city': _region.text,
         'regionId': regionIds[regions.indexOf(location as String)],
         'zip': _postalCode.text,
@@ -569,7 +572,7 @@ class _UploadDataState extends State<UploadData> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      )
+                      ),
                     ],
                     if (showAlt) ...[
                       SizedBox(
@@ -583,6 +586,13 @@ class _UploadDataState extends State<UploadData> {
                     Container(
                       child: TextFormField(
                         controller: _title,
+                        validator: (String? value) {
+                          if (value.toString().isEmpty) {
+                            print('Title is Required');
+                            return 'Title is Required';
+                          }
+                          return null;
+                        },
                         decoration: ThemeHelper().textInputDecoration(
                             'Title *'.tr, 'Enter the title of your post'.tr),
                       ),
@@ -936,8 +946,8 @@ class _UploadDataState extends State<UploadData> {
                       ],
                     )),
                     //if (innerProp.isNotEmpty) ...[
-                      SizedBox(height: 20.0),
-                      ExpansionTile(
+                    SizedBox(height: 20.0),
+                    ExpansionTile(
                         initiallyExpanded: false,
                         backgroundColor: Color.fromARGB(255, 245, 242, 242),
                         title: Text(
@@ -949,12 +959,11 @@ class _UploadDataState extends State<UploadData> {
                         ),
                         children: [
                           selectProps(innerProp),
-                        ]
-                      ),
+                        ]),
                     //],
                     //if (outerProp.isNotEmpty) ...[
-                      SizedBox(height: 20.0),
-                      ExpansionTile(
+                    SizedBox(height: 20.0),
+                    ExpansionTile(
                         initiallyExpanded: false,
                         backgroundColor: Color.fromARGB(255, 245, 242, 242),
                         title: Text(
@@ -966,12 +975,11 @@ class _UploadDataState extends State<UploadData> {
                         ),
                         children: [
                           selectProps(outerProp),
-                        ]
-                      ),
+                        ]),
                     //],
                     //if (konum.isNotEmpty) ...[
-                      SizedBox(height: 20.0),
-                      ExpansionTile(
+                    SizedBox(height: 20.0),
+                    ExpansionTile(
                         initiallyExpanded: false,
                         backgroundColor: Color.fromARGB(255, 245, 242, 242),
                         title: Text(
@@ -983,12 +991,11 @@ class _UploadDataState extends State<UploadData> {
                         ),
                         children: [
                           selectProps(konum),
-                        ]
-                      ),
+                        ]),
                     //],
                     //if (uses.isNotEmpty) ...[
-                      SizedBox(height: 20.0),
-                      ExpansionTile(
+                    SizedBox(height: 20.0),
+                    ExpansionTile(
                         initiallyExpanded: false,
                         backgroundColor: Color.fromARGB(255, 245, 242, 242),
                         title: Text(
@@ -1000,8 +1007,7 @@ class _UploadDataState extends State<UploadData> {
                         ),
                         children: [
                           selectProps(uses),
-                        ]
-                      ),
+                        ]),
                     //],
                     SizedBox(height: 40.0),
                     Container(

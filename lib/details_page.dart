@@ -3,11 +3,15 @@
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:login_ui/pages/comments_page.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:comment_box/comment/comment.dart';
+import 'package:comment_box/comment/test.dart';
+import 'package:comment_box/main.dart';
 
 import 'data/data.dart';
 
@@ -27,25 +31,60 @@ class _DetailsPageState extends State<DetailsPage> {
   bool isExpanded = false;
   bool selected = false;
 
-  getProperties() async {
-    var attrUrl =
-        'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/attr/' +
-            widget.newListing.info[widget.index]["pk_i_id"];
-    var itemUrl =
-        'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/' +
-            widget.newListing.info[widget.index]["pk_i_id"];
-    var response = await http.get(Uri.parse(itemUrl));
-    var content = json.decode(response.body);
-    String catId = content["category"]["fk_i_parent_id"];
+  List<String> innerProp = [];
+  List<String> outerProp = [];
+  List<String> konum = [];
+  List<String> uses = [];
 
-    var cattrr =
-        'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/cattr/' +
-            catId;
+  getProperties() async {
+    innerProp = [];
+    outerProp = [];
+    konum = [];
+    uses = [];
+    var url =
+        'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/attr/157';
+    //+ widget.newListing.info[widget.index]["pk_i_id"];
+    var response = await http.get(Uri.parse(url));
+    var content = json.decode(response.body);
+    
+    for (var id in content.keys) {
+      var value = content[id]["s_name"];
+      if (value.toString().contains('İç Özellikler')) {
+        for (var name in content[id]["values"].keys) {
+          var value = content[id]["values"][name]['s_name'];
+          innerProp.add(value);
+        }
+      }
+      if (value.toString().contains('Dış Özellikler')) {
+        for (var name in content[id]["values"].keys) {
+          var value = content[id]["values"][name]['s_name'];
+          outerProp.add(value);
+        }
+      }
+      if (value.toString().contains('Konum')) {
+        for (var name in content[id]["values"].keys) {
+          var value = content[id]["values"][name]['s_name'];
+          konum.add(value);
+        }
+      }
+      if (value.toString().contains('Kullanım Amacı')) {
+        for (var name in content[id]["values"].keys) {
+          var value = content[id]["values"][name]['s_name'];
+          uses.add(value);
+        }
+      }
+    }
+
+    // print(innerProp);
+    // print(outerProp);
+    // print(konum);
+    // print(uses);  
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    getProperties();
     String price = getPrice(widget.newListing.info[widget.index]["i_price"],
         (widget.newListing.info[widget.index]["fk_c_currency_code"] ?? 'TL'));
 
@@ -84,7 +123,6 @@ class _DetailsPageState extends State<DetailsPage> {
                   ),
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(10),
-                  //color: Color.fromARGB(0, 221, 38, 38),
                 ),
                 child: Icon(
                   Icons.arrow_back_ios_rounded,
@@ -161,182 +199,176 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           ),
           Positioned.fill(
-              child: NotificationListener<DraggableScrollableNotification>(
-                  // onNotification: (notification) {
-                  //   // setState(() {
-                  //   //   _percent = 2 * notification.extent - 0.8;
-                  //   // });
-
-                  //   // return true;
-                  // },
-                  child: DraggableScrollableSheet(
-            maxChildSize: 0.9,
-            minChildSize: 0.5,
-            initialChildSize: 0.6,
-            builder: (_, controller) {
-              return Material(
-                elevation: 10,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                ),
-                color: Colors.white,
-                child: ListView(
-                  controller: controller,
-                  children: [
-                    Center(
-                        child: Column(
+            child: NotificationListener<DraggableScrollableNotification>(
+              child: DraggableScrollableSheet(
+                maxChildSize: 0.9,
+                minChildSize: 0.5,
+                initialChildSize: 0.6,
+                builder: (_, controller) {
+                  return Material(
+                    elevation: 10,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    ),
+                    color: Colors.white,
+                    child: ListView(
+                      controller: controller,
                       children: [
-                        Container(
-                          margin: EdgeInsets.all(5),
-                          height: 4,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color.fromARGB(255, 212, 209, 209),
+                        Center(
+                            child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(5),
+                              height: 4,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Color.fromARGB(255, 212, 209, 209),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right: 24, left: 24, bottom: 16, top: 15),
+                              child: Text(
+                                "Listing Info".tr,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                        Divider(
+                          indent: 10,
+                          endIndent: 10,
+                          color: Colors.grey[500],
+                          height: 1,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(24),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.person_pin,
+                                    size: 50,
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.newListing.info[widget.index]
+                                                ['s_user_name'] ??
+                                            widget.newListing.info[widget.index]
+                                                ['s_contact_name'],
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Text(
+                                        "Property Owner".tr,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey[500],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Divider(
+                          indent: 10,
+                          endIndent: 10,
+                          color: Colors.grey[500],
+                          height: 1,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              right: 24, left: 24, bottom: 24, top: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              buildFeature(Icons.hotel, "3 Bedroom".tr),
+                              buildFeature(Icons.wc, "2 Bathroom".tr),
+                              buildFeature(Icons.kitchen, "1 Kitchen".tr),
+                              buildFeature(Icons.local_parking, "2 Parking".tr),
+                            ],
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                              right: 24, left: 24, bottom: 16, top: 15),
+                            right: 5,
+                            left: 5,
+                            bottom: 16,
+                          ),
+                          child: ExpansionTile(
+                            initiallyExpanded: true,
+                            backgroundColor: Color.fromARGB(255, 245, 242, 242),
+                            title: Text(
+                              'Details'.tr,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            children: [
+                              buildInfo(context, 'Title'.tr, 's_title'),
+                              buildInfo(context, 'About'.tr, 's_description'),
+                              buildInfo(context, 'Phone'.tr, 's_contact_phone'),
+                              buildInfo(context, 'Email'.tr, 's_contact_email'),
+                              //buildInfo(context, 'Price'.tr, 'i_price'),
+                              buildInfo(context, 'Region'.tr, 's_region'),
+                              buildInfo(context, 'Address'.tr, 's_address'),
+                              buildInfo(context, 'Posted on'.tr, 'dt_pub_date'),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            right: 24,
+                            left: 24,
+                            bottom: 16,
+                          ),
                           child: Text(
-                            "Listing Info".tr,
+                            "Photos".tr,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
+                        Container(
+                          height: 170,
+                          child: ListView(
+                            physics: ClampingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            children:
+                                buildPhotos(context, widget.newListing.images),
+                          ),
+                        ),
+                        // Container(
+                        //   // height: 200,
+                        //   child: commentChild(filedata),
+                        // ),
                       ],
-                    )),
-                    Divider(
-                      indent: 10,
-                      endIndent: 10,
-                      color: Colors.grey[500],
-                      height: 1,
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.person_pin,
-                                size: 60,
-                              ),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.newListing.info[widget.index]
-                                            ['s_user_name'] ??
-                                        widget.newListing.info[widget.index]
-                                            ['s_contact_name'],
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Text(
-                                    "Property Owner".tr,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.grey[500],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      indent: 10,
-                      endIndent: 10,
-                      color: Colors.grey[500],
-                      height: 1,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          right: 24, left: 24, bottom: 24, top: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          buildFeature(Icons.hotel, "3 Bedroom".tr),
-                          buildFeature(Icons.wc, "2 Bathroom".tr),
-                          buildFeature(Icons.kitchen, "1 Kitchen".tr),
-                          buildFeature(Icons.local_parking, "2 Parking".tr),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: 5,
-                        left: 5,
-                        bottom: 16,
-                      ),
-                      child: ExpansionTile(
-                        initiallyExpanded: true,
-                        backgroundColor: Color.fromARGB(255, 245, 242, 242),
-                        title: Text(
-                          'Details'.tr,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        children: [
-                          buildInfo(context, 'Title'.tr, 's_title'),
-                          buildInfo(context, 'About'.tr, 's_description'),
-                          buildInfo(context, 'Phone'.tr, 's_contact_phone'),
-                          buildInfo(context, 'Email'.tr, 's_contact_email'),
-                          //buildInfo(context, 'Price'.tr, 'i_price'),
-                          buildInfo(context, 'Region'.tr, 's_region'),
-                          buildInfo(context, 'Address'.tr, 's_address'),
-                          buildInfo(context, 'Posted on'.tr, 'dt_pub_date'),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: 24,
-                        left: 24,
-                        bottom: 16,
-                      ),
-                      child: Text(
-                        "Photos".tr,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 170,
-                      child: ListView(
-                        physics: ClampingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        children:
-                            buildPhotos(context, widget.newListing.images),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                  ],
-                ),
-              );
-            },
+                  );
+                },
           ))),
         ],
       ),
@@ -434,17 +466,16 @@ class _DetailsPageState extends State<DetailsPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.newListing.info[widget.index][subtitle] ??
-                    "Not Specified",
+
+              if (subtitle.isNotEmpty) ...[
+                Text(
+                widget.newListing.info[widget.index][subtitle] ?? '',
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.grey[500],
                 ),
               ),
+              ],
             ],
           ),
         ),
@@ -492,7 +523,7 @@ class _DetailsPageState extends State<DetailsPage> {
       children: [
         Icon(
           iconData,
-          color: Colors.yellow[700],
+          color: Color.fromARGB(255, 13, 46, 151),
           size: 28,
         ),
         SizedBox(
@@ -542,9 +573,14 @@ class _DetailsPageState extends State<DetailsPage> {
         builder: (BuildContext context) {
           return Wrap(
             children: [
-              buildInfo(context, 'Edit'.tr, ''),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CommentsPage(widget.newListing.info[widget.index]["pk_i_id"])));
+                },
+                child: buildInfo(context, 'Comment'.tr, ''),
+              ),
               buildInfo(context, 'Share'.tr, ''),
-              buildInfo(context, 'Delete'.tr, ''),
             ],
           );
         });

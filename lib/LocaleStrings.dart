@@ -170,9 +170,19 @@ class LocaleStrings extends Translations {
       "Currency" : "Birimi",
       "Delete Listing" : "Ilan Sil",
       "Do you want to delete listing": "Ilan silmek istiyor musunuz",
+      "Listing has been deleted" : "Ilan Sildi",
+      "Comment has been deleted" : "Yorum Sildi",
+      "Delete Comment" : "Yorum Sil",
+      "Do you want to delete comment": "yorum silmek istiyor musunuz",
       "Internal Features" : "İç Özellikler",
       "External Features" : "Dış Özellikler",
       "Usages" : "Kullanım Amacı",
+      "Sub-Category *" : "Alt Kategori *",
+      "loggin in..." : "Giriş...",
+      "My Account" : "Hesabım",
+      "email or password invalid" : "e-posta veya şifre geçersiz",
+      "Sign In with Google" : "Google ile giriş yapın",
+      "Comment" : "Yorum",
     },
 
     "de_DE":{
@@ -327,6 +337,10 @@ class LocaleStrings extends Translations {
   "Delete Listing": "DEintrag löschen",
   "Do you want to delete listing": "Möchten Sie den Eintrag löschen",
   'We will email you a password recovery.' : "Wir werden Ihnen eine Passwortwiederherstellung per E-Mail zusenden.",
+  "Internal Features" : "Interne Merkmale",
+  "External Features" : "Äußere Merkmale",
+  "Usages" : "die Verwendung",
+  "Sub-Category *" : "Unterkategorie *",
     }
   };
 }

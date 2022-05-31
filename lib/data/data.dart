@@ -100,7 +100,7 @@ String getPrice(String price, String currency) {
           : price.substring(0, len) + ' ' + currency;
     }
   } else {
-    return "5.000.000 TL";
+    return "500 TL";
   }
 }
 
@@ -322,4 +322,10 @@ List<String> currencies = [
   "GBP",
   "TRY",
   "USD",
+];
+
+List<String> systemLanguages = [
+  "en_US",
+  "tr_TR",
+  "de_DE",
 ];

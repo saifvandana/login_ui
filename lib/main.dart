@@ -25,18 +25,22 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String locale = await Devicelocale.currentLocale;
-  Locale defaultLanguage =
-      Locale(locale.substring(0, 2) ?? 'tr', locale.substring(3, 5) ?? 'TR');
-  print(defaultLanguage.toString());
-  preferences.setString('defaultLanguage', defaultLanguage.toString());
+  Locale defaultLanguage = Locale('tr', 'TR');
+  if (systemLanguages.contains(defaultLanguage.toString())) {
+    defaultLanguage = Locale(locale.substring(0, 2), locale.substring(3, 5));
+  }
+  if (preferences.getString('locale0') != null && preferences.getString('locale1') != null) {
+    defaultLanguage = Locale(preferences.getString('locale0'), preferences.getString('locale1'));
+  }
+  //preferences.setString('defaultLanguage', defaultLanguage.toString());
   // print(preferences.getString('refresh_token'));
   // print(preferences.getString('access_token'));
+  print("System language " + defaultLanguage.toString());
   List<String> _regions = [];
   List<String> _regionIds = [];
   getRegions(_regions, _regionIds);
   //getProperties();
   runApp(MyApp(
-    preferences: preferences,
     lng: defaultLanguage,
   ));
   //configLoading();
@@ -59,7 +63,7 @@ void configLoading() {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({this.preferences, this.lng});
+  MyApp({this.lng});
 
   Color _primaryColor =
       Color.fromARGB(255, 4, 28, 107); //Color.fromARGB(255, 45, 110, 45);
@@ -68,7 +72,6 @@ class MyApp extends StatelessWidget {
 
   //Color _primaryColor = HexColor('#2A6AB1');
   Color _accentColor = HexColor('#2A6AB1');
-  SharedPreferences preferences;
   Locale lng;
 
   // This widget is the root of your application.
@@ -76,9 +79,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       translations: LocaleStrings(),
-      locale: Locale(preferences.getString('locale0'),
-              preferences.getString('locale1')) ??
-          lng,
+      locale: lng,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Login',
       theme: ThemeData(

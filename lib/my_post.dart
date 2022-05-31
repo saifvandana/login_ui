@@ -65,9 +65,9 @@ class _MyPostState extends State<MyPost> {
 
     final content = json.decode(response.body);
     var myitem = content['items'];
-    print(myitem);
+    //print(myitem);
     // myitem.removeWhere((element) => element["s_contact_email"] != email);
-    print(myitem.length);
+    //print(myitem.length);
     return myitem;
   }
 
@@ -85,7 +85,7 @@ class _MyPostState extends State<MyPost> {
     final content = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      print(response.body);
+      //print(response.body);
       setState(() {
         Fluttertoast.showToast(
           msg: "Listing has been deleted".tr,
@@ -93,8 +93,6 @@ class _MyPostState extends State<MyPost> {
           gravity: ToastGravity.SNACKBAR,
         );
       });
-      // Navigator.pushReplacement(
-      //     context, MaterialPageRoute(builder: (context) => MyPost()));
     } else {
       Fluttertoast.showToast(
         msg: "${content['message']}", //"email or password invalid".tr,

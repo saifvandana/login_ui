@@ -339,8 +339,8 @@ class _ProfilePageState extends State<ProfilePage> {
         floatingActionButton: FloatingActionButton(
           child: IconButton(
               onPressed: () {
-                print(catIds);
-                print(cats);
+                // print(catIds);
+                // print(cats);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => UploadData()));
               },

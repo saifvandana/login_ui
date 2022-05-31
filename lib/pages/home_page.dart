@@ -48,9 +48,11 @@ class _HomePageState extends State<HomePage> {
 
   Future getUserInfo() async {
     preferences = await SharedPreferences.getInstance();
-    setState(() {
-      email = preferences.getString('email')!;
-      loggedIn = preferences.getString('loggedIn')!;
+    setState(() { 
+      if (preferences.getString('loggedIn') != null) {
+        loggedIn = preferences.getString('loggedIn')!;
+      } 
+      //email = preferences.getString('email');
     });
   }
 
@@ -98,8 +100,10 @@ class _HomePageState extends State<HomePage> {
                                 break;
                               default:
                                 preferences.setString('locale0', 'tr');
-                                preferences.setString('locale1', 'TR'); 
+                                preferences.setString('locale1', 'TR');
                             }
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
                           });
                         },
                       ),
@@ -362,14 +366,19 @@ class _HomePageState extends State<HomePage> {
               color: Theme.of(context).accentColor,
             ),
             title: Text(
-              'Login'.tr,
+              'My Account'.tr,
               style: TextStyle(
                   fontSize: _drawerFontSize,
                   color: Theme.of(context).accentColor),
             ),
             onTap: () {
-              Navigator.push(context,
+              if (loggedIn == 'true'){
+                Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()));
+              } else {
+                Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LoginPage()));
+              }
             },
           ),
           Divider(
