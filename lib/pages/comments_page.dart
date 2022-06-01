@@ -110,7 +110,7 @@ class _CommentsPageState extends State<CommentsPage> {
           'Authorization': 'Bearer $token',
         },);
     var content = json.decode(response.body);
-    //if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       setState(() {
         Fluttertoast.showToast(
           msg: "Comment has been deleted".tr,
@@ -119,9 +119,9 @@ class _CommentsPageState extends State<CommentsPage> {
         );
         print(content);
       });
-    // } else {
-    //   print(content);
-    // }
+    } else {
+      print(content);
+    }
   }
 
   @override

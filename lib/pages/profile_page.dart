@@ -1,9 +1,15 @@
-// ignore_for_file: unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, unnecessary_import, prefer_is_not_empty, deprecated_member_use, avoid_unnecessary_containers, unused_import, prefer_final_fields
+// ignore_for_file: unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, unnecessary_import, prefer_is_not_empty, deprecated_member_use, avoid_unnecessary_containers, unused_import, prefer_final_fields, avoid_print
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:login_ui/allPosts.dart';
 import 'package:login_ui/common/theme_helper.dart';
 import 'package:login_ui/data/data.dart';
@@ -13,9 +19,12 @@ import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
 import 'package:login_ui/pages/logout_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart' as dio;
 import 'package:login_ui/pages/splash_screen.dart';
 import 'package:login_ui/pages/upload_data.dart';
 import 'package:login_ui/pages/widgets/header_widget.dart';
+import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'forgot_password_verification_page.dart';
@@ -36,11 +45,21 @@ class _ProfilePageState extends State<ProfilePage> {
   String name = '';
   String email = '';
   String phone = '';
+  String id = '';
+  String token = '';
+  List<Asset> images = [];
+  bool hasImage = true;
+  String imageUrl = '';
 
   @override
   void initState() {
     super.initState();
     getUserInfo();
+  }
+
+  Future getToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
   }
 
   Future getUserInfo() async {
@@ -49,13 +68,129 @@ class _ProfilePageState extends State<ProfilePage> {
       email = preferences.getString('email')!;
       name = preferences.getString('name')!;
       phone = preferences.getString('phone')!;
+      id = preferences.getString('pk_i_id')!;
       getCategories(catIds, cats);
+    });
+  }
+
+  Future deleteImage() async {
+    var url =
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile_pic/upload";
+    String token = await getToken();
+    var response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+    var content = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        Fluttertoast.showToast(
+          msg: "Comment has been deleted".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
+        print(content);
+      });
+    } else {
+      print(content);
+    }
+  }
+
+  Future getImage() async {
+    var url =
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile/" +
+            id;
+    var response = await http.get(Uri.parse(url));
+    var content = json.decode(response.body);
+    if (response.statusCode == 200) {
+      if (content['hasImage'] == "true") {
+        imageUrl = content["url"];
+        hasImage = true;
+      }
+      print(imageUrl);
+    } else {
+      print(content);
+    }
+  }
+
+  Future uploadImage() async {
+    var url =
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile_pic/upload";
+
+    String token = await getToken();
+
+    ByteData byteData = await images[0].getByteData();
+    List<int> imageData = byteData.buffer.asUint8List();
+
+    dio.MultipartFile multipartFile = dio.MultipartFile.fromBytes(
+      imageData,
+      filename: images[0].name,
+      contentType: MediaType('image', 'jpeg'),
+    );
+
+    dio.FormData formData = dio.FormData.fromMap({
+      "userfile": multipartFile,
+    });
+
+    var diio = dio.Dio();
+    diio.options.headers["Authorization"] = "Bearer $token";
+    var response = await diio.post(url, data: formData);
+    if (response.statusCode == 200) {
+      EasyLoading.dismiss();
+      Fluttertoast.showToast(
+        msg: "Profile photo updated".tr,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+      );
+      print(response.data);
+    } else {
+      EasyLoading.dismiss();
+      Fluttertoast.showToast(
+        msg: "Profile photo update error".tr,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+      );
+      print(response.data);
+    }
+  }
+
+  Future<void> loadImage() async {
+    List<Asset> resultList = [];
+
+    try {
+      resultList = await MultiImagePicker.pickImages(
+        maxImages: 1,
+        enableCamera: true,
+        selectedAssets: images,
+        cupertinoOptions: CupertinoOptions(
+          takePhotoIcon: "chat",
+          doneButtonTitle: "Fatto",
+        ),
+        materialOptions: MaterialOptions(
+          actionBarColor: '#2A6AB1',
+          actionBarTitle: "Select Photo".tr,
+          allViewTitle: "All Photos".tr,
+          useDetailsView: false,
+          selectCircleStrokeColor: "#000000",
+        ),
+      );
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+      uploadImage();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -197,33 +332,62 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Container(
                 height: 100,
-                child: HeaderWidget(100, false, Icons.house_rounded),
+                child: HeaderWidget(100, false, Icons.ac_unit_outlined),
               ),
               Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: Column(
                   children: [
-                    Container(
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(width: 5, color: Colors.white),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 20,
-                              offset: const Offset(5, 5),
-                            ),
-                          ],
+                    Stack(
+                      children: [
+                        Container(
+                          //padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(width: 5, color: Colors.white),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 20,
+                                offset: const Offset(5, 5),
+                              ),
+                            ],
+                          ),
+                          child: hasImage
+                              ? Image.asset(
+                                  'assets/images/google-logo.png',
+                                  height: 110,
+                                  width: 110,
+                                )
+                              : Icon(
+                                  Icons.person,
+                                  size: 110,
+                                  color: Colors.grey.shade300,
+                                ),
                         ),
-                        child: Icon(
-                          Icons.person,
-                          size: 80,
-                          color: Colors.grey.shade300,
-                        )),
+                        GestureDetector(
+                          onTap: loadImage,
+                          child: Container(
+                            height: 30,
+                            width: 30,
+                            //padding: EdgeInsets.fromLTRB(80, 90, 0, 0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(width: 5, color: Colors.white),
+                              color: Colors.white,
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              color: Theme.of(context).primaryColor,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -275,8 +439,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               ListTile(
                                                 leading: Icon(Icons.email),
                                                 title: Text("Email".tr),
-                                                subtitle:
-                                                    Text(email),
+                                                subtitle: Text(email),
                                               ),
                                               ListTile(
                                                 leading: Icon(Icons.phone),

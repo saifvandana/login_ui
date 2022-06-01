@@ -79,7 +79,6 @@ class _LoginPageState extends State<LoginPage> {
         if (content['user']['s_phone_mobile'].toString().isNotEmpty) {
           preferences.setString('phone', content['user']['s_phone_mobile']);
         }
-        //preferences.setString('phone', content['user']['s_phone_mobile']);
 
         print(response.body);
 
@@ -88,13 +87,6 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ProfilePage()));
 
-        // else {
-        //   Fluttertoast.showToast(
-        //     msg: "email or password invalid".tr,
-        //     toastLength: Toast.LENGTH_SHORT,
-        //     gravity: ToastGravity.SNACKBAR,
-        //   );
-        // }
       } else {
         EasyLoading.dismiss();
         print(response.body);

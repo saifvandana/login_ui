@@ -72,6 +72,7 @@ dependencies:
   devicelocale: ^0.5.1
   grouped_buttons: ^1.0.4
   comment_box: ^0.0.17
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:

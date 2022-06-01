@@ -8,18 +8,18 @@ class HeaderWidget extends StatefulWidget {
   final bool _showIcon;
   final IconData _icon;
 
-  const HeaderWidget(this._height, this._showIcon, this._icon, {Key? key}) : super(key: key);
+  const HeaderWidget(this._height, this._showIcon, this._icon);
 
   @override
-  _HeaderWidgetState createState() => _HeaderWidgetState(_height, _showIcon, _icon);
+  State<HeaderWidget> createState() => _HeaderWidgetState();
 }
 
 class _HeaderWidgetState extends State<HeaderWidget> {
-  double _height;
-  bool _showIcon;
-  IconData _icon;
+  // double _height;
+  // bool _showIcon;
+  // IconData _icon;
 
-  _HeaderWidgetState(this._height, this._showIcon, this._icon);
+  // _HeaderWidgetState(this._height, this._showIcon, this._icon);
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +100,9 @@ class _HeaderWidgetState extends State<HeaderWidget> {
             ),
           ),
           Visibility(
-            visible: _showIcon,
+            visible: widget._showIcon,
             child: Container(
-              height: _height - 20,
+              height: widget._height - 20,
               child: Center(
                 child: Container(
                   margin: EdgeInsets.all(20),
@@ -122,11 +122,15 @@ class _HeaderWidgetState extends State<HeaderWidget> {
                     ),
                     border: Border.all(width: 5, color: Colors.white, style: BorderStyle.solid),
                   ),
-                  child: Icon(
-                    _icon,
+                  child: widget._showIcon ? Icon(
+                    widget._icon,
                     color: Colors.white,
                     size: 35.0,
-                  ),
+                  ) : Image.asset(
+                        'assets/images/google-logo.png',
+                        height: 25,
+                        width: 25,
+                      ),
                 ),
               ),
             ),
