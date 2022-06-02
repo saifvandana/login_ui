@@ -48,6 +48,7 @@ class LocaleStrings extends Translations {
       "Buy" : "Satılık",
       "ENG" : "TR",
       "FOR " : "",
+      "en" : "tr",
       " Reviews" : " Değerlendirme",
       "Filters" : "Filtreleme",
       "Name" : "İsim",
@@ -184,6 +185,8 @@ class LocaleStrings extends Translations {
       "email or password invalid" : "e-posta veya şifre geçersiz",
       "Sign In with Google" : "Google ile giriş yapın",
       "Comment" : "Yorum",
+      "Profile photo updated" : "Profil fotoğrafı güncellendi",
+      "Profile photo has been deleted" : "Profil sildi",
     },
 
     "de_DE":{

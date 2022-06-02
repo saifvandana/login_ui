@@ -27,7 +27,7 @@ List<String> cities = [];
 List<String> cityIds = [];
 Map<String, List<String>> districts = {};
 bool showAlt = false;
-String lang = '';
+String lang = 'en'.tr;
 String locale0 = '', locale1 = '';
 
 Future getCategories(List<String> _catIds, List<String> _cats) async {
@@ -73,7 +73,8 @@ Future getRegions(List<String> _regions, List<String> _regionIds) async {
 Future getLang() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   lang = prefs.getString('locale0') as String;
-  print(lang);
+  await Future.delayed(const Duration(seconds: 5), (){});
+  //print(lang);
 }
 
 String getPrice(String price, String currency) {

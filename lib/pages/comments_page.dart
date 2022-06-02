@@ -58,14 +58,16 @@ class _CommentsPageState extends State<CommentsPage> {
   }
 
   Future getComments(List filedata) async {
+    filedata.clear();
     var url =
-        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/allcomment/" + widget.itemId;
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/allcomment/" +
+            widget.itemId;
     var response = await http.get(Uri.parse(url));
     var content = json.decode(response.body);
     //print(content);
     for (int i = 0; i < content.length; i++) {
       var value = {
-        'id' : content[i]['pk_i_id'],
+        'id': content[i]['pk_i_id'],
         'name': content[i]['s_author_name'],
         'pic': 'https://picsum.photos/300/30',
         'message': content[i]['s_body']
@@ -102,13 +104,18 @@ class _CommentsPageState extends State<CommentsPage> {
   }
 
   Future deleteComment(String id) async {
-
     String token = await getToken();
-    var url = "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/comment?id=" + widget.itemId + "&comment=" + id;
-    var response = await http.delete(Uri.parse(url),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },);
+    var url =
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/item/comment?id=" +
+            widget.itemId +
+            "&comment=" +
+            id;
+    var response = await http.delete(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
     var content = json.decode(response.body);
     if (response.statusCode == 200) {
       setState(() {
@@ -146,36 +153,49 @@ class _CommentsPageState extends State<CommentsPage> {
                 ])),
           ),
         ),
-        body: Container(
-          child: CommentBox(
-            userImage: "https://picsum.photos/300/30",
-            child: commentChild(filedata),
-            labelText: 'Write a comment...'.tr,
-            errorText: 'Comment cannot be blank'.tr,
-            sendButtonMethod: () {
-              if (formKey.currentState!.validate()) {
-                //print(commentController.text);
-                setState(() {
-                  var value = {
-                    'name': 'New User',
-                    'pic': 'https://picsum.photos/300/30',
-                    'message': commentController.text
-                  };
-                  //filedata.insert(0, value);
-                  addComments(commentController.text);
-                });
-                commentController.clear();
-                FocusScope.of(context).unfocus();
-              } else {
-                print("Not validated");
-              }
-            },
-            formKey: formKey,
-            commentController: commentController,
-            backgroundColor: Theme.of(context).primaryColor,
-            textColor: Colors.white,
-            sendWidget: Icon(Icons.send_sharp, size: 30, color: Colors.white),
+        body: RefreshIndicator(
+          child: Container(
+            child: CommentBox(
+              userImage: "https://picsum.photos/300/30",
+              child: commentChild(filedata),
+              labelText: 'Write a comment...'.tr,
+              errorText: 'Comment cannot be blank'.tr,
+              sendButtonMethod: () {
+                if (formKey.currentState!.validate()) {
+                  //print(commentController.text);
+                  setState(() {
+                    var value = {
+                      'name': 'New User',
+                      'pic': 'https://picsum.photos/300/30',
+                      'message': commentController.text
+                    };
+                    //filedata.insert(0, value);
+                    addComments(commentController.text);
+                  });
+                  commentController.clear();
+                  FocusScope.of(context).unfocus();
+                } else {
+                  print("Not validated");
+                }
+              },
+              formKey: formKey,
+              commentController: commentController,
+              backgroundColor: Theme.of(context).primaryColor,
+              textColor: Colors.white,
+              sendWidget: Icon(Icons.send_sharp, size: 30, color: Colors.white),
+            ),
           ),
+          onRefresh: () {
+            return Future.delayed(
+              Duration(seconds: 1),
+              () {
+                setState(() {
+                  getComments(filedata);
+                  print('refresh');
+                });
+              },
+            );
+          },
         ));
   }
 

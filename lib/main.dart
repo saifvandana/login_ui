@@ -25,17 +25,27 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String locale = await Devicelocale.currentLocale;
-  Locale defaultLanguage = Locale('tr', 'TR');
-  if (systemLanguages.contains(defaultLanguage.toString())) {
-    defaultLanguage = Locale(locale.substring(0, 2), locale.substring(3, 5));
+  print('locale ' + locale);
+  Locale defaultLanguage =
+      Locale(locale.substring(0, 2), locale.substring(3, 5));
+  lang = locale.substring(0, 2);
+
+  if (!systemLanguages.contains(defaultLanguage.toString())) {
+    defaultLanguage = Locale('tr', 'TR');
+    lang = 'tr';
   }
-  if (preferences.getString('locale0') != null && preferences.getString('locale1') != null) {
-    defaultLanguage = Locale(preferences.getString('locale0'), preferences.getString('locale1'));
+
+  if (preferences.getString('locale0') != null &&
+      preferences.getString('locale1') != null) {
+    defaultLanguage = Locale(
+        preferences.getString('locale0'), preferences.getString('locale1'));
+    lang = preferences.getString('locale0');
   }
   //preferences.setString('defaultLanguage', defaultLanguage.toString());
   // print(preferences.getString('refresh_token'));
   // print(preferences.getString('access_token'));
   print("System language " + defaultLanguage.toString());
+  print('lang ' + lang);
   List<String> _regions = [];
   List<String> _regionIds = [];
   getRegions(_regions, _regionIds);
@@ -44,22 +54,6 @@ void main() async {
     lng: defaultLanguage,
   ));
   //configLoading();
-}
-
-void configLoading() {
-  EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
-    ..loadingStyle = EasyLoadingStyle.dark
-    ..indicatorSize = 45.0
-    ..radius = 10.0
-    ..progressColor = Colors.yellow
-    ..backgroundColor = Colors.green
-    ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withOpacity(0.5)
-    ..userInteractions = true
-    ..dismissOnTap = false;
 }
 
 class MyApp extends StatelessWidget {

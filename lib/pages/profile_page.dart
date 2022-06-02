@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, unnecessary_import, prefer_is_not_empty, deprecated_member_use, avoid_unnecessary_containers, unused_import, prefer_final_fields, avoid_print
+// ignore_for_file: unused_local_variable, prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, unnecessary_import, prefer_is_not_empty, deprecated_member_use, avoid_unnecessary_containers, unused_import, prefer_final_fields, avoid_print, unnecessary_null_comparison
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -40,6 +40,9 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   double _drawerIconSize = 20;
   double _drawerFontSize = 15;
+  int _popupMenuItemIndex = 0;
+  Color _changeColorAccordingToMenuItem = Colors.red;
+
   List<String> catIds = [];
   List<String> cats = [];
   String name = '';
@@ -48,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String id = '';
   String token = '';
   List<Asset> images = [];
-  bool hasImage = true;
+  bool hasImage = false;
   String imageUrl = '';
 
   @override
@@ -68,34 +71,42 @@ class _ProfilePageState extends State<ProfilePage> {
       email = preferences.getString('email')!;
       name = preferences.getString('name')!;
       phone = preferences.getString('phone')!;
-      id = preferences.getString('pk_i_id')!;
+      id = preferences.getString('id')!;
       getCategories(catIds, cats);
+      getImage();
     });
   }
 
   Future deleteImage() async {
-    var url =
-        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile_pic/upload";
-    String token = await getToken();
-    var response = await http.delete(
-      Uri.parse(url),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
-    var content = json.decode(response.body);
+    if (hasImage) {
+      var url =
+          "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile_pic/delete/" +
+              id;
+      String token = await getToken();
+      var response = await http.delete(
+        Uri.parse(url),
+        // headers: {
+        //   'Authorization': 'Bearer $token',
+        // },
+      );
+      var content = json.decode(response.body);
+      print(response.body);
 
-    if (response.statusCode == 200) {
-      setState(() {
-        Fluttertoast.showToast(
-          msg: "Comment has been deleted".tr,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.SNACKBAR,
-        );
-        print(content);
-      });
+      if (content['status'] == '1') {
+        setState(() {
+          // Fluttertoast.showToast(
+          //   msg: "Profile photo has been deleted".tr,
+          //   toastLength: Toast.LENGTH_SHORT,
+          //   gravity: ToastGravity.SNACKBAR,
+          // );
+          hasImage = false;
+          print('deleted image');
+        });
+      } else {
+        print('not deleted image');
+      }
     } else {
-      print(content);
+      print('no image');
     }
   }
 
@@ -105,20 +116,28 @@ class _ProfilePageState extends State<ProfilePage> {
             id;
     var response = await http.get(Uri.parse(url));
     var content = json.decode(response.body);
-    if (response.statusCode == 200) {
-      if (content['hasImage'] == "true") {
+    print(content);
+    if (content['hasImage'] == 'true') {
+      print('true');
+      setState(() {
         imageUrl = content["url"];
         hasImage = true;
-      }
-      print(imageUrl);
+      });
     } else {
+      print('false');
       print(content);
     }
+    //print('image url ' + imageUrl);
   }
 
   Future uploadImage() async {
+    if (hasImage) {
+      deleteImage();
+    }
+
     var url =
-        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile_pic/upload";
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile_pic/upload?id=" +
+            id;
 
     String token = await getToken();
 
@@ -136,15 +155,22 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     var diio = dio.Dio();
-    diio.options.headers["Authorization"] = "Bearer $token";
+    //diio.options.headers["Authorization"] = "Bearer $token";
+
     var response = await diio.post(url, data: formData);
-    if (response.statusCode == 200) {
-      EasyLoading.dismiss();
-      Fluttertoast.showToast(
-        msg: "Profile photo updated".tr,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.SNACKBAR,
-      );
+    //final content = jsonDecode(response.data);
+    //imageUrl = response.data['url'];
+    if (response.data['status'] == '1') {
+      setState(() {
+        hasImage = true;
+        Fluttertoast.showToast(
+          msg: "Profile photo updated".tr,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.SNACKBAR,
+        );
+      });
+      // Navigator.of(context).pushAndRemoveUntil(
+      //   MaterialPageRoute(builder: (context) => ProfilePage()), (route) => false);
       print(response.data);
     } else {
       EasyLoading.dismiss();
@@ -342,48 +368,44 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Stack(
                       children: [
-                        Container(
-                          //padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(width: 5, color: Colors.white),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 20,
-                                offset: const Offset(5, 5),
-                              ),
-                            ],
-                          ),
-                          child: hasImage
-                              ? Image.asset(
-                                  'assets/images/google-logo.png',
-                                  height: 110,
-                                  width: 110,
-                                )
-                              : Icon(
-                                  Icons.person,
-                                  size: 110,
-                                  color: Colors.grey.shade300,
-                                ),
-                        ),
                         GestureDetector(
-                          onTap: loadImage,
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            //padding: EdgeInsets.fromLTRB(80, 90, 0, 0),
+                          onTap: () {
+                            setState(() {
+                              showPopupMenu(context);
+                            });
+                          },
+                          child : Container(
+                            //padding: EdgeInsets.all(5),
+                            height: 130,
+                            width: 130,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(width: 5, color: Colors.white),
+                              borderRadius: BorderRadius.circular(100),
+                              //border: Border.all(width: 5, color: Colors.white),
                               color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 20,
+                                  offset: const Offset(5, 5),
+                                ),
+                              ],
                             ),
-                            child: Icon(
-                              Icons.edit,
-                              color: Theme.of(context).primaryColor,
-                              size: 20,
-                            ),
+                            child: ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: hasImage
+                                ? CircleAvatar(
+                                  child: Image.network(
+                                    "https://allmenkul.com/oc-content/plugins/profile_picture/images/" +
+                                        imageUrl,
+                                    fit: BoxFit.fill,
+                                  )
+                                )
+                                : Icon(
+                                    Icons.person,
+                                    size: 100,
+                                    color: Colors.grey.shade300,
+                                  ),
+                            )
                           ),
                         ),
                       ],
@@ -511,5 +533,50 @@ class _ProfilePageState extends State<ProfilePage> {
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {},
         ));
+  }
+
+  showPopupMenu(BuildContext context) {
+    showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(
+          -5, 200, 0, 0.0), //position where you want to show the menu on screen
+      items: [
+        PopupMenuItem<String>(
+            onTap: loadImage,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Icon(
+                  Icons.upload,
+                  color: Colors.blue,
+                ),
+                SizedBox(
+                  width: 2,
+                ),
+                Text('Update'.tr),
+              ],
+            ),
+            value: '1'),
+        PopupMenuItem<String>(
+            onTap: deleteImage,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 2,
+                ),
+                Text('Delete'.tr),
+              ],
+            ),
+            value: '2'),
+      ],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+    );
   }
 }

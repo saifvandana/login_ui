@@ -26,6 +26,7 @@ class _MyPostState extends State<MyPost> {
       "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/search";
   String email = '';
   String itemId = '';
+  String price = '';
   //List<String> images = [];
   List<String> testurl = [
     "https://cdn.vox-cdn.com/thumbor/0Evrn26bKYe5IA19SwiQ96ZrrF4=/0x0:1086x724/970x728/filters:focal(457x276:629x448):format(webp):no_upscale()/cdn.vox-cdn.com/uploads/chorus_image/image/62581501/1_1118165_18_1496251977.0.0.jpg",
@@ -108,11 +109,11 @@ class _MyPostState extends State<MyPost> {
     // String folder = id.toString();
     for (var i = 0; i < list.length; i++) {
       //if (list[i]['s_path'] == 'oc-content/uploads/0/') {
-        images.add("https://allmenkul.com/" +
-            list[i]['s_path'] +
-            list[i]['pk_i_id'] +
-            "." +
-            list[i]['s_extension']);
+      images.add("https://allmenkul.com/" +
+          list[i]['s_path'] +
+          list[i]['pk_i_id'] +
+          "." +
+          list[i]['s_extension']);
       // } else if (list[i]['s_path'] == 'oc-admin/images/') {
       //   images.add(
       //       "https://allmenkul.com/" + list[i]['s_path'] + list[i]['s_name']);
@@ -154,6 +155,9 @@ class _MyPostState extends State<MyPost> {
                     itemBuilder: (context, index) {
                       List list = snapshot.data;
                       List<String> images = [];
+                      price = getPrice(
+                        list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL'));
+                  
                       getImages(list[index]['resources'], images,
                           list[index]['pk_i_id']);
                       Listing newListing = (images.isNotEmpty)
@@ -184,8 +188,9 @@ class _MyPostState extends State<MyPost> {
 
   Widget buildListing(BuildContext context, List list, int index, String img) {
     double width = MediaQuery.of(context).size.width;
-    String price = getPrice(
-        list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL'));
+
+    // String price = getPrice(
+    //     list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL'));
     return SizedBox(
         child: Card(
             elevation: 4,

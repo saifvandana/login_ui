@@ -23,6 +23,7 @@ class _PostScreenState extends State<PostScreen> {
   var url =
       "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/search";
   String email = '';
+  String price = '';
   List<String> images = [];
   List<String> testurl = [
     "https://cdn.vox-cdn.com/thumbor/dK9BJ2AUCPUk10X-DKpqlmFZGA0=/0x0:1113x706/970x728/filters:focal(468x264:646x442):format(webp):no_upscale()/cdn.vox-cdn.com/uploads/chorus_image/image/62581502/1_1186768_0_1504892016.0.0.jpg",
@@ -100,10 +101,14 @@ class _PostScreenState extends State<PostScreen> {
                       // print("length of resources: " +
                       //     list[index]['resources'].length.toString());
                       // print(images);
-                      Listing newListing = (images.isNotEmpty) ? new Listing(list, images) : new Listing(list, testurl);
+                      
+                      price = getPrice(list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL')); 
+                      Future.delayed(const Duration(seconds: 5), (){});
+                      Listing newListing = (images.isNotEmpty)
+                          ? new Listing(list, images)
+                          : new Listing(list, testurl);
                       return GestureDetector(
-                        child: 
-                        (images.isNotEmpty)
+                        child: (images.isNotEmpty)
                             ? buildListing(context, list, index, images[0])
                             : buildListing(context, list, index, testurl[0]),
                         onTap: () {
@@ -127,8 +132,6 @@ class _PostScreenState extends State<PostScreen> {
 
   Widget buildListing(BuildContext context, List list, int index, String img) {
     double width = MediaQuery.of(context).size.width;
-    String price = getPrice(
-        list[index]["i_price"], (list[index]["fk_c_currency_code"] ?? 'TL'));
 
     return SizedBox(
         child: Card(
@@ -186,10 +189,9 @@ class _PostScreenState extends State<PostScreen> {
                               child: Center(
                                 child: IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                    });
+                                    setState(() {});
                                   },
-                                  color: Colors.yellow[700], 
+                                  color: Colors.yellow[700],
                                   icon: Icon(Icons.favorite_border),
                                 ),
                               ),
@@ -228,7 +230,7 @@ class _PostScreenState extends State<PostScreen> {
                                     width: 4,
                                   ),
                                   Text(
-                                    list[index]["s_region"] ??  "Ankara",
+                                    list[index]["s_region"] ?? "Ankara",
                                     style: TextStyle(
                                       color: Colors.brown,
                                       fontSize: 16,
