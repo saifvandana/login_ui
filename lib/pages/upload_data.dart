@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print, unnecessary_null_comparison, unused_local_variable, import_of_legacy_library_into_null_safe, non_constant_identifier_names, unnecessary_new
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_final_fields, deprecated_member_use, unnecessary_import, prefer_const_declarations, dead_code, avoid_print, unnecessary_null_comparison, unused_local_variable, import_of_legacy_library_into_null_safe, non_constant_identifier_names, unnecessary_new, unnecessary_const
 
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+//import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +25,21 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:path/path.dart';
 
+class FlutterAbsolutePath {
+  static const MethodChannel _channel =
+      const MethodChannel('flutter_absolute_path');
+
+  /// Gets absolute path of the file from android URI or iOS PHAsset identifier
+  /// The return of this method can be used directly with flutter [File] class
+  static Future<String?> getAbsolutePath(String uri) async {
+    final Map<String, dynamic> params = <String, dynamic>{
+      'uri': uri,
+    };
+    final String? path = await _channel.invokeMethod('getAbsolutePath', params);
+    return path;
+  }
+}
+
 class UploadData extends StatefulWidget {
   const UploadData({Key? key}) : super(key: key);
 
@@ -42,6 +57,10 @@ class _UploadDataState extends State<UploadData> {
   String description = '';
   //String process = '', state = '', location = '', currency = '';
   String? category, altCategory, process, state, location, currency;
+  bool selectInner = false,
+      selectOuter = false,
+      selectKonum = false,
+      selectUsage = false;
   //String locale0 = '', locale1 = '';
 
   TextEditingController _name = TextEditingController();
@@ -176,16 +195,16 @@ class _UploadDataState extends State<UploadData> {
       request.headers['Authorization'] = 'Bearer $token';
       List<http.MultipartFile> newList = <http.MultipartFile>[];
 
-      for (int i = 0; i < images.length; i++) {
-        var path =
-            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
-        File imageFile = File(path);
-        var stream = http.ByteStream(imageFile.openRead());
-        var length = await imageFile.length();
-        var multipartFile = http.MultipartFile("photos", stream, length,
-            filename: basename(imageFile.path));
-        newList.add(multipartFile);
-      }
+      // for (int i = 0; i < images.length; i++) {
+      //   var path =
+      //       await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+      //   File imageFile = File(path);
+      //   var stream = http.ByteStream(imageFile.openRead());
+      //   var length = await imageFile.length();
+      //   var multipartFile = http.MultipartFile("photos", stream, length,
+      //       filename: basename(imageFile.path));
+      //   newList.add(multipartFile);
+      // }
 
       request.files.addAll(newList);
       var response = await request.send();
@@ -390,8 +409,8 @@ class _UploadDataState extends State<UploadData> {
       //start uploading images
       for (int i = 0; i < images.length; i++) {
         var request = new http.MultipartRequest('POST', Uri.parse(thisUrl));
-        var path =
-            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+        String path =
+            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier as String) as String;
         File imageFile = File(path);
         var stream = http.ByteStream(imageFile.openRead());
         var length = await imageFile.length();
@@ -586,13 +605,13 @@ class _UploadDataState extends State<UploadData> {
                     Container(
                       child: TextFormField(
                         controller: _title,
-                        validator: (String? value) {
-                          if (value.toString().isEmpty) {
-                            print('Title is Required');
-                            return 'Title is Required';
-                          }
-                          return null;
-                        },
+                        // validator: (String? value) {
+                        //   if (value.toString().isEmpty) {
+                        //     print('Title is Required');
+                        //     return 'Title is Required';
+                        //   }
+                        //   return null;
+                        // },
                         decoration: ThemeHelper().textInputDecoration(
                             'Title *'.tr, 'Enter the title of your post'.tr),
                       ),
@@ -958,7 +977,39 @@ class _UploadDataState extends State<UploadData> {
                           ),
                         ),
                         children: [
-                          selectProps(innerProp),
+                          if (!selectInner) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectInner = true;
+                                });
+                              },
+                              child: Text(
+                                'Select All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (selectInner) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectInner = false;
+                                });
+                              },
+                              child: Text(
+                                'Unselect All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          selectProps(innerProp, selectInner),
                         ]),
                     //],
                     //if (outerProp.isNotEmpty) ...[
@@ -974,7 +1025,39 @@ class _UploadDataState extends State<UploadData> {
                           ),
                         ),
                         children: [
-                          selectProps(outerProp),
+                          if (!selectOuter) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectOuter = true;
+                                });
+                              },
+                              child: Text(
+                                'Select All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (selectOuter) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectOuter = false;
+                                });
+                              },
+                              child: Text(
+                                'Uselect All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          selectProps(outerProp, selectOuter),
                         ]),
                     //],
                     //if (konum.isNotEmpty) ...[
@@ -990,7 +1073,39 @@ class _UploadDataState extends State<UploadData> {
                           ),
                         ),
                         children: [
-                          selectProps(konum),
+                          if (!selectKonum) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectKonum = true;
+                                });
+                              },
+                              child: Text(
+                                'Select All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (selectKonum) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectKonum = false;
+                                });
+                              },
+                              child: Text(
+                                'Unselect All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          selectProps(konum, selectKonum),
                         ]),
                     //],
                     //if (uses.isNotEmpty) ...[
@@ -1006,7 +1121,39 @@ class _UploadDataState extends State<UploadData> {
                           ),
                         ),
                         children: [
-                          selectProps(uses),
+                          if (!selectUsage) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectUsage = true;
+                                });
+                              },
+                              child: Text(
+                                'Select All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          if (selectUsage) ...[
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectUsage = false;
+                                });
+                              },
+                              child: Text(
+                                'Uselect All'.tr,
+                                style: TextStyle(
+                                  //fontSize: 20,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                          selectProps(uses, selectUsage),
                         ]),
                     //],
                     SizedBox(height: 40.0),
@@ -1042,12 +1189,25 @@ class _UploadDataState extends State<UploadData> {
     );
   }
 
-  Widget selectProps(List<String> arr) {
+  Widget selectProps(List<String> arr, bool check) {
+    List<String> temp = arr;
+    List<String> temp2 = [];
     return CheckboxGroup(
+        checked: check ? temp : temp2,
         labels: arr,
-        onChange: (bool isChecked, String label, int index) =>
-            print("isChecked: $isChecked   label: $label  index: $index"),
+        onChange: (bool isChecked, String label, int index) {
+          setState(() {
+            if (check) {
+              temp.removeAt(index);
+            } else {
+              temp2.add(label);
+            }
+            print("temp2 : ${temp2.toString()}");
+          });
+          print("isChecked: $isChecked   label: $label  index: $index");
+        },
         onSelected: (List<String> checked) {
+          //temp2 = checked;
           print("checked: ${checked.toString()}");
         });
   }

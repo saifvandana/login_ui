@@ -40,8 +40,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   double _drawerIconSize = 20;
   double _drawerFontSize = 15;
-  int _popupMenuItemIndex = 0;
-  Color _changeColorAccordingToMenuItem = Colors.red;
 
   List<String> catIds = [];
   List<String> cats = [];
@@ -217,6 +215,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    imageCache!.clear();
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -353,173 +353,187 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Container(
-                height: 100,
-                child: HeaderWidget(100, false, Icons.ac_unit_outlined),
-              ),
-              Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              showPopupMenu(context);
-                            });
-                          },
-                          child : Container(
-                            //padding: EdgeInsets.all(5),
-                            height: 130,
-                            width: 130,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              //border: Border.all(width: 5, color: Colors.white),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 20,
-                                  offset: const Offset(5, 5),
-                                ),
-                              ],
-                            ),
-                            child: ClipRRect(
-                            borderRadius: BorderRadius.circular(100),
-                            child: hasImage
-                                ? CircleAvatar(
-                                  child: Image.network(
-                                    "https://allmenkul.com/oc-content/plugins/profile_picture/images/" +
-                                        imageUrl,
-                                    fit: BoxFit.fill,
-                                  )
-                                )
-                                : Icon(
-                                    Icons.person,
-                                    size: 100,
-                                    color: Colors.grey.shade300,
+        body: RefreshIndicator(
+          child: ListView(
+            children: [ Stack(
+              children: [
+                Container(
+                  height: 100,
+                  child: HeaderWidget(100, false, Icons.ac_unit_outlined),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showPopupMenu(context);
+                              });
+                            },
+                            child : Container(
+                              //padding: EdgeInsets.all(5),
+                              height: 130,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                //border: Border.all(width: 5, color: Colors.white),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 20,
+                                    offset: const Offset(5, 5),
                                   ),
-                            )
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      name,
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                            alignment: Alignment.topLeft,
-                            child: Center(
-                              child: Text(
-                                'User Information'.tr,
-                                style: TextStyle(
-                                  color: Colors.black54,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                                textAlign: TextAlign.left,
+                                ],
                               ),
+                              child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: hasImage
+                                  ? CircleAvatar(
+                                    child: Image.network(
+                                      "https://allmenkul.com/oc-content/plugins/profile_picture/images/" +
+                                          imageUrl,
+                                      fit: BoxFit.fill,
+                                    )
+                                  )
+                                  : Icon(
+                                      Icons.person,
+                                      size: 100,
+                                      color: Colors.grey.shade300,
+                                    ),
+                              )
                             ),
                           ),
-                          Card(
-                            child: Container(
-                                alignment: Alignment.topLeft,
-                                padding: EdgeInsets.all(15),
-                                child: Column(
-                                  children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        ...ListTile.divideTiles(
-                                            color: Colors.grey,
-                                            tiles: [
-                                              ListTile(
-                                                leading:
-                                                    Icon(Icons.my_location),
-                                                title: Text("Location".tr),
-                                                subtitle: Text("Turkey"),
-                                              ),
-                                              ListTile(
-                                                leading: Icon(Icons.email),
-                                                title: Text("Email".tr),
-                                                subtitle: Text(email),
-                                              ),
-                                              ListTile(
-                                                leading: Icon(Icons.phone),
-                                                title: Text("Phone".tr),
-                                                subtitle: Text(phone),
-                                              ),
-                                            ])
-                                      ],
-                                    )
-                                  ],
-                                )),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(
-                            children: [
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => MyPost()));
-                                  },
-                                  child: Text(
-                                    'MY POSTS'.tr,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  )),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PostScreen()));
-                                  },
-                                  child: Text(
-                                    'ALL POSTS'.tr,
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                  )),
-                            ],
-                          )
                         ],
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        name,
+                        style:
+                            TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                              alignment: Alignment.topLeft,
+                              child: Center(
+                                child: Text(
+                                  'User Information'.tr,
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ),
+                            Card(
+                              child: Container(
+                                  alignment: Alignment.topLeft,
+                                  padding: EdgeInsets.all(15),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          ...ListTile.divideTiles(
+                                              color: Colors.grey,
+                                              tiles: [
+                                                ListTile(
+                                                  leading:
+                                                      Icon(Icons.my_location),
+                                                  title: Text("Location".tr),
+                                                  subtitle: Text("Turkey"),
+                                                ),
+                                                ListTile(
+                                                  leading: Icon(Icons.email),
+                                                  title: Text("Email".tr),
+                                                  subtitle: Text(email),
+                                                ),
+                                                ListTile(
+                                                  leading: Icon(Icons.phone),
+                                                  title: Text("Phone".tr),
+                                                  subtitle: Text(phone),
+                                                ),
+                                              ])
+                                        ],
+                                      )
+                                    ],
+                                  )),
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Row(
+                              children: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => MyPost()));
+                                    },
+                                    child: Text(
+                                      'MY POSTS'.tr,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    )),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PostScreen()));
+                                    },
+                                    child: Text(
+                                      'ALL POSTS'.tr,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                    )),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),]
           ),
+           onRefresh:  () {
+            return Future.delayed(
+              Duration(seconds: 1),
+              () {
+                setState(() {
+                  Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => ProfilePage()), (route) => false);
+                  print('refresh');
+                });
+              },
+            );
+          },
         ),
         floatingActionButton: FloatingActionButton(
           child: IconButton(
@@ -542,40 +556,43 @@ class _ProfilePageState extends State<ProfilePage> {
           -5, 200, 0, 0.0), //position where you want to show the menu on screen
       items: [
         PopupMenuItem<String>(
-            onTap: loadImage,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(
-                  Icons.upload,
-                  color: Colors.blue,
-                ),
-                SizedBox(
-                  width: 2,
-                ),
-                Text('Update'.tr),
-              ],
+          onTap: loadImage,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Icon(
+                Icons.upload,
+                color: Colors.blue,
+              ),
+              SizedBox(
+                width: 2,
+              ),
+              Text('Update'.tr),
+            ],
+          ),
+          value: '1'),
+          if (hasImage) ...[
+            PopupMenuItem<String>(
+              onTap: deleteImage,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  SizedBox(
+                    width: 2,
+                  ),
+                  Text('Delete'.tr),
+                ],
+              ),
+              value: '2',
             ),
-            value: '1'),
-        PopupMenuItem<String>(
-            onTap: deleteImage,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  width: 2,
-                ),
-                Text('Delete'.tr),
-              ],
-            ),
-            value: '2'),
-      ],
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+          ],
+        ],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
       ),
     );
   }

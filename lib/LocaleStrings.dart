@@ -185,8 +185,12 @@ class LocaleStrings extends Translations {
       "email or password invalid" : "e-posta veya şifre geçersiz",
       "Sign In with Google" : "Google ile giriş yapın",
       "Comment" : "Yorum",
+      "Update" : "Güncelle",
+      "Delete" : "Profil Sil",
       "Profile photo updated" : "Profil fotoğrafı güncellendi",
       "Profile photo has been deleted" : "Profil sildi",
+      "Write a comment..." : "Yorum yaz...",
+      "Comment cannot be blank" : "Yorum boş",
     },
 
     "de_DE":{
