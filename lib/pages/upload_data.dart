@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-//import 'package:flutter_absolute_path/flutter_absolute_path.dart';
+import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -25,20 +25,20 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:path/path.dart';
 
-class FlutterAbsolutePath {
-  static const MethodChannel _channel =
-      const MethodChannel('flutter_absolute_path');
+// class FlutterAbsolutePath {
+//   static const MethodChannel _channel =
+//       const MethodChannel('flutter_absolute_path');
 
-  /// Gets absolute path of the file from android URI or iOS PHAsset identifier
-  /// The return of this method can be used directly with flutter [File] class
-  static Future<String?> getAbsolutePath(String uri) async {
-    final Map<String, dynamic> params = <String, dynamic>{
-      'uri': uri,
-    };
-    final String? path = await _channel.invokeMethod('getAbsolutePath', params);
-    return path;
-  }
-}
+//   /// Gets absolute path of the file from android URI or iOS PHAsset identifier
+//   /// The return of this method can be used directly with flutter [File] class
+//   static Future<String?> getAbsolutePath(String uri) async {
+//     final Map<String, dynamic> params = <String, dynamic>{
+//       'uri': uri,
+//     };
+//     final String? path = await _channel.invokeMethod('getAbsolutePath', params);
+//     return path;
+//   }
+// }
 
 class UploadData extends StatefulWidget {
   const UploadData({Key? key}) : super(key: key);
@@ -409,8 +409,9 @@ class _UploadDataState extends State<UploadData> {
       //start uploading images
       for (int i = 0; i < images.length; i++) {
         var request = new http.MultipartRequest('POST', Uri.parse(thisUrl));
-        String path =
-            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier as String) as String;
+        var path =
+            await FlutterAbsolutePath.getAbsolutePath(images[i].identifier);
+        //await FlutterAbsolutePath.getAbsolutePath(images[i].identifier as String) as String;
         File imageFile = File(path);
         var stream = http.ByteStream(imageFile.openRead());
         var length = await imageFile.length();
@@ -420,11 +421,29 @@ class _UploadDataState extends State<UploadData> {
 
         var response = await request.send();
         var streamResponse = await response.stream.bytesToString();
-        final content = jsonDecode(streamResponse);
-        ajaxPhotos.add(content['name']);
+        print(streamResponse);
+
+        if (streamResponse.contains('name')) {
+          final content = jsonDecode(streamResponse);
+          ajaxPhotos.add(content['name']);
+        } else {
+          print('image not accepted');
+          EasyLoading.dismiss();
+          Fluttertoast.showToast(
+            msg: "Image not accepted".tr,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+          );
+          return;
+        }
       }
 
       print(ajaxPhotos.length);
+      altCategory = altCategory ?? '';
+      currency = currency ?? '';
+      process = process ?? '';
+      state = state ?? '';
+      location = location ?? '';
 
       //start uploading item
       Map formData = {
@@ -818,6 +837,7 @@ class _UploadDataState extends State<UploadData> {
                     SizedBox(height: 20.0),
                     Container(
                       child: TextFormField(
+                        keyboardType: TextInputType.number,
                         controller: _postalCode,
                         decoration: ThemeHelper()
                             .textInputDecoration("Postal Code".tr, "".tr),

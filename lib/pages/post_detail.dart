@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
-import 'data/data.dart';
+import '../data/data.dart';
 
 class PostDetail extends StatelessWidget {
   PostDetail({required this.newListing, required this.index});

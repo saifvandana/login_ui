@@ -4,16 +4,14 @@ import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:login_ui/pages/comments_page.dart';
+import 'package:login_ui/pages/user_profile.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:comment_box/comment/comment.dart';
-import 'package:comment_box/comment/test.dart';
-import 'package:comment_box/main.dart';
 
-import 'data/data.dart';
+import '../data/data.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage(this.newListing, this.index);
@@ -30,11 +28,40 @@ class _DetailsPageState extends State<DetailsPage> {
 
   bool isExpanded = false;
   bool selected = false;
+  bool hasImage = false;
+  String imageUrl = '';
+  String id = '';
 
   List<String> innerProp = [];
   List<String> outerProp = [];
   List<String> konum = [];
   List<String> uses = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getImage();
+  }
+
+  Future getImage() async {
+    var url =
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/profile/" +
+            widget.newListing.info[widget.index]["fk_i_user_id"];
+    var response = await http.get(Uri.parse(url));
+    var content = json.decode(response.body);
+    print(content);
+    if (content['hasImage'] == 'true') {
+      print('true');
+      setState(() {
+        imageUrl = content["url"];
+        hasImage = true;
+      });
+    } else {
+      print('false');
+      print(content);
+    }
+    //print('image url ' + imageUrl);
+  }
 
   getProperties() async {
     innerProp = [];
@@ -46,7 +73,7 @@ class _DetailsPageState extends State<DetailsPage> {
     //+ widget.newListing.info[widget.index]["pk_i_id"];
     var response = await http.get(Uri.parse(url));
     var content = json.decode(response.body);
-    
+
     for (var id in content.keys) {
       var value = content[id]["s_name"];
       if (value.toString().contains('İç Özellikler')) {
@@ -78,7 +105,7 @@ class _DetailsPageState extends State<DetailsPage> {
     // print(innerProp);
     // print(outerProp);
     // print(konum);
-    // print(uses);  
+    // print(uses);
   }
 
   @override
@@ -199,176 +226,218 @@ class _DetailsPageState extends State<DetailsPage> {
             ),
           ),
           Positioned.fill(
-            child: NotificationListener<DraggableScrollableNotification>(
-              child: DraggableScrollableSheet(
-                maxChildSize: 0.9,
-                minChildSize: 0.5,
-                initialChildSize: 0.6,
-                builder: (_, controller) {
-                  return Material(
-                    elevation: 10,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                    ),
-                    color: Colors.white,
-                    child: ListView(
-                      controller: controller,
+              child: NotificationListener<DraggableScrollableNotification>(
+                  child: DraggableScrollableSheet(
+            maxChildSize: 0.9,
+            minChildSize: 0.5,
+            initialChildSize: 0.6,
+            builder: (_, controller) {
+              return Material(
+                elevation: 10,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+                color: Colors.white,
+                child: ListView(
+                  controller: controller,
+                  children: [
+                    Center(
+                        child: Column(
                       children: [
-                        Center(
-                            child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(5),
-                              height: 4,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Color.fromARGB(255, 212, 209, 209),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: 24, left: 24, bottom: 16, top: 15),
-                              child: Text(
-                                "Listing Info".tr,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                        Divider(
-                          indent: 10,
-                          endIndent: 10,
-                          color: Colors.grey[500],
-                          height: 1,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(24),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.person_pin,
-                                    size: 50,
-                                  ),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        widget.newListing.info[widget.index]
-                                                ['s_user_name'] ??
-                                            widget.newListing.info[widget.index]
-                                                ['s_contact_name'],
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        "Property Owner".tr,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.grey[500],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Divider(
-                          indent: 10,
-                          endIndent: 10,
-                          color: Colors.grey[500],
-                          height: 1,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              right: 24, left: 24, bottom: 24, top: 15),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              buildFeature(Icons.hotel, "3 Bedroom".tr),
-                              buildFeature(Icons.wc, "2 Bathroom".tr),
-                              buildFeature(Icons.kitchen, "1 Kitchen".tr),
-                              buildFeature(Icons.local_parking, "2 Parking".tr),
-                            ],
+                        Container(
+                          margin: EdgeInsets.all(5),
+                          height: 4,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Color.fromARGB(255, 212, 209, 209),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(
-                            right: 5,
-                            left: 5,
-                            bottom: 16,
-                          ),
-                          child: ExpansionTile(
-                            initiallyExpanded: true,
-                            backgroundColor: Color.fromARGB(255, 245, 242, 242),
-                            title: Text(
-                              'Details'.tr,
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            children: [
-                              buildInfo(context, 'Title'.tr, 's_title'),
-                              buildInfo(context, 'About'.tr, 's_description'),
-                              buildInfo(context, 'Phone'.tr, 's_contact_phone'),
-                              buildInfo(context, 'Email'.tr, 's_contact_email'),
-                              //buildInfo(context, 'Price'.tr, 'i_price'),
-                              buildInfo(context, 'Region'.tr, 's_region'),
-                              buildInfo(context, 'Address'.tr, 's_address'),
-                              buildInfo(context, 'Posted on'.tr, 'dt_pub_date'),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            right: 24,
-                            left: 24,
-                            bottom: 16,
-                          ),
+                              right: 24, left: 24, bottom: 16, top: 15),
                           child: Text(
-                            "Photos".tr,
+                            "Listing Info".tr,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Container(
-                          height: 170,
-                          child: ListView(
-                            physics: ClampingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            children:
-                                buildPhotos(context, widget.newListing.images),
+                      ],
+                    )),
+                    Divider(
+                      indent: 10,
+                      endIndent: 10,
+                      color: Colors.grey[500],
+                      height: 1,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              UserProfile(widget.newListing.info[widget.index]["fk_i_user_id"])));
+                                },
+                                child: Container(
+                                  //padding: EdgeInsets.all(5),
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    //border: Border.all(width: 5, color: Colors.white),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 20,
+                                        offset: const Offset(5, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: hasImage
+                                      ? CircleAvatar(
+                                        child: Image.network(
+                                          "https://allmenkul.com/oc-content/plugins/profile_picture/images/" +
+                                              imageUrl,
+                                          fit: BoxFit.fill,
+                                        )
+                                      )
+                                      : Icon(
+                                          Icons.person,
+                                          size: 50,
+                                          color: Colors.grey.shade300,
+                                        ),
+                                  )
+                                ),
+                              ),
+                              // Icon(
+                              //   Icons.person_pin,
+                              //   size: 50,
+                              // ),
+                              SizedBox(
+                                width: 16,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.newListing.info[widget.index]
+                                            ['s_user_name'] ??
+                                        widget.newListing.info[widget.index]
+                                            ['s_contact_name'],
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  Text(
+                                    "Property Owner".tr,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.grey[500],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(
+                      indent: 10,
+                      endIndent: 10,
+                      color: Colors.grey[500],
+                      height: 1,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          right: 24, left: 24, bottom: 24, top: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          buildFeature(Icons.hotel, "3 Bedroom".tr),
+                          buildFeature(Icons.wc, "2 Bathroom".tr),
+                          buildFeature(Icons.kitchen, "1 Kitchen".tr),
+                          buildFeature(Icons.local_parking, "2 Parking".tr),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 5,
+                        left: 5,
+                        bottom: 16,
+                      ),
+                      child: ExpansionTile(
+                        initiallyExpanded: true,
+                        backgroundColor: Color.fromARGB(255, 245, 242, 242),
+                        title: Text(
+                          'Details'.tr,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        // Container(
-                        //   // height: 200,
-                        //   child: commentChild(filedata),
-                        // ),
-                      ],
+                        children: [
+                          buildInfo(context, 'Title'.tr, 's_title'),
+                          buildInfo(context, 'About'.tr, 's_description'),
+                          buildInfo(context, 'Phone'.tr, 's_contact_phone'),
+                          buildInfo(context, 'Email'.tr, 's_contact_email'),
+                          //buildInfo(context, 'Price'.tr, 'i_price'),
+                          buildInfo(context, 'Region'.tr, 's_region'),
+                          buildInfo(context, 'Address'.tr, 's_address'),
+                          buildInfo(context, 'Posted on'.tr, 'dt_pub_date'),
+                        ],
+                      ),
                     ),
-                  );
-                },
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 24,
+                        left: 24,
+                        bottom: 16,
+                      ),
+                      child: Text(
+                        "Photos".tr,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 170,
+                      child: ListView(
+                        physics: ClampingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        children:
+                            buildPhotos(context, widget.newListing.images),
+                      ),
+                    ),
+                    // Container(
+                    //   // height: 200,
+                    //   child: commentChild(filedata),
+                    // ),
+                  ],
+                ),
+              );
+            },
           ))),
         ],
       ),
@@ -466,15 +535,14 @@ class _DetailsPageState extends State<DetailsPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               if (subtitle.isNotEmpty) ...[
                 Text(
-                widget.newListing.info[widget.index][subtitle] ?? '',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey[500],
+                  widget.newListing.info[widget.index][subtitle] ?? '',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey[500],
+                  ),
                 ),
-              ),
               ],
             ],
           ),
@@ -576,7 +644,10 @@ class _DetailsPageState extends State<DetailsPage> {
               GestureDetector(
                 onTap: () {
                   Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => CommentsPage(widget.newListing.info[widget.index]["pk_i_id"])));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CommentsPage(widget
+                              .newListing.info[widget.index]["pk_i_id"])));
                 },
                 child: buildInfo(context, 'Comment'.tr, ''),
               ),

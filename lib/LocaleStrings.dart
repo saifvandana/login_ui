@@ -191,6 +191,13 @@ class LocaleStrings extends Translations {
       "Profile photo has been deleted" : "Profil sildi",
       "Write a comment..." : "Yorum yaz...",
       "Comment cannot be blank" : "Yorum boş",
+      "Rate User" : "Kullanıcıyı Değerlendir",
+      'Tap a star to set your rating. Add more description here if you want.' : 'Derecelendirmenizi belirlemek için bir yıldıza dokunun. İsterseniz buraya daha fazla açıklama ekleyin.',
+      'Submit' : 'Gönder',
+      'View All' : 'Hepsini gör',
+      'RATINGS' : 'DEĞERLENDİRMELER',
+      "RATE USER" : "DEĞERLENDİRİN",
+
     },
 
     "de_DE":{

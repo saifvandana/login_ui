@@ -10,10 +10,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:login_ui/allPosts.dart';
+import 'package:login_ui/pages/allPosts.dart';
 import 'package:login_ui/common/theme_helper.dart';
 import 'package:login_ui/data/data.dart';
-import 'package:login_ui/my_post.dart';
+import 'package:login_ui/pages/my_post.dart';
 import 'package:login_ui/pages/forgot_password_page.dart';
 import 'package:login_ui/pages/home_page.dart';
 import 'package:login_ui/pages/login_page.dart';
@@ -66,10 +66,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Future getUserInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      email = preferences.getString('email')!;
-      name = preferences.getString('name')!;
-      phone = preferences.getString('phone')!;
-      id = preferences.getString('id')!;
+      email = preferences.getString('email') ?? '';
+      name = preferences.getString('name') ?? '';
+      phone = preferences.getString('phone') ?? '';
+      id = preferences.getString('id') ?? '';
       getCategories(catIds, cats);
       getImage();
     });
@@ -527,8 +527,8 @@ class _ProfilePageState extends State<ProfilePage> {
               Duration(seconds: 1),
               () {
                 setState(() {
-                  Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => ProfilePage()), (route) => false);
+                  // Navigator.of(context).pushAndRemoveUntil(
+                  //             MaterialPageRoute(builder: (context) => ProfilePage()), (route) => false);
                   print('refresh');
                 });
               },

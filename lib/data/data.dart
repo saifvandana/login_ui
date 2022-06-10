@@ -28,12 +28,15 @@ List<String> cityIds = [];
 Map<String, List<String>> districts = {};
 bool showAlt = false;
 String lang = 'en'.tr;
-String locale0 = '', locale1 = '';
+String locale0 = 'tr', locale1 = 'Tr';
 
 Future getCategories(List<String> _catIds, List<String> _cats) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  locale0 = preferences.getString('locale0')!;
-  locale1 = preferences.getString('locale1')!;
+  if (preferences.getString('locale0') != null &&
+      preferences.getString('locale1') != null) {
+        locale0 = preferences.getString('locale0')!;
+        locale1 = preferences.getString('locale1')!;
+      }
 
   var url =
       'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/category/all/' + locale0 +'_' + locale1;
@@ -79,6 +82,9 @@ Future getLang() async {
 
 String getPrice(String price, String currency) {
   if (price != null) {
+    if (price == "0") {
+      return 'No Price'.tr;
+    }
     int len = price.length;
     len = len - 6;
     getLang();
@@ -92,8 +98,16 @@ String getPrice(String price, String currency) {
             str.substring(len - 6, len - 3) +
             '.' +
             str.substring(len - 3, len);
+      } else if (len >= 10 && len < 13) {
+        str = str.substring(0, len - 9) +
+            '.' +
+            str.substring(len - 9, len - 6) +
+            '.' +
+            str.substring(len - 6, len - 3) +
+            '.' +
+            str.substring(len - 3, len);
       }
-      print(str + currency);
+      //print(str + currency);
       return (currency == 'TRY') ? str + ' TL' : str + ' ' + currency;
     } else {
       return (currency == 'TRY')

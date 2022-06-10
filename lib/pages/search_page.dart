@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:login_ui/Detail.dart';
+import 'package:login_ui/pages/Detail.dart';
 import 'package:login_ui/data/data.dart';
-import 'package:login_ui/filter.dart';
+import 'package:login_ui/pages/filter.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({ Key? key }) : super(key: key);
