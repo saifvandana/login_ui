@@ -1,10 +1,12 @@
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:login_ui/constants/Theme.dart';
 
 class DrawerTile extends StatelessWidget {
   final String title;
   final IconData icon;
-  final Function onTap;
+  final Function()? onTap;
   final bool isSelected;
   final Color iconColor;
 
@@ -18,28 +20,16 @@ class DrawerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       child: Container(
-          margin: EdgeInsets.only(top: 6),
           padding: EdgeInsets.all(16),
           decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: isSelected
-                        ? LoginUIColors.black.withOpacity(0.07)
-                        : Colors.transparent,
-                    offset: Offset(0, 0.5),
-                    spreadRadius: 3,
-                    blurRadius: 10)
-              ],
-              color: isSelected ? LoginUIColors.white : LoginUIColors.primary,
-              borderRadius: BorderRadius.all(Radius.circular(54))),
+              color: isSelected ? LoginUIColors.primary : LoginUIColors.white,
+              borderRadius: BorderRadius.all(Radius.circular(8))),
           child: Row(
             children: [
-              // Icon(icon,
-              //     size: 18,
-              //     color: isSelected
-              //         ? LoginUIColors.primary
-              //         : LoginUIColors.white.withOpacity(0.6)),
+              Icon(icon,
+                  size: 20, color: isSelected ? LoginUIColors.white : iconColor),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Text(title,
@@ -48,8 +38,8 @@ class DrawerTile extends StatelessWidget {
                         fontSize: 15,
                         fontWeight: FontWeight.w200,
                         color: isSelected
-                            ? LoginUIColors.primary
-                            : LoginUIColors.white.withOpacity(0.8))),
+                            ? LoginUIColors.white
+                            : Color.fromRGBO(0, 0, 0, 0.7))),
               )
             ],
           )),

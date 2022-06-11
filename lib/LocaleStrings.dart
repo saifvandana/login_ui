@@ -197,7 +197,9 @@ class LocaleStrings extends Translations {
       'View All' : 'Hepsini gör',
       'RATINGS' : 'DEĞERLENDİRMELER',
       "RATE USER" : "DEĞERLENDİRİN",
-
+      "Rating has been posted" : "Derecelendirme yayınlandı",
+      "Rating was not posted" : "Derecelendirme yayınlanamadı",
+      "My posts" : "",
     },
 
     "de_DE":{

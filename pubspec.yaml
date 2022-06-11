@@ -76,6 +76,7 @@ dependencies:
   flutter_absolute_path: ^1.0.6
   rating_dialog: ^2.0.4
   flutter_rating_bar: ^4.0.1
+  scrollable_positioned_list: ^0.2.3
 
 dev_dependencies:
   flutter_test:

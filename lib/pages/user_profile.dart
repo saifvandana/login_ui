@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../common/theme_helper.dart';
 import 'widgets/drawer.dart';
 import 'widgets/header_widget.dart';
+import 'widgets/navbar.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile(this.id);
@@ -221,8 +222,9 @@ class _UserProfileState extends State<UserProfile> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 27, 120, 196), // 1
+          backgroundColor: Colors.transparent,//Color.fromARGB(255, 27, 120, 196), // 1
           elevation: 0,
           title: Text(
             "Profile".tr,
@@ -256,7 +258,7 @@ class _UserProfileState extends State<UserProfile> {
             )
           ],
         ),
-        drawer: MyDrawer(currentPage: 'Profile'.tr),
+        drawer: MyDrawer(currentPage: "Profile".tr),
         body: Stack(children: <Widget>[
           Container(
               decoration: BoxDecoration(

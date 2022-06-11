@@ -27,8 +27,10 @@ import 'package:login_ui/pages/widgets/header_widget.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/Theme.dart';
 import 'forgot_password_verification_page.dart';
 import 'post_screen.dart';
+import 'widgets/drawer.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -218,335 +220,638 @@ class _ProfilePageState extends State<ProfilePage> {
     imageCache!.clear();
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Profile".tr,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          elevation: 0.5,
-          iconTheme: IconThemeData(color: Colors.white),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: <Color>[
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).accentColor,
-                ])),
-          ),
-          actions: [
-            Container(
-              margin: EdgeInsets.only(
-                top: 16,
-                right: 16,
-              ),
-              child: Stack(
-                children: <Widget>[
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return ThemeHelper().alartDialog("Notifications".tr,
-                                "There are no notifications".tr, context);
-                          },
-                        );
-                      });
-                    },
-                    icon: Icon(Icons.notifications),
-                  )
-                ],
-              ),
-            )
-          ],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,//Color.fromARGB(255, 27, 120, 196), // 1
+        elevation: 0,
+        title: Text(
+          "Profile".tr,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        drawer: Drawer(
-          child: Container(
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          stops: [
-                            0.0,
-                            1.0
-                          ],
-                          colors: [
-                            Theme.of(context).primaryColor, //.withOpacity(0.2),
-                            Theme.of(context).accentColor, //.withOpacity(0.2),
-                          ])),
-                  child: Container(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      "Allmenkul",
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.home_outlined,
-                    size: _drawerIconSize,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  title: Text(
-                    'Homepage'.tr,
-                    style: TextStyle(
-                        fontSize: _drawerFontSize,
-                        color: Theme.of(context).accentColor),
-                  ),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+        iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(
+              top: 16,
+              right: 16,
+            ),
+            child: Stack(
+              children: <Widget>[
+                IconButton(
+                  onPressed: () {
                   },
-                ),
-                Divider(
-                  color: Theme.of(context).primaryColor,
-                  height: 1,
-                  indent: 10,
-                  endIndent: 10,
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.settings,
-                    size: _drawerIconSize,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  title: Text(
-                    'Settings'.tr,
-                    style: TextStyle(
-                        fontSize: _drawerFontSize,
-                        color: Theme.of(context).accentColor),
-                  ),
-                  onTap: () {},
-                ),
-                Divider(
-                  color: Theme.of(context).primaryColor,
-                  height: 1,
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout_rounded,
-                    size: _drawerIconSize,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  title: Text(
-                    'Logout'.tr,
-                    style: TextStyle(
-                        fontSize: _drawerFontSize,
-                        color: Theme.of(context).accentColor),
-                  ),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LogoutPage()));
-                  },
-                ),
+                  icon: Icon(Icons.notifications),
+                )
               ],
             ),
-          ),
-        ),
-        body: RefreshIndicator(
-          child: ListView(
-            children: [ Stack(
-              children: [
-                Container(
-                  height: 100,
-                  child: HeaderWidget(100, false, Icons.ac_unit_outlined),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                showPopupMenu(context);
-                              });
-                            },
-                            child : Container(
-                              //padding: EdgeInsets.all(5),
-                              height: 130,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                //border: Border.all(width: 5, color: Colors.white),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 20,
-                                    offset: const Offset(5, 5),
+          )
+        ],
+      ),
+      drawer: MyDrawer(currentPage: "Profile".tr),
+       body: Stack(children: <Widget>[
+          Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      alignment: Alignment.topCenter,
+                      image: AssetImage("assets/images/profile-screen-bg.png"),
+                      fit: BoxFit.fitWidth))),
+          SafeArea(
+            child: ListView(children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 16.0, right: 16.0, top: 74.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Stack(children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.1),
+                              spreadRadius: 1,
+                              blurRadius: 7,
+                              offset:
+                                  Offset(0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: Card(
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            elevation: .0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5.0))),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 85.0, bottom: 20.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Align(
+                                          child: Text(name,
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      50, 50, 93, 1),
+                                                  fontSize: 28.0)),
+                                        ),
+                                        SizedBox(height: 10.0),
+                                        Align(
+                                          child: Text("Ankara, Turkey",
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      50, 50, 93, 1),
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.w200)),
+                                        ),
+                                        Divider(
+                                          height: 40.0,
+                                          thickness: 1.5,
+                                          indent: 32.0,
+                                          endIndent: 32.0,
+                                        ),
+                                        SizedBox(height: 25.0),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 25.0, left: 25.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "My Posts".tr,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15.0,
+                                                    color: LoginUIColors.text),
+                                              ),
+                                              Text(
+                                                "View All".tr,
+                                                style: TextStyle(
+                                                    color:
+                                                        LoginUIColors.primary,
+                                                    fontSize: 13.0,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 250,
+                                          child: GridView.count(
+                                              primary: false,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 24.0,
+                                                  vertical: 15.0),
+                                              crossAxisSpacing: 10,
+                                              mainAxisSpacing: 10,
+                                              crossAxisCount: 3,
+                                              children: <Widget>[
+                                                Container(
+                                                    height: 100,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  6.0)),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                              "https://images.unsplash.com/photo-1501601983405-7c7cabaa1581?fit=crop&w=240&q=80"),
+                                                          fit: BoxFit.cover),
+                                                    )),
+                                                Container(
+                                                    decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(6.0)),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          "https://images.unsplash.com/photo-1543747579-795b9c2c3ada?fit=crop&w=240&q=80hoto-1501601983405-7c7cabaa1581?fit=crop&w=240&q=80"),
+                                                      fit: BoxFit.cover),
+                                                )),
+                                                Container(
+                                                    decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(6.0)),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          "https://images.unsplash.com/photo-1551798507-629020c81463?fit=crop&w=240&q=80"),
+                                                      fit: BoxFit.cover),
+                                                )),
+                                                Container(
+                                                    decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(6.0)),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?fit=crop&w=240&q=80"),
+                                                      fit: BoxFit.cover),
+                                                )),
+                                                Container(
+                                                    decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(6.0)),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          "https://images.unsplash.com/photo-1503642551022-c011aafb3c88?fit=crop&w=240&q=80"),
+                                                      fit: BoxFit.cover),
+                                                )),
+                                                Container(
+                                                    decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(6.0)),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          "https://images.unsplash.com/photo-1482686115713-0fbcaced6e28?fit=crop&w=240&q=80"),
+                                                      fit: BoxFit.cover),
+                                                )),
+                                              ]),
+                                        ),
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) => MyPost()));
+                                                },
+                                                child: Text(
+                                                  'MY POSTS'.tr,
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context).primaryColor,
+                                                  ),
+                                                )),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              PostScreen()));
+                                                },
+                                                child: Text(
+                                                  'ALL POSTS'.tr,
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context).primaryColor,
+                                                  ),
+                                                )),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                              child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: hasImage
-                                  ? CircleAvatar(
-                                    child: Image.network(
-                                      "https://allmenkul.com/oc-content/plugins/profile_picture/images/" +
-                                          imageUrl,
-                                      fit: BoxFit.fill,
-                                    )
-                                  )
-                                  : Icon(
-                                      Icons.person,
-                                      size: 100,
-                                      color: Colors.grey.shade300,
+                            )),
+                      ),
+                      FractionalTranslation(
+                          translation: Offset(0.0, -0.5),
+                          child: Align(
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  showPopupMenu(context);
+                                });
+                              },
+                              child : Container(
+                                //padding: EdgeInsets.all(5),
+                                height: 130,
+                                width: 130,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  //border: Border.all(width: 5, color: Colors.white),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      blurRadius: 20,
+                                      offset: const Offset(5, 5),
                                     ),
-                              )
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        name,
-                        style:
-                            TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                              alignment: Alignment.topLeft,
-                              child: Center(
-                                child: Text(
-                                  'User Information'.tr,
-                                  style: TextStyle(
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.left,
+                                  ],
                                 ),
+                                child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: hasImage
+                                    ? CircleAvatar(
+                                      child: Image.network(
+                                        "https://allmenkul.com/oc-content/plugins/profile_picture/images/" +
+                                            imageUrl,
+                                        fit: BoxFit.fill,
+                                      )
+                                    )
+                                    : Icon(
+                                        Icons.person,
+                                        size: 100,
+                                        color: Colors.grey.shade300,
+                                      ),
+                                )
                               ),
                             ),
-                            Card(
-                              child: Container(
-                                  alignment: Alignment.topLeft,
-                                  padding: EdgeInsets.all(15),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Column(
-                                        children: <Widget>[
-                                          ...ListTile.divideTiles(
-                                              color: Colors.grey,
-                                              tiles: [
-                                                ListTile(
-                                                  leading:
-                                                      Icon(Icons.my_location),
-                                                  title: Text("Location".tr),
-                                                  subtitle: Text("Turkey"),
-                                                ),
-                                                ListTile(
-                                                  leading: Icon(Icons.email),
-                                                  title: Text("Email".tr),
-                                                  subtitle: Text(email),
-                                                ),
-                                                ListTile(
-                                                  leading: Icon(Icons.phone),
-                                                  title: Text("Phone".tr),
-                                                  subtitle: Text(phone),
-                                                ),
-                                              ])
-                                        ],
-                                      )
-                                    ],
-                                  )),
-                            ),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Row(
-                              children: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => MyPost()));
-                                    },
-                                    child: Text(
-                                      'MY POSTS'.tr,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    )),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PostScreen()));
-                                    },
-                                    child: Text(
-                                      'ALL POSTS'.tr,
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    )),
-                              ],
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                            alignment: FractionalOffset(0.5, 0.0),
+                          ))
+                    ]),
+                  ],
                 ),
-              ],
-            ),]
+              ),
+            ]),
           ),
-           onRefresh:  () {
-            return Future.delayed(
-              Duration(seconds: 1),
-              () {
-                setState(() {
-                  // Navigator.of(context).pushAndRemoveUntil(
-                  //             MaterialPageRoute(builder: (context) => ProfilePage()), (route) => false);
-                  print('refresh');
-                });
-              },
-            );
-          },
-        ),
+        ]),
         floatingActionButton: FloatingActionButton(
           child: IconButton(
               onPressed: () {
-                // print(catIds);
-                // print(cats);
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => UploadData()));
               },
               icon: Icon(Icons.add)),
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {},
-        ));
+        )
+  //      appBar: AppBar(
+  //         title: Text(
+  //           "Profile".tr,
+  //           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+  //         ),
+  //         elevation: 0.5,
+  //         iconTheme: IconThemeData(color: Colors.white),
+  //         flexibleSpace: Container(
+  //           decoration: BoxDecoration(
+  //               gradient: LinearGradient(
+  //                   begin: Alignment.topLeft,
+  //                   end: Alignment.bottomRight,
+  //                   colors: <Color>[
+  //                 Theme.of(context).primaryColor,
+  //                 Theme.of(context).accentColor,
+  //               ])),
+  //         ),
+  //         actions: [
+  //           Container(
+  //             margin: EdgeInsets.only(
+  //               top: 16,
+  //               right: 16,
+  //             ),
+  //             child: Stack(
+  //               children: <Widget>[
+  //                 IconButton(
+  //                   onPressed: () {
+  //                     setState(() {
+  //                       showDialog(
+  //                         context: context,
+  //                         builder: (BuildContext context) {
+  //                           return ThemeHelper().alartDialog("Notifications".tr,
+  //                               "There are no notifications".tr, context);
+  //                         },
+  //                       );
+  //                     });
+  //                   },
+  //                   icon: Icon(Icons.notifications),
+  //                 )
+  //               ],
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //       drawer: Drawer(
+  //         child: Container(
+  //           child: ListView(
+  //             children: [
+  //               DrawerHeader(
+  //                 decoration: BoxDecoration(
+  //                     color: Theme.of(context).primaryColor,
+  //                     gradient: LinearGradient(
+  //                         begin: Alignment.topLeft,
+  //                         end: Alignment.bottomRight,
+  //                         stops: [
+  //                           0.0,
+  //                           1.0
+  //                         ],
+  //                         colors: [
+  //                           Theme.of(context).primaryColor, //.withOpacity(0.2),
+  //                           Theme.of(context).accentColor, //.withOpacity(0.2),
+  //                         ])),
+  //                 child: Container(
+  //                   alignment: Alignment.bottomLeft,
+  //                   child: Text(
+  //                     "Allmenkul",
+  //                     style: TextStyle(
+  //                         fontSize: 25,
+  //                         color: Colors.white,
+  //                         fontWeight: FontWeight.bold),
+  //                   ),
+  //                 ),
+  //               ),
+  //               ListTile(
+  //                 leading: Icon(
+  //                   Icons.home_outlined,
+  //                   size: _drawerIconSize,
+  //                   color: Theme.of(context).accentColor,
+  //                 ),
+  //                 title: Text(
+  //                   'Homepage'.tr,
+  //                   style: TextStyle(
+  //                       fontSize: _drawerFontSize,
+  //                       color: Theme.of(context).accentColor),
+  //                 ),
+  //                 onTap: () {
+  //                   Navigator.push(context,
+  //                       MaterialPageRoute(builder: (context) => HomePage()));
+  //                 },
+  //               ),
+  //               Divider(
+  //                 color: Theme.of(context).primaryColor,
+  //                 height: 1,
+  //                 indent: 10,
+  //                 endIndent: 10,
+  //               ),
+  //               ListTile(
+  //                 leading: Icon(
+  //                   Icons.settings,
+  //                   size: _drawerIconSize,
+  //                   color: Theme.of(context).accentColor,
+  //                 ),
+  //                 title: Text(
+  //                   'Settings'.tr,
+  //                   style: TextStyle(
+  //                       fontSize: _drawerFontSize,
+  //                       color: Theme.of(context).accentColor),
+  //                 ),
+  //                 onTap: () {},
+  //               ),
+  //               Divider(
+  //                 color: Theme.of(context).primaryColor,
+  //                 height: 1,
+  //               ),
+  //               ListTile(
+  //                 leading: Icon(
+  //                   Icons.logout_rounded,
+  //                   size: _drawerIconSize,
+  //                   color: Theme.of(context).accentColor,
+  //                 ),
+  //                 title: Text(
+  //                   'Logout'.tr,
+  //                   style: TextStyle(
+  //                       fontSize: _drawerFontSize,
+  //                       color: Theme.of(context).accentColor),
+  //                 ),
+  //                 onTap: () {
+  //                   Navigator.push(context,
+  //                       MaterialPageRoute(builder: (context) => LogoutPage()));
+  //                 },
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       body: RefreshIndicator(
+  //         child: ListView(
+  //           children: [ Stack(
+  //             children: [
+  //               Container(
+  //                 height: 100,
+  //                 child: HeaderWidget(100, false, Icons.ac_unit_outlined),
+  //               ),
+  //               Container(
+  //                 alignment: Alignment.center,
+  //                 margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
+  //                 padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+  //                 child: Column(
+  //                   children: [
+  //                     Stack(
+  //                       children: [
+  //                         GestureDetector(
+  //                           onTap: () {
+  //                             setState(() {
+  //                               showPopupMenu(context);
+  //                             });
+  //                           },
+  //                           child : Container(
+  //                             //padding: EdgeInsets.all(5),
+  //                             height: 130,
+  //                             width: 130,
+  //                             decoration: BoxDecoration(
+  //                               borderRadius: BorderRadius.circular(100),
+  //                               //border: Border.all(width: 5, color: Colors.white),
+  //                               color: Colors.white,
+  //                               boxShadow: [
+  //                                 BoxShadow(
+  //                                   color: Colors.grey,
+  //                                   blurRadius: 20,
+  //                                   offset: const Offset(5, 5),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                             child: ClipRRect(
+  //                             borderRadius: BorderRadius.circular(100),
+  //                             child: hasImage
+  //                                 ? CircleAvatar(
+  //                                   child: Image.network(
+  //                                     "https://allmenkul.com/oc-content/plugins/profile_picture/images/" +
+  //                                         imageUrl,
+  //                                     fit: BoxFit.fill,
+  //                                   )
+  //                                 )
+  //                                 : Icon(
+  //                                     Icons.person,
+  //                                     size: 100,
+  //                                     color: Colors.grey.shade300,
+  //                                   ),
+  //                             )
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     SizedBox(
+  //                       height: 20,
+  //                     ),
+  //                     Text(
+  //                       name,
+  //                       style:
+  //                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+  //                     ),
+  //                     SizedBox(
+  //                       height: 10,
+  //                     ),
+  //                     Container(
+  //                       padding: EdgeInsets.all(10),
+  //                       child: Column(
+  //                         children: <Widget>[
+  //                           Container(
+  //                             padding:
+  //                                 const EdgeInsets.only(left: 8.0, bottom: 4.0),
+  //                             alignment: Alignment.topLeft,
+  //                             child: Center(
+  //                               child: Text(
+  //                                 'User Information'.tr,
+  //                                 style: TextStyle(
+  //                                   color: Colors.black54,
+  //                                   fontWeight: FontWeight.w500,
+  //                                   fontSize: 16,
+  //                                 ),
+  //                                 textAlign: TextAlign.left,
+  //                               ),
+  //                             ),
+  //                           ),
+  //                           Card(
+  //                             child: Container(
+  //                                 alignment: Alignment.topLeft,
+  //                                 padding: EdgeInsets.all(15),
+  //                                 child: Column(
+  //                                   children: <Widget>[
+  //                                     Column(
+  //                                       children: <Widget>[
+  //                                         ...ListTile.divideTiles(
+  //                                             color: Colors.grey,
+  //                                             tiles: [
+  //                                               ListTile(
+  //                                                 leading:
+  //                                                     Icon(Icons.my_location),
+  //                                                 title: Text("Location".tr),
+  //                                                 subtitle: Text("Turkey"),
+  //                                               ),
+  //                                               ListTile(
+  //                                                 leading: Icon(Icons.email),
+  //                                                 title: Text("Email".tr),
+  //                                                 subtitle: Text(email),
+  //                                               ),
+  //                                               ListTile(
+  //                                                 leading: Icon(Icons.phone),
+  //                                                 title: Text("Phone".tr),
+  //                                                 subtitle: Text(phone),
+  //                                               ),
+  //                                             ])
+  //                                       ],
+  //                                     )
+  //                                   ],
+  //                                 )),
+  //                           ),
+  //                           SizedBox(
+  //                             height: 15,
+  //                           ),
+  //                           Row(
+  //                             children: [
+  //                               TextButton(
+  //                                   onPressed: () {
+  //                                     Navigator.push(
+  //                                         context,
+  //                                         MaterialPageRoute(
+  //                                             builder: (context) => MyPost()));
+  //                                   },
+  //                                   child: Text(
+  //                                     'MY POSTS'.tr,
+  //                                     style: TextStyle(
+  //                                       fontSize: 15,
+  //                                       fontWeight: FontWeight.bold,
+  //                                       color: Theme.of(context).primaryColor,
+  //                                     ),
+  //                                   )),
+  //                               TextButton(
+  //                                   onPressed: () {
+  //                                     Navigator.push(
+  //                                         context,
+  //                                         MaterialPageRoute(
+  //                                             builder: (context) =>
+  //                                                 PostScreen()));
+  //                                   },
+  //                                   child: Text(
+  //                                     'ALL POSTS'.tr,
+  //                                     style: TextStyle(
+  //                                       fontSize: 15,
+  //                                       fontWeight: FontWeight.bold,
+  //                                       color: Theme.of(context).primaryColor,
+  //                                     ),
+  //                                   )),
+  //                             ],
+  //                           )
+  //                         ],
+  //                       ),
+  //                     )
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),]
+  //         ),
+  //          onRefresh:  () {
+  //           return Future.delayed(
+  //             Duration(seconds: 1),
+  //             () {
+  //               setState(() {
+  //                 // Navigator.of(context).pushAndRemoveUntil(
+  //                 //             MaterialPageRoute(builder: (context) => ProfilePage()), (route) => false);
+  //                 print('refresh');
+  //               });
+  //             },
+  //           );
+  //         },
+  //       ),
+  //       floatingActionButton: FloatingActionButton(
+  //         child: IconButton(
+  //             onPressed: () {
+  //               // print(catIds);
+  //               // print(cats);
+  //               Navigator.push(context,
+  //                   MaterialPageRoute(builder: (context) => UploadData()));
+  //             },
+  //             icon: Icon(Icons.add)),
+  //         backgroundColor: Theme.of(context).primaryColor,
+  //         onPressed: () {},
+  //       )
+    );
   }
 
   showPopupMenu(BuildContext context) {

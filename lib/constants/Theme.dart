@@ -9,7 +9,9 @@ class LoginUIColors {
 
   static const Color defaultColor = Color.fromRGBO(136, 136, 136, 1.0);
 
-  static const Color primary = Color.fromARGB(255, 4, 28, 107);
+  static const Color _primary = Color.fromARGB(255, 4, 28, 107);
+
+  static const Color primary = Color.fromARGB(255, 75, 97, 219);
 
   static Color accent = HexColor('#2A6AB1');
 

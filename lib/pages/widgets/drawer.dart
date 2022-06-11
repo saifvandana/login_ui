@@ -1,134 +1,136 @@
-// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
+// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors, curly_braces_in_flow_control_structures, use_key_in_widget_constructors
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:login_ui/pages/logout_page.dart';
+import 'package:login_ui/pages/profile_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/Theme.dart';
+import '../home_page.dart';
 import 'drawer_tile.dart';
 
 class MyDrawer extends StatelessWidget {
   final String currentPage;
-  const MyDrawer({required this.currentPage});
+  MyDrawer({required this.currentPage});
 
+  String loggedIn = '';
+  Future getUserInfo() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.getString('loggedIn') != null) {
+      loggedIn = preferences.getString('loggedIn')!;
+    }
+    //email = preferences.getString('email');
+  }
 
   @override
   Widget build(BuildContext context) {
+    getUserInfo();
+
     return Drawer(
-      child: Container(
-        color: LoginUIColors.primary,
-        child: Column(
-          children: [
-            SizedBox(
+        child: Container(
+      color: LoginUIColors.white,
+      child: Column(children: [
+        Container(
             height: MediaQuery.of(context).size.height * 0.1,
             width: MediaQuery.of(context).size.width * 0.85,
             child: SafeArea(
               bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24.0, right: 20.0),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // crossAxisAlignment: CrossAxisAlignment.baseline,
-                  children: [
-                    Container(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                      child: Image.asset(
-                          'assets/images/allmenkul.jpg' //'assets/images/newlogo.svg',
-                          ),),
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(width: 5, color: Colors.white),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 20,
-                            offset: const Offset(5, 5),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: IconButton(
-                          icon: Icon(Icons.menu,
-                              color: LoginUIColors.white.withOpacity(0.82),
-                              size: 24.0),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          }),
-                    ),
-                  ],
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 26),
+                  child: Image.asset(
+                    'assets/images/allmenkul.jpg',
+                    height: 40,
+                  ),
                 ),
               ),
             )),
-            Expanded(
+        Expanded(
           flex: 2,
           child: ListView(
-            padding: EdgeInsets.only(top: 36, left: 8, right: 16),
+            padding: EdgeInsets.only(top: 44, left: 16, right: 16),
             children: [
               DrawerTile(
                   icon: Icons.home,
                   onTap: () {
                     if (currentPage != "Home")
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                          (route) => false);
                   },
                   iconColor: LoginUIColors.primary,
-                  title: "Home",
+                  title: "Home".tr,
                   isSelected: currentPage == "Home" ? true : false),
               DrawerTile(
-                  icon: Icons.settings_input_component,
-                  onTap: () {
-                    if (currentPage != "Components")
-                      Navigator.pushReplacementNamed(context, '/components');
-                  },
-                  iconColor: LoginUIColors.error,
-                  title: "Components",
-                  isSelected: currentPage == "Components" ? true : false),
-              DrawerTile(
-                  icon: Icons.post_add_sharp,
-                  onTap: () {
-                    if (currentPage != "Articles")
-                      Navigator.pushReplacementNamed(context, '/articles');
-                  },
-                  iconColor: LoginUIColors.primary,
-                  title: "Articles",
-                  isSelected: currentPage == "Articles" ? true : false),
-              DrawerTile(
-                  icon: Icons.person,
+                  icon: Icons.pie_chart,
                   onTap: () {
                     if (currentPage != "Profile")
-                      Navigator.pushReplacementNamed(context, '/profile');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage()));
                   },
                   iconColor: LoginUIColors.warning,
-                  title: "Profile",
+                  title: "Profile".tr,
                   isSelected: currentPage == "Profile" ? true : false),
-              DrawerTile(
-                  icon: Icons.account_box,
-                  onTap: () {
-                    if (currentPage != "Account")
-                      Navigator.pushReplacementNamed(context, '/account');
-                  },
-                  iconColor: LoginUIColors.info,
-                  title: "Account",
-                  isSelected: currentPage == "Account" ? true : false),
               DrawerTile(
                   icon: Icons.settings,
                   onTap: () {
-                    if (currentPage != "Settings")
-                      Navigator.pushReplacementNamed(context, '/settings');
+                    if (currentPage != "Settings") {}
                   },
-                  iconColor:LoginUIColors.info,
+                  iconColor: LoginUIColors.success,
                   title: "Settings".tr,
                   isSelected: currentPage == "Settings" ? true : false),
+              //if (loggedIn == 'true') ...[
+                DrawerTile(
+                  icon: Icons.logout,
+                  onTap: () {
+                    if (currentPage != "Logout") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LogoutPage()));
+                    }
+                  },
+                  iconColor: LoginUIColors.error,
+                  title: "Logout".tr,
+                  isSelected: currentPage == "Settings" ? true : false),
+              //],
             ],
           ),
         ),
-          ],
+        Expanded(
+          flex: 1,
+          child: Container(
+              padding: EdgeInsets.only(left: 8, right: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Divider(height: 4, thickness: 0, color: LoginUIColors.muted),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16.0, left: 16, bottom: 8),
+                    child: Text("DOCUMENTATION".tr,
+                        style: TextStyle(
+                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                          fontSize: 15,
+                        )),
+                  ),
+                  DrawerTile(
+                      icon: Icons.airplanemode_active,
+                      onTap: () {},
+                      iconColor: LoginUIColors.muted,
+                      title: "Getting Started".tr,
+                      isSelected:
+                          currentPage == "Getting started" ? true : false),
+                ],
+              )),
         ),
-      ),
-    );
+      ]),
+    ));
   }
 }

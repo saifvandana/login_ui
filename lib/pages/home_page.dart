@@ -23,6 +23,7 @@ import 'forgot_password_verification_page.dart';
 import '../common/theme_helper.dart';
 import '../data/data.dart';
 import 'widgets/category_item.dart';
+import 'widgets/drawer.dart';
 import 'widgets/search_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -174,6 +175,7 @@ class _HomePageState extends State<HomePage> {
         iconTheme: IconThemeData(color: Theme.of(context).accentColor),
       ),
       drawer: buildDrawer(context),
+      //drawer: MyDrawer(currentPage: "Homepage".tr),
       body: FooterView(
         children: [
           Stack(
