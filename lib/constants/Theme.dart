@@ -13,6 +13,8 @@ class LoginUIColors {
 
   static const Color primary = Color.fromARGB(255, 75, 97, 219);
 
+  static const Color initial = Color.fromRGBO(23, 43, 77, 1.0);
+
   static Color accent = HexColor('#2A6AB1');
 
   static const Color secondary = Color.fromRGBO(68, 68, 68, 1.0);
@@ -31,7 +33,7 @@ class LoginUIColors {
 
   static const Color warning = Color.fromRGBO(255, 178, 54, 1.0);
 
-  static const Color text = Color.fromRGBO(44, 44, 44, 1.0);
+  //static const Color text = Color.fromRGBO(44, 44, 44, 1.0);
 
   static const Color bgColorScreen = Color.fromRGBO(255, 255, 255, 1.0);
 
@@ -45,7 +47,7 @@ class LoginUIColors {
 
   static const Color muted = Color.fromRGBO(136, 152, 170, 1.0);
 
-  // static const Color text = Color.fromRGBO(50, 50, 93, 1.0);
+  static const Color text = Color.fromRGBO(50, 50, 93, 1.0);
 
   static const Color time = Color.fromRGBO(154, 154, 154, 1.0);
 

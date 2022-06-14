@@ -24,7 +24,7 @@ import '/pages/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.setString('loggedIn', 'false');
+  //preferences.setString('loggedIn', 'false');
   String locale = await Devicelocale.currentLocale;
   print('locale ' + locale);
   Locale defaultLanguage =

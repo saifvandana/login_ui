@@ -18,10 +18,12 @@ import 'package:login_ui/pages/profile_page.dart';
 import 'package:login_ui/pages/registration_page.dart';
 import 'package:login_ui/pages/splash_screen.dart';
 import 'package:login_ui/pages/search_page.dart';
+import 'package:login_ui/pages/widgets/mydrawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'forgot_password_verification_page.dart';
 import '../common/theme_helper.dart';
 import '../data/data.dart';
+import 'login.dart';
 import 'widgets/category_item.dart';
 import 'widgets/drawer.dart';
 import 'widgets/search_widget.dart';
@@ -159,7 +161,7 @@ class _HomePageState extends State<HomePage> {
               } else {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  MaterialPageRoute(builder: (context) => Login()),
                 );
                 //print(cats);
               }
@@ -174,8 +176,8 @@ class _HomePageState extends State<HomePage> {
         elevation: 10,
         iconTheme: IconThemeData(color: Theme.of(context).accentColor),
       ),
-      drawer: buildDrawer(context),
-      //drawer: MyDrawer(currentPage: "Homepage".tr),
+      //drawer: buildDrawer(context),
+      drawer: AppDrawer("Home"),
       body: FooterView(
         children: [
           Stack(
