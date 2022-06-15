@@ -13,8 +13,11 @@ import 'package:rating_dialog/rating_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common/theme_helper.dart';
+import 'my_post.dart';
+import 'widgets/card-small.dart';
 import 'widgets/drawer.dart';
 import 'widgets/header_widget.dart';
+import 'widgets/mydrawer.dart';
 import 'widgets/navbar.dart';
 
 class UserProfile extends StatefulWidget {
@@ -33,6 +36,10 @@ class _UserProfileState extends State<UserProfile> {
       avg = '',
       myId = ''; //, img = '';
   bool hasImage = false, loading = true;
+  int count = 0;
+  List myItem = [];
+  List<String> itemImages = [];
+  bool hasPosts = false;
 
   @override
   void initState() {
@@ -40,6 +47,7 @@ class _UserProfileState extends State<UserProfile> {
     getImage();
     getUserInfo();
     getAvgRating();
+    userPosts();
   }
 
   Future getProfile(String img, String id) async {
@@ -50,11 +58,14 @@ class _UserProfileState extends State<UserProfile> {
     var content = json.decode(response.body);
     print(content);
     if (content['hasImage'] == 'true') {
-      setState((){ 
+      setState(() {
         img = content["url"];
-        loading = false; });
+        loading = false;
+      });
     } else {
-      setState((){ loading = false; });
+      setState(() {
+        loading = false;
+      });
       // print('false');
       // print(content);
     }
@@ -101,6 +112,42 @@ class _UserProfileState extends State<UserProfile> {
     }
   }
 
+  Future userPosts() async {
+    itemImages.clear();
+    String token = await getToken();
+    var url =
+        "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/search";
+
+    var response = await http.get(Uri.parse(url));
+
+    final content = json.decode(response.body);
+    myItem = content['items'];
+    myItem.removeWhere((element) => element["fk_i_user_id"] != widget.id);
+    print(myItem);
+    count = myItem.length;
+    if (count > 0) {
+      setState(() {
+        hasPosts = true;
+        for (int i = 0; i < 2; i++) {
+          if (i < count) {
+            if (myItem[i]["resources"].length > i) {
+              String img = "https://allmenkul.com/" +
+                  myItem[i]["resources"][0]['s_path'] +
+                  myItem[i]["resources"][0]['pk_i_id'] +
+                  "." +
+                  myItem[i]["resources"][0]['s_extension'];
+              itemImages.add(img);
+            } else {
+              itemImages.add("https://via.placeholder.com/200");
+            }
+          }
+        }
+      });
+    }
+    print(count);
+  }
+
+  //for ratings
   Future getUsername(String name, String id) async {
     var url =
         "https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/user/" +
@@ -109,6 +156,7 @@ class _UserProfileState extends State<UserProfile> {
     if (response.statusCode == 200) {
       var content = json.decode(response.body);
       name = content["s_name"];
+
       ///phone = content["s_phone_mobile"];
       //print(content);
     } else {
@@ -224,7 +272,8 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,//Color.fromARGB(255, 27, 120, 196), // 1
+          backgroundColor:
+              Colors.transparent, //Color.fromARGB(255, 27, 120, 196), // 1
           elevation: 0,
           title: Text(
             "Profile".tr,
@@ -258,7 +307,7 @@ class _UserProfileState extends State<UserProfile> {
             )
           ],
         ),
-        drawer: MyDrawer(currentPage: "Profile".tr),
+        drawer: AppDrawer("Profile"),
         body: Stack(children: <Widget>[
           Container(
               decoration: BoxDecoration(
@@ -305,20 +354,19 @@ class _UserProfileState extends State<UserProfile> {
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          // crossAxisAlignment:
-                                          //     CrossAxisAlignment.center,
                                           children: [
-                                            Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                              size: 20,
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8.0),
+                                              child: Text(avg,
+                                                  style: TextStyle(
+                                                      color:
+                                                          LoginUIColors.warning,
+                                                      fontSize: 20)),
                                             ),
-                                            Text(
-                                              avg,
-                                              style: TextStyle(
-                                                  color: Colors.amber,
-                                                  fontSize: 20),
-                                            )
+                                            Icon(Icons.star_border,
+                                                color: LoginUIColors.warning,
+                                                size: 25)
                                           ],
                                         ),
                                         SizedBox(height: 40.0),
@@ -341,29 +389,51 @@ class _UserProfileState extends State<UserProfile> {
                                                                       .all(5.0),
                                                               child: Card(
                                                                 child: Column(
-                                                                  children: [
-                                                                    Text(name,
-                                                                      style: TextStyle(
-                                                                          color: Color.fromRGBO(
-                                                                              50, 50, 93, 1),
-                                                                          fontSize: 25.0, fontWeight: FontWeight.bold), ),
-                                                                    SizedBox(height: 30,),
-                                                                    Text(avg,
-                                                                    style: TextStyle(
-                                                                        color: Color.fromRGBO(
-                                                                            50, 50, 93, 1),
-                                                                        fontSize: 28.0, fontWeight: FontWeight.bold)),
-                                                                    SizedBox(height: 10,),
-                                                                    RatingBarIndicator(
-                                                                      itemBuilder: (context, index) => Icon(
-                                                                        Icons.star,
-                                                                        color: Colors.amber,
+                                                                    children: [
+                                                                      Text(
+                                                                        name,
+                                                                        style: TextStyle(
+                                                                            color: Color.fromRGBO(
+                                                                                50,
+                                                                                50,
+                                                                                93,
+                                                                                1),
+                                                                            fontSize:
+                                                                                25.0,
+                                                                            fontWeight:
+                                                                                FontWeight.bold),
                                                                       ),
-                                                                      itemSize: 30.0,
-                                                                      unratedColor: Colors.amber.withAlpha(50),
-                                                                      rating: double.parse(avg),
-                                                                    ),
-                                                                  ]),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            30,
+                                                                      ),
+                                                                      Text(avg,
+                                                                          style: TextStyle(
+                                                                              color: Color.fromRGBO(50, 50, 93, 1),
+                                                                              fontSize: 28.0,
+                                                                              fontWeight: FontWeight.bold)),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      RatingBarIndicator(
+                                                                        itemBuilder:
+                                                                            (context, index) =>
+                                                                                Icon(
+                                                                          Icons
+                                                                              .star,
+                                                                          color:
+                                                                              Colors.amber,
+                                                                        ),
+                                                                        itemSize:
+                                                                            30.0,
+                                                                        unratedColor: Colors
+                                                                            .amber
+                                                                            .withAlpha(50),
+                                                                        rating:
+                                                                            double.parse(avg),
+                                                                      ),
+                                                                    ]),
                                                               ),
                                                             ),
                                                           ),
@@ -469,30 +539,7 @@ class _UserProfileState extends State<UserProfile> {
                                           indent: 32.0,
                                           endIndent: 32.0,
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 32.0, right: 32.0),
-                                          child: Align(
-                                            child: Text(
-                                                "An artist of considerable range, I provide quality service",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        82, 95, 127, 1),
-                                                    fontSize: 15.0,
-                                                    fontWeight:
-                                                        FontWeight.w200)),
-                                          ),
-                                        ),
                                         SizedBox(height: 15.0),
-                                        Align(
-                                            child: Text("Show more",
-                                                style: TextStyle(
-                                                    color:
-                                                        LoginUIColors.primary,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 16.0))),
-                                        SizedBox(height: 25.0),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               right: 25.0, left: 25.0),
@@ -519,81 +566,39 @@ class _UserProfileState extends State<UserProfile> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 250,
-                                          child: GridView.count(
-                                              primary: false,
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 24.0,
-                                                  vertical: 15.0),
-                                              crossAxisSpacing: 10,
-                                              mainAxisSpacing: 10,
-                                              crossAxisCount: 3,
-                                              children: <Widget>[
-                                                Container(
-                                                    height: 100,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  6.0)),
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              "https://images.unsplash.com/photo-1501601983405-7c7cabaa1581?fit=crop&w=240&q=80"),
-                                                          fit: BoxFit.cover),
-                                                    )),
-                                                Container(
-                                                    decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(6.0)),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          "https://images.unsplash.com/photo-1543747579-795b9c2c3ada?fit=crop&w=240&q=80hoto-1501601983405-7c7cabaa1581?fit=crop&w=240&q=80"),
-                                                      fit: BoxFit.cover),
-                                                )),
-                                                Container(
-                                                    decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(6.0)),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          "https://images.unsplash.com/photo-1551798507-629020c81463?fit=crop&w=240&q=80"),
-                                                      fit: BoxFit.cover),
-                                                )),
-                                                Container(
-                                                    decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(6.0)),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?fit=crop&w=240&q=80"),
-                                                      fit: BoxFit.cover),
-                                                )),
-                                                Container(
-                                                    decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(6.0)),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          "https://images.unsplash.com/photo-1503642551022-c011aafb3c88?fit=crop&w=240&q=80"),
-                                                      fit: BoxFit.cover),
-                                                )),
-                                                Container(
-                                                    decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(6.0)),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          "https://images.unsplash.com/photo-1482686115713-0fbcaced6e28?fit=crop&w=240&q=80"),
-                                                      fit: BoxFit.cover),
-                                                )),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              right: 24.0, left: 24.0),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                if (hasPosts) ...[
+                                                  for (int i = 0;
+                                                      i < itemImages.length;
+                                                      i++) ...[
+                                                    CardSmall(
+                                                        cta: "View post".tr,
+                                                        title: name,
+                                                        img: itemImages[i],
+                                                        tap: () {
+                                                          // Navigator.push(
+                                                          //     context,
+                                                          //     MaterialPageRoute(
+                                                          //         builder:
+                                                          //             (context) =>
+                                                          //                 MyPost()));
+                                                        }),
+                                                  ],
+                                                ],
+                                                if (!hasPosts) ...[
+                                                  SizedBox(height: 150.0),
+                                                  Text('No Posts yet'.tr),
+                                                  SizedBox(height: 150.0),
+                                                ]
                                               ]),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -673,10 +678,12 @@ class _UserProfileState extends State<UserProfile> {
                         leading: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: CircleAvatar(
-                                  child: Image.network(
-                                  "https://allmenkul.com/oc-content/plugins/profile_picture/images/profile"+ list[index]["fk_i_from_user_id"] + ".jpg",
-                                  fit: BoxFit.fill,
-                                )),
+                              child: Image.network(
+                            "https://allmenkul.com/oc-content/plugins/profile_picture/images/profile" +
+                                list[index]["fk_i_from_user_id"] +
+                                ".jpg",
+                            fit: BoxFit.fill,
+                          )),
                           // (img.isNotEmpty)
                           //     ? CircleAvatar(
                           //         child: Image.network(
@@ -700,7 +707,10 @@ class _UserProfileState extends State<UserProfile> {
                           rating: double.parse(list[index]["i_cat0"]),
                         ), //Text('Two-line ListTile')
                         subtitle: Text(list[index]["s_comment"]),
-                        trailing: Text(list[index]["d_datetime"].substring(0, 10), style: TextStyle(fontSize: 10),),
+                        trailing: Text(
+                          list[index]["d_datetime"].substring(0, 10),
+                          style: TextStyle(fontSize: 10),
+                        ),
                       ));
                     },
                   ),

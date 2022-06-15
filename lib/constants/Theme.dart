@@ -33,6 +33,8 @@ class LoginUIColors {
 
   static const Color warning = Color.fromRGBO(255, 178, 54, 1.0);
 
+  static const Color header = Color.fromRGBO(82, 95, 127, 1.0);
+
   //static const Color text = Color.fromRGBO(44, 44, 44, 1.0);
 
   static const Color bgColorScreen = Color.fromRGBO(255, 255, 255, 1.0);

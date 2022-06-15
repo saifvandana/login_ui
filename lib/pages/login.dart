@@ -21,7 +21,7 @@ import 'register.dart';
 import 'widgets/input.dart';
 
 class Login extends StatefulWidget {
-  const Login({ Key? key }) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -89,12 +89,12 @@ class _LoginState extends State<Login> {
         preferences.setString('access_token', content['access_token']);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => ProfilePage()));
-
       } else {
         EasyLoading.dismiss();
         print(response.body);
         Fluttertoast.showToast(
-          msg: "email or password invalid".tr, //"${content['message']}", //"email or password invalid".tr,
+          msg: "email or password invalid"
+              .tr, //"${content['message']}", //"email or password invalid".tr,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.SNACKBAR,
         );
@@ -105,262 +105,316 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.white),
-        elevation: 0,
-      ),
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/images/register-bg.png"),
-                    fit: BoxFit.cover)),
-          ),
-          SafeArea(
-            child: ListView(children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 25, left: 24.0, right: 24.0, bottom: 32),
-                child: Card(
-                    elevation: 5,
-                    clipBehavior: Clip.antiAlias,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          decoration: BoxDecoration(
-                              color: LoginUIColors.white,
-                              border: Border(
-                                  bottom: BorderSide(
-                                      width: 0.5,
-                                      color: LoginUIColors.muted))),
-                          child: Column(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
-                            children: [
-                               Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0,),
-                                child: Text('Sign In with Google'.tr,
-                                    style: TextStyle(
-                                        color: LoginUIColors.text,
-                                        fontSize: 15.0)),
-                              )),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 5.0,  bottom: 8),
-                                child: FloatingActionButton.extended(
-                                  onPressed: () {},
-                                  icon: Image.asset(
-                                    'assets/images/google-logo.png',
-                                    height: 25,
-                                    width: 25,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: Colors.white),
+          elevation: 0,
+        ),
+        extendBodyBehindAppBar: true,
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/register-bg.png"),
+                      fit: BoxFit.cover)),
+            ),
+            SafeArea(
+              child: ListView(children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 25, left: 24.0, right: 24.0, bottom: 32),
+                  child: Card(
+                      elevation: 5,
+                      clipBehavior: Clip.antiAlias,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            decoration: BoxDecoration(
+                                color: LoginUIColors.white,
+                                border: Border(
+                                    bottom: BorderSide(
+                                        width: 0.5,
+                                        color: LoginUIColors.muted))),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 8.0,
                                   ),
-                                  label: Text(
-                                    'GOOGLE'.tr,
-                                    style: TextStyle(
-                                      color: LoginUIColors.primary,
-                                      fontWeight:
-                                          FontWeight
-                                              .w600,
-                                      fontSize: 13)),
-                                  backgroundColor: Colors.white,
-                                  shape:RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4.0), )
-                                )
-                              ), 
-                              //Divider(height: 1,)     
-                            ],
+                                  child: Text('Sign In with Google'.tr,
+                                      style: TextStyle(
+                                          color: LoginUIColors.text,
+                                          fontSize: 15.0)),
+                                )),
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 5.0, bottom: 8),
+                                    child: FloatingActionButton.extended(
+                                        onPressed: () {},
+                                        icon: Image.asset(
+                                          'assets/images/google-logo.png',
+                                          height: 25,
+                                          width: 25,
+                                        ),
+                                        label: Text('GOOGLE'.tr,
+                                            style: TextStyle(
+                                                color: LoginUIColors.primary,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 13)),
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4.0),
+                                        ))),
+                                //Divider(height: 1,)
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            color: Color.fromRGBO(244, 245, 247, 1),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Center(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 24.0, bottom: 0.0),
-                                      child: Center(
-                                        child: Column(
+                          //ListView(children: [],),
+                          Container(
+                              height: MediaQuery.of(context).size.height * 0.6,
+                              color: Color.fromRGBO(244, 245, 247, 1),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 24.0, bottom: 0.0),
+                                        child: Center(
+                                            child: Column(
                                           children: [
                                             Text(
                                               'Welcome'.tr,
                                               style: TextStyle(
-                                                  fontSize: 30, fontWeight: FontWeight.bold),
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               'Sign in to your account'.tr,
-                                              style: TextStyle(color: Colors.grey),
+                                              style:
+                                                  TextStyle(color: Colors.grey),
                                             ),
                                           ],
                                         )
-                                        // Text(
-                                        //     "Or sign up with the classic way",
-                                        //     style: TextStyle(
-                                        //         color: LoginUIColors.text,
-                                        //         fontWeight: FontWeight.w200,
-                                        //         fontSize: 16)),
-                                      ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            controller: _email,
-                                            keyboardType: TextInputType.emailAddress,
-                                            autofocus: false,
-                                            cursorColor: LoginUIColors.muted,
-                                            style:TextStyle(fontSize: 14.0, color: LoginUIColors.initial),
-                                              textAlignVertical: TextAlignVertical(y: 0.6),
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: LoginUIColors.white,
-                                              hintStyle: TextStyle(
-                                                color: LoginUIColors.muted,
-                                              ),
-                                              prefixIcon: Icon(Icons.email),
-                                              enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(4.0),
-                                                  borderSide: BorderSide(
-                                                      color: LoginUIColors.border, width: 1.0, style: BorderStyle.solid)),
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(4.0),
-                                                  borderSide: BorderSide(
-                                                      color: LoginUIColors.border, width: 1.0, style: BorderStyle.solid)),
-                                              hintText: "Email".tr)
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            controller: _password,
-                                            obscureText: _obscureText,
-                                            autofocus: false,
-                                            cursorColor: LoginUIColors.muted,
-                                            style:TextStyle(fontSize: 14.0, color: LoginUIColors.initial),
-                                              textAlignVertical: TextAlignVertical(y: 0.6),
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              fillColor: LoginUIColors.white,
-                                              hintStyle: TextStyle(
-                                                color: LoginUIColors.muted,
-                                              ),
-                                              prefixIcon: Padding(
-                                                padding: EdgeInsets.only(right: 5),
-                                                child: GestureDetector(
-                                                  child: _obscureText
-                                                      ? Icon(Icons.lock)
-                                                      : Icon(Icons.lock_open),
-                                                  onTap: _toggle,
-                                                ),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(4.0),
-                                                  borderSide: BorderSide(
-                                                      color: LoginUIColors.border, width: 1.0, style: BorderStyle.solid)),
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(4.0),
-                                                  borderSide: BorderSide(
-                                                      color: LoginUIColors.border, width: 1.0, style: BorderStyle.solid)),
-                                              hintText: "Password".tr)
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.fromLTRB(10, 0, 10, 20),
-                                          alignment: Alignment.topRight,
-                                          child: Text.rich(TextSpan(children: [
-                                            TextSpan(
-                                              text: 'Forgot your password?'.tr,
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ForgotPassword()));
-                                                },
-                                              style: TextStyle(
-                                                  color: Colors.blueGrey),
+                                            // Text(
+                                            //     "Or sign up with the classic way",
+                                            //     style: TextStyle(
+                                            //         color: LoginUIColors.text,
+                                            //         fontWeight: FontWeight.w200,
+                                            //         fontSize: 16)),
                                             ),
-                                          ])),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                          //child: Text('Don\'t have an account? Create'),
-                                          child: Text.rich(TextSpan(children: [
-                                            TextSpan(text: "Don't have an account? ".tr),
-                                            TextSpan(
-                                              text: 'Create'.tr,
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              Register()));
-                                                },
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: LoginUIColors.primary),
-                                            ),
-                                          ])),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 16),
-                                      child: Center(
-                                        child: FlatButton(
-                                          textColor: LoginUIColors.white,
-                                          color: LoginUIColors.primary,
-                                          onPressed: () {
-                                            login(email, password);
-                                          },
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(4.0),
-                                          ),
-                                          child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 16.0,
-                                                  right: 16.0,
-                                                  top: 12,
-                                                  bottom: 12),
-                                              child: Text("LOGIN".tr,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 16.0))),
-                                        ),
                                       ),
-                                    )
-                                  ],
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: TextField(
+                                                controller: _email,
+                                                keyboardType:
+                                                    TextInputType.emailAddress,
+                                                autofocus: false,
+                                                cursorColor:
+                                                    LoginUIColors.muted,
+                                                style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    color:
+                                                        LoginUIColors.initial),
+                                                textAlignVertical:
+                                                    TextAlignVertical(y: 0.6),
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    fillColor:
+                                                        LoginUIColors.white,
+                                                    hintStyle: TextStyle(
+                                                      color:
+                                                          LoginUIColors.muted,
+                                                    ),
+                                                    prefixIcon:
+                                                        Icon(Icons.email),
+                                                    enabledBorder: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                4.0),
+                                                        borderSide: BorderSide(
+                                                            color: LoginUIColors
+                                                                .border,
+                                                            width: 1.0,
+                                                            style: BorderStyle
+                                                                .solid)),
+                                                    focusedBorder: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4.0),
+                                                        borderSide: BorderSide(
+                                                            color: LoginUIColors
+                                                                .border,
+                                                            width: 1.0,
+                                                            style: BorderStyle
+                                                                .solid)),
+                                                    hintText: "Email".tr)),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: TextField(
+                                                controller: _password,
+                                                obscureText: _obscureText,
+                                                autofocus: false,
+                                                cursorColor:
+                                                    LoginUIColors.muted,
+                                                style: TextStyle(
+                                                    fontSize: 14.0,
+                                                    color:
+                                                        LoginUIColors.initial),
+                                                textAlignVertical:
+                                                    TextAlignVertical(y: 0.6),
+                                                decoration: InputDecoration(
+                                                    filled: true,
+                                                    fillColor:
+                                                        LoginUIColors.white,
+                                                    hintStyle: TextStyle(
+                                                      color:
+                                                          LoginUIColors.muted,
+                                                    ),
+                                                    prefixIcon: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          right: 5),
+                                                      child: GestureDetector(
+                                                        child: _obscureText
+                                                            ? Icon(Icons.lock)
+                                                            : Icon(Icons
+                                                                .lock_open),
+                                                        onTap: _toggle,
+                                                      ),
+                                                    ),
+                                                    enabledBorder: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4.0),
+                                                        borderSide: BorderSide(
+                                                            color: LoginUIColors
+                                                                .border,
+                                                            width: 1.0,
+                                                            style: BorderStyle
+                                                                .solid)),
+                                                    focusedBorder: OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4.0),
+                                                        borderSide: BorderSide(
+                                                            color: LoginUIColors
+                                                                .border,
+                                                            width: 1.0,
+                                                            style: BorderStyle
+                                                                .solid)),
+                                                    hintText: "Password".tr)),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                10, 0, 10, 20),
+                                            alignment: Alignment.topRight,
+                                            child:
+                                                Text.rich(TextSpan(children: [
+                                              TextSpan(
+                                                text:
+                                                    'Forgot your password?'.tr,
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ForgotPassword()));
+                                                      },
+                                                style: TextStyle(
+                                                    color: Colors.blueGrey),
+                                              ),
+                                            ])),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.fromLTRB(
+                                                10, 20, 10, 20),
+                                            //child: Text('Don\'t have an account? Create'),
+                                            child:
+                                                Text.rich(TextSpan(children: [
+                                              TextSpan(
+                                                  text:
+                                                      "Don't have an account? "
+                                                          .tr),
+                                              TextSpan(
+                                                text: 'Create'.tr,
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Register()));
+                                                      },
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        LoginUIColors.primary),
+                                              ),
+                                            ])),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 16),
+                                        child: Center(
+                                          child: FlatButton(
+                                            textColor: LoginUIColors.white,
+                                            color: LoginUIColors.primary,
+                                            onPressed: () {
+                                              login(email, password);
+                                            },
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 16.0,
+                                                    right: 16.0,
+                                                    top: 12,
+                                                    bottom: 12),
+                                                child: Text("LOGIN".tr,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 16.0))),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ))
-                      ],
-                    )),
-              ),
-            ]),
-          )
-        ],
-      ));
+                              ))
+                        ],
+                      )),
+                ),
+              ]),
+            )
+          ],
+        ));
   }
 }

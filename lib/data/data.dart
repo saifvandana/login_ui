@@ -8,8 +8,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-final String BASEURL = 'http://192.168.0.105/localconnect/';
-
 class Listing {
   List info;
   List<String> images;
@@ -34,12 +32,15 @@ Future getCategories(List<String> _catIds, List<String> _cats) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   if (preferences.getString('locale0') != null &&
       preferences.getString('locale1') != null) {
-        locale0 = preferences.getString('locale0')!;
-        locale1 = preferences.getString('locale1')!;
-      }
+    locale0 = preferences.getString('locale0')!;
+    locale1 = preferences.getString('locale1')!;
+  }
 
   var url =
-      'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/category/all/' + locale0 +'_' + locale1;
+      'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/category/all/' +
+          locale0 +
+          '_' +
+          locale1;
   var response = await http.get(Uri.parse(url));
   var content = json.decode(response.body);
   content.forEach((s) => _catIds.add(s["pk_i_id"]));
@@ -52,7 +53,11 @@ Future getAlts(
     List<String> _altCatIds, List<String> _altCats, String category) async {
   var url =
       'https://allmenkul.com/oc-content/plugins/Osclass-API-main/api/category/' +
-          catIds[cats.indexOf(category)] + '/' + locale0 +'_' + locale1;
+          catIds[cats.indexOf(category)] +
+          '/' +
+          locale0 +
+          '_' +
+          locale1;
   var response = await http.get(Uri.parse(url));
   var content = json.decode(response.body);
   content.forEach((s) => _altCatIds.add(s["pk_i_id"]));
@@ -76,7 +81,7 @@ Future getRegions(List<String> _regions, List<String> _regionIds) async {
 Future getLang() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   lang = prefs.getString('locale0') as String;
-  await Future.delayed(const Duration(seconds: 5), (){});
+  await Future.delayed(const Duration(seconds: 5), () {});
   //print(lang);
 }
 

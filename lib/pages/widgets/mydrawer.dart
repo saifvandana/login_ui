@@ -8,6 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_ui/pages/login.dart';
 import 'package:login_ui/pages/logout_page.dart';
 import 'package:login_ui/pages/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -221,8 +222,18 @@ class _AppDrawerState extends State<AppDrawer> {
                 DrawerTile(
                     icon: Icons.account_circle,
                     onTap: () {
-                      if (widget.currentPage != "Profile")
-                        Navigator.pushReplacementNamed(context, '/profile');
+                      if (loggedIn == 'true') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage()),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Login()),
+                        );
+                      }
                     },
                     iconColor: Color.fromRGBO(255, 235, 59, 1),
                     title: "Profile".tr,
